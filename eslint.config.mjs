@@ -8,6 +8,7 @@ import prettierConfig from "eslint-config-prettier";
 export default defineConfig([
   ...nextVitals,
   ...nextTs,
+  
 
   ...tseslint.configs.recommended,
 
