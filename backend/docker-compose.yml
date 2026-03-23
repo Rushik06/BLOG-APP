@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  strapi:
+    image: node:20
+    container_name: strapi
+    working_dir: /srv/app
+    command: sh -c "npx create-strapi-app@latest . --quickstart --no-run --skip-cloud && npm install && npm run develop"
+    ports:
+      - "1337:1337"
+    env_file:
+      - .env
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: ${POSTGRES_DB}
+      DATABASE_USERNAME: ${POSTGRES_USER}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      NODE_ENV: development
+    volumes:
+      - ./app:/srv/app
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15
+    container_name: strapi-db
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
