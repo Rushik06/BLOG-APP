@@ -2,11 +2,15 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.29.3",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,css,md}\"",
+    "prepare": "husky"
   },
   "dependencies": {
     "next": "16.2.1",
@@ -20,7 +24,24 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
+    "eslint-config-prettier": "^9",
+    "eslint-plugin-prettier": "^5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "husky": "^9",
+    "lint-staged": "^16",
+    "prettier": "^3",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "typescript-eslint": "^8"
+  },
+  "lint-staged": {
+    "**/*.{js,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "**/*.{json,css,md}": [
+      "prettier --write"
+    ]
   }
 }

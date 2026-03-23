@@ -1,0 +1,22 @@
+# Dependencies
+node_modules
+
+# Next.js build outputs
+.next
+out
+build
+dist
+
+# Generated files 
+next-env.d.ts
+*.d.ts
+
+# Coverage
+coverage
+
+# Config tooling
+.husky
+.vscode
+
+# Package manager
+pnpm-lock.yaml
