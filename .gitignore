@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-/postgres-data
+backend/postgres-data
 /.pnp
 .pnp.*
 .yarn/*
