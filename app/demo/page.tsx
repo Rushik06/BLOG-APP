@@ -1,25 +1,15 @@
-import {
-  Package,
-  Users,
-  TrendingUp,
-  AlertTriangle,
-  Activity,
-} from "lucide-react";
+import { Package, Users, TrendingUp, AlertTriangle, Activity } from 'lucide-react';
 
-import { Card, CardContent } from "@/components/ui/Card";
-import { fetchAPI } from "@/lib/strapi";
-import DemoModal from "./DemoModal";
+import { Card, CardContent } from '@/components/ui/Card';
+import { fetchAPI } from '@/lib/strapi';
+import DemoModal from './DemoModal';
 
-import {
-  Stat,
-  InventoryItem,
-  ActivityItem,
-} from "@/app/types/demo";
+import { Stat, InventoryItem, ActivityItem } from '@/app/types/demo';
 
 export default async function DemoPage() {
-  const statsRes = await fetchAPI<{ data: Stat[] }>("/stats");
-  const inventoryRes = await fetchAPI<{ data: InventoryItem[] }>("/inventories");
-  const activityRes = await fetchAPI<{ data: ActivityItem[] }>("/activities");
+  const statsRes = await fetchAPI<{ data: Stat[] }>('/stats');
+  const inventoryRes = await fetchAPI<{ data: InventoryItem[] }>('/inventories');
+  const activityRes = await fetchAPI<{ data: ActivityItem[] }>('/activities');
 
   const stats = statsRes?.data || [];
   const inventory = inventoryRes?.data || [];
@@ -27,11 +17,11 @@ export default async function DemoPage() {
 
   const getIcon = (title: string) => {
     switch (title) {
-      case "Products":
+      case 'Products':
         return <Package className="text-blue-600" size={18} />;
-      case "Customers":
+      case 'Customers':
         return <Users className="text-green-600" size={18} />;
-      case "Revenue":
+      case 'Revenue':
         return <TrendingUp className="text-purple-600" size={18} />;
       default:
         return <Activity className="text-orange-600" size={18} />;
@@ -40,20 +30,17 @@ export default async function DemoPage() {
 
   return (
     <DemoModal>
-
       {/* HEADER */}
-      <div className="text-left mb-6">
+      <div className="mb-6 text-left">
         <h1 className="text-xl font-semibold">RetailPro Demo</h1>
-        <p className="text-sm text-gray-500">
-          Quick preview of your dashboard
-        </p>
+        <p className="text-sm text-gray-500">Quick preview of your dashboard</p>
       </div>
 
       {/* STATS */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
         {stats.map((stat) => (
           <Card key={stat.id}>
-            <CardContent className="p-4 flex items-center gap-3">
+            <CardContent className="flex items-center gap-3 p-4">
               {getIcon(stat.title)}
               <div>
                 <p className="text-xs text-gray-500">{stat.title}</p>
@@ -65,12 +52,11 @@ export default async function DemoPage() {
       </div>
 
       {/* CONTENT */}
-      <div className="grid md:grid-cols-2 gap-4">
-
+      <div className="grid gap-4 md:grid-cols-2">
         {/* INVENTORY */}
         <Card>
           <CardContent className="p-4">
-            <h2 className="text-sm font-semibold mb-3">Inventory</h2>
+            <h2 className="mb-3 text-sm font-semibold">Inventory</h2>
 
             <div className="space-y-2 text-sm">
               {inventory.map((item) => (
@@ -78,16 +64,12 @@ export default async function DemoPage() {
                   <span>{item.name}</span>
 
                   <span className="flex items-center gap-2">
-                    {item.stockStatus === "low" && (
+                    {item.stockStatus === 'low' && (
                       <AlertTriangle className="text-red-500" size={14} />
                     )}
 
                     <span
-                      className={
-                        item.stockStatus === "low"
-                          ? "text-red-500"
-                          : "text-green-600"
-                      }
+                      className={item.stockStatus === 'low' ? 'text-red-500' : 'text-green-600'}
                     >
                       {item.stock}
                     </span>
@@ -101,9 +83,7 @@ export default async function DemoPage() {
         {/* ACTIVITY */}
         <Card>
           <CardContent className="p-4">
-            <h2 className="text-sm font-semibold mb-3">
-              Recent Activity
-            </h2>
+            <h2 className="mb-3 text-sm font-semibold">Recent Activity</h2>
 
             <div className="space-y-2 text-sm text-gray-600">
               {activities.map((a) => (
@@ -115,9 +95,7 @@ export default async function DemoPage() {
             </div>
           </CardContent>
         </Card>
-
       </div>
-
     </DemoModal>
   );
 }

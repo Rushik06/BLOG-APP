@@ -19,10 +19,7 @@
     },
     "stockStatus": {
       "type": "enumeration",
-      "enum": [
-        "low",
-        "ok"
-      ]
+      "enum": ["low", "ok"]
     }
   }
 }

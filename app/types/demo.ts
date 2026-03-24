@@ -8,7 +8,7 @@ export interface InventoryItem {
   id: number;
   name: string;
   stock: number;
-  stockStatus: "low" | "ok";
+  stockStatus: 'low' | 'ok';
 }
 
 export interface ActivityItem {

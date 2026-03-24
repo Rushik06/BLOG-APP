@@ -1,5 +1,4 @@
-export 
-interface LandingPage {
+export interface LandingPage {
   HeroTitle: string;
   HeroSubtitle: string;
   CTAText: string;

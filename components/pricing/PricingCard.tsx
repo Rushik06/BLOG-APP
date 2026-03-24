@@ -1,7 +1,7 @@
-import { Card, CardContent } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { Check } from "lucide-react";
-import { Pricing } from "@/app/types/pricing";
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Check } from 'lucide-react';
+import { Pricing } from '@/app/types/pricing';
 
 interface PricingCardProps {
   plan: Pricing;
@@ -9,15 +9,11 @@ interface PricingCardProps {
 
 export default function PricingCard({ plan }: PricingCardProps) {
   return (
-    <Card className="hover:shadow-xl transition duration-300 border">
+    <Card className="border transition duration-300 hover:shadow-xl">
       <CardContent className="p-6 text-center">
-        <h2 className="text-xl font-semibold">
-          {plan.planName}
-        </h2>
+        <h2 className="text-xl font-semibold">{plan.planName}</h2>
 
-        <p className="text-3xl font-bold mt-4 text-blue-600">
-          ₹{plan.Price}
-        </p>
+        <p className="mt-4 text-3xl font-bold text-blue-600">₹{plan.Price}</p>
 
         <div className="mt-4 space-y-2 text-sm text-gray-600">
           <div className="flex items-center justify-center gap-2">
@@ -36,9 +32,7 @@ export default function PricingCard({ plan }: PricingCardProps) {
           </div>
         </div>
 
-        <Button className="mt-6 w-full">
-          Get Started
-        </Button>
+        <Button className="mt-6 w-full">Get Started</Button>
       </CardContent>
     </Card>
   );
