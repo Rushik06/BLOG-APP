@@ -11,7 +11,7 @@ export default function ScrollToHeroBadge() {
 
   return (
     <div className="mt-12 flex flex-col items-center">
-      {/* BLACK & WHITE BADGE */}
+      {/* BADGE */}
       <button
         onClick={handleClick}
         className="flex items-center gap-2 rounded-full border border-black bg-black px-5 py-2 text-sm text-white shadow-sm transition-all hover:-translate-y-0.5 hover:border-black hover:bg-white hover:text-black hover:shadow-lg"

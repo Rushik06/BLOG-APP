@@ -1,7 +1,8 @@
 export interface Blog {
   id: number;
-  title: string;
+  Title: string;
   slug: string;
+  createdAt:string;
   description: string;
   content: string;
   category: string;
@@ -16,3 +17,13 @@ export interface BlogDetailProps {
     slug: string;
   };
 }
+
+export type RichTextChild = {
+  text?: string;
+  children?: { text: string }[];
+};
+
+export type RichTextBlock = {
+  type: string;
+  children?: RichTextChild[];
+};

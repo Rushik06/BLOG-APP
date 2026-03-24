@@ -5,7 +5,7 @@ interface StatsResponse {
   totalSubscribers: number;
 }
 
-// clean fetch (no unnecessary try/catch)
+
 async function getStats(): Promise<StatsResponse> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 

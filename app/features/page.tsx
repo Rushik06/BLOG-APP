@@ -12,11 +12,12 @@ export default async function Features() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
-      {/* ================= HEADER ================= */}
+      {/*  HEADER */}
       <div className="mx-auto mb-16 max-w-2xl text-center">
-        <div className="mb-4 flex justify-center">
-          <div className="rounded-full bg-black p-3 text-white">
-            <Sparkles size={20} />
+        {/*ICON */}
+        <div className="flex justify-center mb-4">
+          <div className="p-3 bg-blue-100 rounded-full animate-pulse">
+            <Sparkles className="text-blue-600" size={20} />
           </div>
         </div>
 
@@ -27,7 +28,7 @@ export default async function Features() {
         </p>
       </div>
 
-      {/* ================= FEATURES GRID ================= */}
+      {/* FEATURES GRID */}
       {features.length === 0 ? (
         <div className="py-20 text-center text-gray-500">No features available.</div>
       ) : (
@@ -43,7 +44,7 @@ export default async function Features() {
         </div>
       )}
 
-      {/* ================= COLORFUL BADGES ================= */}
+      {/* BADGES  */}
       <div className="mt-20 flex flex-wrap justify-center gap-4">
         <div className="flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-blue-700 transition-transform hover:scale-105">
           <Zap size={16} />
@@ -66,7 +67,7 @@ export default async function Features() {
         </div>
       </div>
 
-      {/* ================= CTA ================= */}
+      {/* CTA */}
       <div className="mt-20 text-center">
         <Card className="border shadow-sm">
           <CardContent className="p-10">
@@ -75,7 +76,7 @@ export default async function Features() {
             <p className="mt-2 text-gray-500">Explore how RetailPro works in real-time</p>
 
             <div className="mt-6 flex justify-center gap-4">
-              {/* ✅ Scroll to Home Demo Section */}
+              {/* Scroll to Home Demo Section */}
               <Link href="/#demo">
                 <Button className="flex items-center gap-2 transition-transform hover:scale-105">
                   Live Demo
