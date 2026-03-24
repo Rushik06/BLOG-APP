@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pricings",
+  "info": {
+    "singularName": "pricing",
+    "pluralName": "pricings",
+    "displayName": "Pricing"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "planName": {
+      "type": "string"
+    },
+    "Price": {
+      "type": "biginteger"
+    }
+  }
+}
