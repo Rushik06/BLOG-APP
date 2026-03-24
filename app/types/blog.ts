@@ -1,14 +1,18 @@
-export type Blog = {
+export interface Blog {
   id: number;
-  attributes: {
-    title: string;
-    content: string;
-    slug: string;
-  };
-};
+  title: string;
+  slug: string;
+  description: string;
+  content: string;
+  category: string;
+}
 
-export type Props = {
+export interface BlogCardProps {
+  blog: Blog;
+}
+
+export interface BlogDetailProps {
   params: {
     slug: string;
   };
-};
+}

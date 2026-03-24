@@ -1,8 +1,9 @@
-export type Pricing = {
+export interface Pricing {
   id: number;
-  attributes: {
-    title: string;
-    price: number;
-    description: string;
-  };
-};
+  planName: string;
+  Price: number;
+}
+
+export interface PricingCardProps {
+  plan: Pricing;
+}

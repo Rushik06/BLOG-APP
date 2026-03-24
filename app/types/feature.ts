@@ -1,7 +1,9 @@
-export type Feature = {
+export interface Feature {
   id: number;
-  attributes: {
-    title: string;
-    description: string;
-  };
-};
+  title: string;
+  description: string;
+}
+
+export interface FeatureCardProps {
+  feature: Feature;
+}
