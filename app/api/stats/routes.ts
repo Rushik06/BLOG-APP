@@ -1,4 +1,4 @@
-import { subscribers } from "@/lib/store";
+import { subscribers } from '@/lib/store';
 
 export async function GET() {
   try {
@@ -6,11 +6,8 @@ export async function GET() {
       totalSubscribers: subscribers.length,
     });
   } catch (error) {
-    console.error("Stats API error:", error);
+    console.error('Stats API error:', error);
 
-    return Response.json(
-      { totalSubscribers: 0 },
-      { status: 500 }
-    );
+    return Response.json({ totalSubscribers: 0 }, { status: 500 });
   }
 }
