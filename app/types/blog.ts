@@ -2,7 +2,7 @@ export interface Blog {
   id: number;
   Title: string;
   slug: string;
-  createdAt:string;
+  createdAt: string;
   description: string;
   content: string;
   category: string;

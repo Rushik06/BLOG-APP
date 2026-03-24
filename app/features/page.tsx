@@ -15,8 +15,8 @@ export default async function Features() {
       {/*  HEADER */}
       <div className="mx-auto mb-16 max-w-2xl text-center">
         {/*ICON */}
-        <div className="flex justify-center mb-4">
-          <div className="p-3 bg-blue-100 rounded-full animate-pulse">
+        <div className="mb-4 flex justify-center">
+          <div className="animate-pulse rounded-full bg-blue-100 p-3">
             <Sparkles className="text-blue-600" size={20} />
           </div>
         </div>

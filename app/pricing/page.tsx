@@ -50,7 +50,7 @@ export default async function PricingPage() {
                 <PricingCard
                   plan={{
                     ...plan,
-                    Price: plan.price, 
+                    Price: plan.price,
                   }}
                 />
               </div>
