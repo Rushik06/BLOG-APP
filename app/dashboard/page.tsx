@@ -1,5 +1,8 @@
 import { Users, BarChart3 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/Card';
+import { dashboardMetadata } from '@/app/metadata/dashboard';
+
+export const metadata = dashboardMetadata;
 
 interface StatsResponse {
   totalSubscribers: number;
@@ -27,7 +30,7 @@ export default async function Dashboard() {
       {/* Header */}
       <div className="mb-10">
         <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="mt-2 text-gray-500">Overview of your platform performance</p>
+        <p className="mt-2 text-gray-600">Overview of your platform performance</p>
       </div>
 
       {/* Stats Grid */}
@@ -36,7 +39,7 @@ export default async function Dashboard() {
         <Card className="transition hover:shadow-lg">
           <CardContent className="flex items-center justify-between p-6">
             <div>
-              <p className="text-sm text-gray-500">Total Subscribers</p>
+              <p className="text-sm text-gray-600">Total Subscribers</p>
 
               <h2 className="mt-2 text-3xl font-bold">{data.totalSubscribers}</h2>
             </div>
@@ -51,7 +54,7 @@ export default async function Dashboard() {
         <Card className="transition hover:shadow-lg">
           <CardContent className="flex items-center justify-between p-6">
             <div>
-              <p className="text-sm text-gray-500">Analytics (Coming Soon)</p>
+              <p className="text-sm text-gray-600">Analytics (Coming Soon)</p>
 
               <h2 className="mt-2 text-3xl font-bold">—</h2>
             </div>
@@ -69,7 +72,7 @@ export default async function Dashboard() {
           <CardContent className="p-6">
             <h3 className="text-lg font-semibold">Recent Activity</h3>
 
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-gray-600">
               Subscriber activity and system updates will appear here.
             </p>
           </CardContent>

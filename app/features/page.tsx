@@ -5,6 +5,9 @@ import { Sparkles, ArrowRight, Zap, BarChart3, Store, TrendingUp } from 'lucide-
 import { Card, CardContent } from '@/components/ui/Card';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
+import { featuresMetadata } from '@/app/metadata/features';
+
+export const metadata = featuresMetadata;
 
 export default async function Features() {
   const res = await fetchAPI<{ data: Feature[] }>('/features');
@@ -17,13 +20,13 @@ export default async function Features() {
         {/*ICON */}
         <div className="mb-4 flex justify-center">
           <div className="animate-pulse rounded-full bg-blue-100 p-3">
-            <Sparkles className="text-blue-600" size={20} />
+            <Sparkles className="text-blue-600" size={20} aria-label="Retail features highlight" />
           </div>
         </div>
 
         <h1 className="text-4xl font-bold">Powerful Features</h1>
 
-        <p className="mt-3 text-lg text-gray-500">
+        <p className="mt-3 text-lg text-gray-600">
           Everything you need to manage your retail business efficiently
         </p>
       </div>
@@ -73,11 +76,11 @@ export default async function Features() {
           <CardContent className="p-10">
             <h2 className="text-2xl font-semibold">Ready to experience it live?</h2>
 
-            <p className="mt-2 text-gray-500">Explore how RetailPro works in real-time</p>
+            <p className="mt-2 text-gray-600">Explore how RetailPro works in real-time</p>
 
             <div className="mt-6 flex justify-center gap-4">
               {/* Scroll to Home Demo Section */}
-              <Link href="/#demo">
+              <Link href="/#demo" aria-label="View live demo of RetailPro">
                 <Button className="flex items-center gap-2 transition-transform hover:scale-105">
                   Live Demo
                   <ArrowRight size={16} />

@@ -1,10 +1,11 @@
 import { Package, Users, TrendingUp, AlertTriangle, Activity } from 'lucide-react';
-
 import { Card, CardContent } from '@/components/ui/Card';
 import { fetchAPI } from '@/lib/strapi';
 import DemoModal from './DemoModal';
-
 import { Stat, InventoryItem, ActivityItem } from '@/app/types/demo';
+import { demoMetadata } from '../metadata/demo';
+
+export const metadata = demoMetadata;
 
 export default async function DemoPage() {
   const statsRes = await fetchAPI<{ data: Stat[] }>('/stats');
@@ -33,7 +34,7 @@ export default async function DemoPage() {
       {/* HEADER */}
       <div className="mb-6 text-left">
         <h1 className="text-xl font-semibold">RetailPro Demo</h1>
-        <p className="text-sm text-gray-500">Quick preview of your dashboard</p>
+        <p className="text-sm text-gray-600">Quick preview of your dashboard</p>
       </div>
 
       {/* STATS */}
@@ -43,7 +44,7 @@ export default async function DemoPage() {
             <CardContent className="flex items-center gap-3 p-4">
               {getIcon(stat.title)}
               <div>
-                <p className="text-xs text-gray-500">{stat.title}</p>
+                <p className="text-xs text-gray-600">{stat.title}</p>
                 <p className="text-sm font-semibold">{stat.value}</p>
               </div>
             </CardContent>

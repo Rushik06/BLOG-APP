@@ -560,8 +560,16 @@ export interface ApiLandingPageLandingPage extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     CTAText: Schema.Attribute.String;
+    featuresSubtitle: Schema.Attribute.String;
+    featuresTitle: Schema.Attribute.String;
     HeroSubtitle: Schema.Attribute.String;
     HeroTitle: Schema.Attribute.String;
+    howItWorksStep: Schema.Attribute.Component<
+      'repeatable.how-it-works-steps',
+      true
+    >;
+    howItWorksSubtitle: Schema.Attribute.String;
+    howItWorksTitle: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -586,9 +594,14 @@ export interface ApiPricingPricing extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    contactNumber: Schema.Attribute.BigInteger;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    ctaSubtitle: Schema.Attribute.String;
+    ctaTitle: Schema.Attribute.String;
+    highlightPoints: Schema.Attribute.JSON;
+    highlightTitle: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -627,6 +640,37 @@ export interface ApiStatStat extends Struct.CollectionTypeSchema {
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     value: Schema.Attribute.String;
+  };
+}
+
+export interface ApiTestimonalTestimonal extends Struct.CollectionTypeSchema {
+  collectionName: 'testimonals';
+  info: {
+    displayName: 'Testimonal';
+    pluralName: 'testimonals';
+    singularName: 'testimonal';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    content: Schema.Attribute.Blocks;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::testimonal.testimonal'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    rating: Schema.Attribute.Integer;
+    role: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1131,7 +1175,7 @@ export interface PluginUsersPermissionsUser
 }
 
 declare module '@strapi/strapi' {
-  export namespace Public {
+  export module Public {
     export interface ContentTypeSchemas {
       'admin::api-token': AdminApiToken;
       'admin::api-token-permission': AdminApiTokenPermission;
@@ -1148,6 +1192,7 @@ declare module '@strapi/strapi' {
       'api::landing-page.landing-page': ApiLandingPageLandingPage;
       'api::pricing.pricing': ApiPricingPricing;
       'api::stat.stat': ApiStatStat;
+      'api::testimonal.testimonal': ApiTestimonalTestimonal;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

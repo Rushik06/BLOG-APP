@@ -32,7 +32,7 @@ export default function BlogClient({ blogs }: Props) {
         {/* ICON */}
         <div className="mb-4 flex justify-center">
           <div className="animate-pulse rounded-full bg-blue-100 p-3">
-            <Sparkles className="text-blue-600" size={20} />
+           <Sparkles className="text-blue-600" size={20} aria-label="Retail features highlight" />
           </div>
         </div>
 
@@ -40,7 +40,7 @@ export default function BlogClient({ blogs }: Props) {
         <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Blog & Resources</h1>
 
         {/* SUBTEXT */}
-        <p className="mt-4 text-lg leading-relaxed text-gray-500">
+        <p className="mt-4 text-lg leading-relaxed text-gray-600">
           Insights, guides, and updates to grow your retail business
         </p>
 

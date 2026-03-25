@@ -21,7 +21,7 @@ export default function ScrollToHeroBadge() {
       </button>
 
       {/* SUBTEXT */}
-      <p className="mt-2 text-center text-xs text-gray-400">
+      <p className="mt-2 text-center text-xs text-gray-600">
         Explore how everything works in real-time
       </p>
     </div>

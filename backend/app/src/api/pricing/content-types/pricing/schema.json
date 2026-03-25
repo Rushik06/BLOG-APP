@@ -16,6 +16,21 @@
     },
     "Price": {
       "type": "biginteger"
+    },
+    "ctaTitle": {
+      "type": "string"
+    },
+    "ctaSubtitle": {
+      "type": "string"
+    },
+    "highlightTitle": {
+      "type": "string"
+    },
+    "highlightPoints": {
+      "type": "json"
+    },
+    "contactNumber": {
+      "type": "biginteger"
     }
   }
 }

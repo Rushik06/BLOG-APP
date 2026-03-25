@@ -19,6 +19,23 @@
     },
     "CTAText": {
       "type": "string"
+    },
+    "featuresTitle": {
+      "type": "string"
+    },
+    "featuresSubtitle": {
+      "type": "string"
+    },
+    "howItWorksTitle": {
+      "type": "string"
+    },
+    "howItWorksSubtitle": {
+      "type": "string"
+    },
+    "howItWorksStep": {
+      "type": "component",
+      "component": "repeatable.how-it-works-steps",
+      "repeatable": true
     }
   }
 }
