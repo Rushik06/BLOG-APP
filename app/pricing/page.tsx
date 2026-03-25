@@ -1,6 +1,6 @@
 import { fetchAPI } from '@/lib/strapi';
 import PricingCard from '@/components/pricing/PricingCard';
-import { Pricing } from '@/app/types/pricing';
+import { Pricing, PricingApi } from '@/app/types/pricing';
 import { PRICING_DEFAULTS } from '@/app/constants/pricing-constants';
 
 import { BadgeCheck, Check, Sparkles, Phone } from 'lucide-react';
@@ -10,15 +10,24 @@ import { pricingMetadata } from '@/app/metadata/pricing';
 export const metadata = pricingMetadata;
 
 export default async function PricingPage() {
-  const res = await fetchAPI<{ data: any[] }>('/pricings');
+  const res = await fetchAPI<{ data: PricingApi[] }>('/pricings');
 
   const plans: Pricing[] = (res.data || []).map((plan) => ({
-    ...plan,
+    id: plan.id,
+    planName: plan.planName,
     Price: Number(plan.Price),
 
-    extraFeatures: plan.extraFeatures?.extraFeatures || [],
+    ctaTitle: plan.ctaTitle ?? null,
+    ctaSubtitle: plan.ctaSubtitle ?? null,
+    contactNumber: plan.contactNumber ?? null,
+
+    highlightTitle: plan.highlightTitle ?? null,
+    highlightPoints: plan.highlightPoints ?? null,
+
+    extraFeatures: plan.extraFeatures?.extraFeatures ?? [],
   }));
 
+  // keep logic same
   const proIndex = plans.findIndex((p) => p.planName === 'Pro');
 
   if (proIndex !== -1) {
@@ -36,6 +45,7 @@ export default async function PricingPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
+
       {/* HEADER */}
       <div className="mx-auto mb-16 max-w-2xl text-center">
         <div className="mb-4 flex justify-center">
@@ -53,7 +63,7 @@ export default async function PricingPage() {
         </p>
       </div>
 
-      {/* PRICING GRID */}
+      {/* GRID */}
       {plans.length === 0 ? (
         <div className="py-20 text-center text-gray-500 dark:text-gray-400">
           No pricing plans available.
@@ -88,6 +98,7 @@ export default async function PricingPage() {
       <div className="mt-20">
         <Card className="rounded-2xl border border-gray-200 transition-all hover:shadow-lg dark:border-gray-800">
           <CardContent className="p-10 text-center">
+
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
               {highlightTitle}
             </h2>
@@ -103,15 +114,21 @@ export default async function PricingPage() {
                 </div>
               ))}
             </div>
+
           </CardContent>
         </Card>
       </div>
 
       {/* CTA */}
       <div className="mt-16 text-center">
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{ctaTitle}</h3>
 
-        <p className="mt-2 text-gray-700 dark:text-gray-300">{ctaSubtitle}</p>
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+          {ctaTitle}
+        </h3>
+
+        <p className="mt-2 text-gray-700 dark:text-gray-300">
+          {ctaSubtitle}
+        </p>
 
         <div className="mt-6 flex justify-center">
           <a
@@ -123,6 +140,7 @@ export default async function PricingPage() {
             {contactNumber}
           </a>
         </div>
+
       </div>
     </div>
   );

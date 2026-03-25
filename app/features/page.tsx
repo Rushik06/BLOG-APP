@@ -35,6 +35,7 @@ export default async function Features() {
       </div>
 
       {/*  FEATURES GRID  */}
+      <h2 className="sr-only">Features List</h2>
       {features.length === 0 ? (
         <div className="py-20 text-center text-gray-500 dark:text-gray-400">
           No features available.
