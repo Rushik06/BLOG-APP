@@ -21,9 +21,7 @@ export default async function BlogDetail({ params }: BlogDetailProps) {
   if (!blog) {
     return (
       <div className="mx-auto max-w-3xl py-20 text-center">
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
-          Blog not found
-        </h1>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Blog not found</h1>
 
         <Link
           href="/blog"
@@ -37,49 +35,40 @@ export default async function BlogDetail({ params }: BlogDetailProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors">
+    <div className="min-h-screen bg-gray-50 transition-colors dark:bg-gray-950">
       {/* PROGRESS */}
       <ReadingProgress />
 
       <div className="mx-auto max-w-4xl px-6 py-12">
-
         {/* BACK */}
         <Link
           href="/blog"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition"
+          className="mb-6 inline-flex items-center gap-2 text-sm text-gray-600 transition hover:text-black dark:text-gray-400 dark:hover:text-white"
         >
           <ArrowLeft size={16} />
           Back to Blog
         </Link>
 
         {/* CARD */}
-        <Card className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card className="rounded-2xl border border-gray-200 bg-white shadow-lg transition-all duration-300 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900">
           <CardContent className="p-8 md:p-10">
-
             {/* HEADER */}
             <div className="mb-4 flex items-center gap-3">
-              <div className="rounded-full bg-blue-100 dark:bg-blue-900/40 p-2">
-                <Sparkles
-                  className="text-blue-600 dark:text-blue-300"
-                  size={18}
-                />
+              <div className="rounded-full bg-blue-100 p-2 dark:bg-blue-900/40">
+                <Sparkles className="text-blue-600 dark:text-blue-300" size={18} />
               </div>
 
-              <span className="text-sm text-gray-600 dark:text-gray-400">
-                RetailPro Insights
-              </span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">RetailPro Insights</span>
             </div>
 
             {/* TITLE */}
-            <h1 className="text-3xl leading-tight font-bold tracking-tight md:text-4xl text-gray-900 dark:text-white">
+            <h1 className="text-3xl leading-tight font-bold tracking-tight text-gray-900 md:text-4xl dark:text-white">
               {blog.Title}
             </h1>
 
             {/* DESCRIPTION */}
             {blog.description && (
-              <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">
-                {blog.description}
-              </p>
+              <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">{blog.description}</p>
             )}
 
             {/* META */}
@@ -91,9 +80,7 @@ export default async function BlogDetail({ params }: BlogDetailProps) {
 
               <div className="flex items-center gap-2">
                 <Calendar size={16} />
-                {blog.createdAt
-                  ? new Date(blog.createdAt).toLocaleDateString()
-                  : 'Recently'}
+                {blog.createdAt ? new Date(blog.createdAt).toLocaleDateString() : 'Recently'}
               </div>
             </div>
 
@@ -102,11 +89,10 @@ export default async function BlogDetail({ params }: BlogDetailProps) {
 
             {/* CONTENT */}
             <div className="mx-auto max-w-2xl space-y-6">
-              <div className="space-y-5 border-l-2 border-gray-200 dark:border-gray-700 pl-4">
+              <div className="space-y-5 border-l-2 border-gray-200 pl-4 dark:border-gray-700">
                 <RenderContent content={blog.content} />
               </div>
             </div>
-
           </CardContent>
         </Card>
       </div>

@@ -29,13 +29,9 @@ export default function RenderContent({ content }: { content: unknown }) {
           return (
             <div
               key={index}
-              className="flex items-start gap-3 rounded-lg border border-green-200 bg-green-50 px-4 py-3
-              dark:border-green-800 dark:bg-green-900/30"
+              className="flex items-start gap-3 rounded-lg border border-green-200 bg-green-50 px-4 py-3 dark:border-green-800 dark:bg-green-900/30"
             >
-              <CheckCircle
-                className="mt-1 text-green-600 dark:text-green-400"
-                size={18}
-              />
+              <CheckCircle className="mt-1 text-green-600 dark:text-green-400" size={18} />
               <p className="text-[16px] leading-7 font-medium text-gray-800 dark:text-gray-200">
                 {cleanText.replace(/^\d+\.\s*/, '')}
               </p>
@@ -47,9 +43,7 @@ export default function RenderContent({ content }: { content: unknown }) {
         return (
           <p
             key={index}
-            className="text-[17.5px] leading-8 tracking-[0.2px]
-            text-gray-700 dark:text-gray-300
-            first:text-[18px] first:text-gray-900 dark:first:text-white"
+            className="text-[17.5px] leading-8 tracking-[0.2px] text-gray-700 first:text-[18px] first:text-gray-900 dark:text-gray-300 dark:first:text-white"
           >
             {cleanText}
           </p>
