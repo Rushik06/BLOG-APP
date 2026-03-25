@@ -31,15 +31,10 @@ export default async function DemoPage() {
 
   return (
     <DemoModal>
-
       {/*  HEADER  */}
       <div className="mb-6 text-left">
-        <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-          RetailPro Demo
-        </h1>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          Quick preview of your dashboard
-        </p>
+        <h1 className="text-xl font-semibold text-gray-900 dark:text-white">RetailPro Demo</h1>
+        <p className="text-sm text-gray-600 dark:text-gray-400">Quick preview of your dashboard</p>
       </div>
 
       {/*  STATS  */}
@@ -47,25 +42,19 @@ export default async function DemoPage() {
         {stats.map((stat) => (
           <Card
             key={stat.id}
-            className="border border-gray-200 dark:border-gray-800 transition hover:shadow-lg"
+            className="border border-gray-200 transition hover:shadow-lg dark:border-gray-800"
           >
             <CardContent className="flex items-center gap-3 p-4">
-
               {/* ICON */}
-              <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-2">
+              <div className="rounded-full bg-gray-100 p-2 dark:bg-gray-800">
                 {getIcon(stat.title)}
               </div>
 
               {/* TEXT */}
               <div>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
-                  {stat.title}
-                </p>
-                <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                  {stat.value}
-                </p>
+                <p className="text-xs text-gray-600 dark:text-gray-400">{stat.title}</p>
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">{stat.value}</p>
               </div>
-
             </CardContent>
           </Card>
         ))}
@@ -73,14 +62,10 @@ export default async function DemoPage() {
 
       {/* CONTENT  */}
       <div className="grid gap-4 md:grid-cols-2">
-
         {/* INVENTORY */}
-        <Card className="border border-gray-200 dark:border-gray-800 transition hover:shadow-lg">
+        <Card className="border border-gray-200 transition hover:shadow-lg dark:border-gray-800">
           <CardContent className="p-4">
-
-            <h2 className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">
-              Inventory
-            </h2>
+            <h2 className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">Inventory</h2>
 
             <div className="space-y-2 text-sm">
               {inventory.map((item) => (
@@ -91,7 +76,6 @@ export default async function DemoPage() {
                   <span>{item.name}</span>
 
                   <span className="flex items-center gap-2">
-
                     {item.stockStatus === 'low' && (
                       <AlertTriangle className="text-red-500" size={14} />
                     )}
@@ -105,19 +89,16 @@ export default async function DemoPage() {
                     >
                       {item.stock}
                     </span>
-
                   </span>
                 </div>
               ))}
             </div>
-
           </CardContent>
         </Card>
 
         {/* ACTIVITY */}
-        <Card className="border border-gray-200 dark:border-gray-800 transition hover:shadow-lg">
+        <Card className="border border-gray-200 transition hover:shadow-lg dark:border-gray-800">
           <CardContent className="p-4">
-
             <h2 className="mb-3 text-sm font-semibold text-gray-900 dark:text-white">
               Recent Activity
             </h2>
@@ -130,12 +111,9 @@ export default async function DemoPage() {
                 </div>
               ))}
             </div>
-
           </CardContent>
         </Card>
-
       </div>
-
     </DemoModal>
   );
 }

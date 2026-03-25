@@ -14,7 +14,6 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-  
     const id = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(id);
   }, []);
@@ -26,18 +25,16 @@ export default function Navbar() {
     { name: 'Blog', href: '/blog' },
   ];
 
-  //  prevent layout shift 
+  //  prevent layout shift
   if (!mounted) {
     return <div className="h-16 w-full" />;
   }
 
   return (
-    <nav className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md dark:bg-gray-900/80 dark:border-gray-800">
+    <nav className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-900/80">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-
         {/* LEFT */}
         <div className="flex items-center gap-10">
-
           {/* Logo */}
           <Link
             href="/"
@@ -49,7 +46,7 @@ export default function Navbar() {
           </Link>
 
           {/* Links */}
-          <div className="hidden md:flex items-center gap-6 text-sm">
+          <div className="hidden items-center gap-6 text-sm md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -70,19 +67,12 @@ export default function Navbar() {
 
         {/* RIGHT */}
         <div className="flex items-center gap-3">
-
           {/* DARK MODE */}
           <Button
             variant="ghost"
             size="icon"
-            aria-label={
-              theme === 'dark'
-                ? 'Switch to light mode'
-                : 'Switch to dark mode'
-            }
-            onClick={() =>
-              setTheme(theme === 'dark' ? 'light' : 'dark')
-            }
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="rounded-full transition-transform hover:scale-105"
           >
             {theme === 'dark' ? (
@@ -93,14 +83,9 @@ export default function Navbar() {
           </Button>
 
           {/* LOGIN */}
-          <Button
-            variant="ghost"
-            size="sm"
-            aria-label="Login to your account"
-          >
+          <Button variant="ghost" size="sm" aria-label="Login to your account">
             Login
           </Button>
-
         </div>
       </div>
     </nav>

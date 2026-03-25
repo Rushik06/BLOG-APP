@@ -15,12 +15,10 @@ export default async function Features() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
-
       {/*  HEADER */}
       <div className="mx-auto mb-16 max-w-2xl text-center">
-
         <div className="mb-4 flex justify-center">
-          <div className="animate-pulse rounded-full bg-blue-100 dark:bg-blue-900/40 p-3">
+          <div className="animate-pulse rounded-full bg-blue-100 p-3 dark:bg-blue-900/40">
             <Sparkles
               className="text-blue-600 dark:text-blue-300"
               size={20}
@@ -29,9 +27,7 @@ export default async function Features() {
           </div>
         </div>
 
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-          Powerful Features
-        </h1>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Powerful Features</h1>
 
         <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">
           Everything you need to manage your retail business efficiently
@@ -46,10 +42,7 @@ export default async function Features() {
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
-            <div
-              key={feature.id}
-              className="transition-all duration-300 hover:-translate-y-1"
-            >
+            <div key={feature.id} className="transition-all duration-300 hover:-translate-y-1">
               <FeatureCard feature={feature} />
             </div>
           ))}
@@ -58,34 +51,31 @@ export default async function Features() {
 
       {/*  BADGES */}
       <div className="mt-20 flex flex-wrap justify-center gap-4">
-
-        <div className="flex items-center gap-2 rounded-full border border-blue-100 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/30 px-4 py-2 text-blue-700 dark:text-blue-300 transition hover:scale-105">
+        <div className="flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-blue-700 transition hover:scale-105 dark:border-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
           <Zap size={16} />
           Real-time updates
         </div>
 
-        <div className="flex items-center gap-2 rounded-full border border-green-100 dark:border-green-800 bg-green-50 dark:bg-green-900/30 px-4 py-2 text-green-700 dark:text-green-300 transition hover:scale-105">
+        <div className="flex items-center gap-2 rounded-full border border-green-100 bg-green-50 px-4 py-2 text-green-700 transition hover:scale-105 dark:border-green-800 dark:bg-green-900/30 dark:text-green-300">
           <BarChart3 size={16} />
           Smart analytics
         </div>
 
-        <div className="flex items-center gap-2 rounded-full border border-purple-100 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/30 px-4 py-2 text-purple-700 dark:text-purple-300 transition hover:scale-105">
+        <div className="flex items-center gap-2 rounded-full border border-purple-100 bg-purple-50 px-4 py-2 text-purple-700 transition hover:scale-105 dark:border-purple-800 dark:bg-purple-900/30 dark:text-purple-300">
           <Store size={16} />
           Multi-store support
         </div>
 
-        <div className="flex items-center gap-2 rounded-full border border-orange-100 dark:border-orange-800 bg-orange-50 dark:bg-orange-900/30 px-4 py-2 text-orange-700 dark:text-orange-300 transition hover:scale-105">
+        <div className="flex items-center gap-2 rounded-full border border-orange-100 bg-orange-50 px-4 py-2 text-orange-700 transition hover:scale-105 dark:border-orange-800 dark:bg-orange-900/30 dark:text-orange-300">
           <TrendingUp size={16} />
           Business growth
         </div>
-
       </div>
 
       {/* CTA */}
       <div className="mt-20 text-center">
-        <Card className="border border-gray-200 dark:border-gray-800 rounded-2xl transition hover:shadow-lg">
+        <Card className="rounded-2xl border border-gray-200 transition hover:shadow-lg dark:border-gray-800">
           <CardContent className="p-10">
-
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
               Ready to experience it live?
             </h2>
@@ -95,7 +85,6 @@ export default async function Features() {
             </p>
 
             <div className="mt-6 flex justify-center gap-4">
-
               <Link href="/#demo" aria-label="View live demo of RetailPro">
                 <Button className="flex items-center gap-2 transition hover:scale-105">
                   Live Demo
@@ -109,13 +98,10 @@ export default async function Features() {
               >
                 Get Started
               </Button>
-
             </div>
-
           </CardContent>
         </Card>
       </div>
-
     </div>
   );
 }

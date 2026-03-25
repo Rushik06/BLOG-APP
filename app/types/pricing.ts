@@ -10,7 +10,6 @@ export interface Pricing {
   highlightTitle?: string | null;
   highlightPoints?: string[] | null;
 
-  
   extraFeatures: string[];
 }
 

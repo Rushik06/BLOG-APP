@@ -28,7 +28,6 @@ export type RichTextBlock = {
   children?: RichTextChild[];
 };
 
-
 export type Props = {
   blogs: Blog[];
 };

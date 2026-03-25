@@ -12,15 +12,12 @@ export const metadata = pricingMetadata;
 export default async function PricingPage() {
   const res = await fetchAPI<{ data: any[] }>('/pricings');
 
-  
   const plans: Pricing[] = (res.data || []).map((plan) => ({
     ...plan,
     Price: Number(plan.Price),
 
-
     extraFeatures: plan.extraFeatures?.extraFeatures || [],
   }));
-
 
   const proIndex = plans.findIndex((p) => p.planName === 'Pro');
 
@@ -39,11 +36,10 @@ export default async function PricingPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
-
       {/* HEADER */}
       <div className="mx-auto mb-16 max-w-2xl text-center">
         <div className="mb-4 flex justify-center">
-          <div className="rounded-full bg-blue-100 dark:bg-blue-900/40 p-3 transition hover:scale-110">
+          <div className="rounded-full bg-blue-100 p-3 transition hover:scale-110 dark:bg-blue-900/40">
             <BadgeCheck className="text-blue-600 dark:text-blue-300" />
           </div>
         </div>
@@ -90,14 +86,13 @@ export default async function PricingPage() {
 
       {/* HIGHLIGHT */}
       <div className="mt-20">
-        <Card className="rounded-2xl border border-gray-200 dark:border-gray-800 transition-all hover:shadow-lg">
+        <Card className="rounded-2xl border border-gray-200 transition-all hover:shadow-lg dark:border-gray-800">
           <CardContent className="p-10 text-center">
-
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
               {highlightTitle}
             </h2>
 
-            <div className="mt-6 flex flex-col justify-center gap-6 text-sm text-gray-700 dark:text-gray-300 md:flex-row">
+            <div className="mt-6 flex flex-col justify-center gap-6 text-sm text-gray-700 md:flex-row dark:text-gray-300">
               {highlightPoints.map((point, i) => (
                 <div
                   key={i}
@@ -108,21 +103,15 @@ export default async function PricingPage() {
                 </div>
               ))}
             </div>
-
           </CardContent>
         </Card>
       </div>
 
       {/* CTA */}
       <div className="mt-16 text-center">
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{ctaTitle}</h3>
 
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-          {ctaTitle}
-        </h3>
-
-        <p className="mt-2 text-gray-700 dark:text-gray-300">
-          {ctaSubtitle}
-        </p>
+        <p className="mt-2 text-gray-700 dark:text-gray-300">{ctaSubtitle}</p>
 
         <div className="mt-6 flex justify-center">
           <a
@@ -134,7 +123,6 @@ export default async function PricingPage() {
             {contactNumber}
           </a>
         </div>
-
       </div>
     </div>
   );

@@ -9,16 +9,11 @@ interface PricingCardProps {
 
 export default function PricingCard({ plan }: PricingCardProps) {
   return (
-    <Card className="h-full border border-gray-200 dark:border-gray-800 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 rounded-2xl">
+    <Card className="h-full rounded-2xl border border-gray-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-gray-800">
       <CardContent className="flex h-full flex-col p-6 text-center">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{plan.planName}</h2>
 
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-          {plan.planName}
-        </h2>
-
-        <p className="mt-4 text-3xl font-bold text-blue-600">
-          ₹{plan.Price}
-        </p>
+        <p className="mt-4 text-3xl font-bold text-blue-600">₹{plan.Price}</p>
 
         {/* FEATURES */}
         <div className="mt-4 space-y-2 text-sm text-gray-600 dark:text-gray-400">
@@ -40,7 +35,7 @@ export default function PricingCard({ plan }: PricingCardProps) {
 
         {/* EXTRA FEATURES */}
         {plan.extraFeatures && plan.extraFeatures.length > 0 && (
-          <div className="mt-4 space-y-2 border-t pt-4 border-gray-200 dark:border-gray-700">
+          <div className="mt-4 space-y-2 border-t border-gray-200 pt-4 dark:border-gray-700">
             {plan.extraFeatures.map((feature, i) => (
               <div
                 key={i}
@@ -56,10 +51,7 @@ export default function PricingCard({ plan }: PricingCardProps) {
         {/* 👇 THIS MAKES HEIGHT EQUAL */}
         <div className="flex-grow" />
 
-        <Button className="mt-6 w-full transition hover:scale-105">
-          Get Started
-        </Button>
-
+        <Button className="mt-6 w-full transition hover:scale-105">Get Started</Button>
       </CardContent>
     </Card>
   );
