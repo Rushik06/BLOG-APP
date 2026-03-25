@@ -3,12 +3,15 @@ export interface Pricing {
   planName: string;
   Price: number;
 
-  ctaTitle?: string;
-  ctaSubtitle?: string;
-  contactNumber?: string;
+  ctaTitle?: string | null;
+  ctaSubtitle?: string | null;
+  contactNumber?: string | null;
 
-  highlightTitle?: string;
-  highlightPoints?: string[];
+  highlightTitle?: string | null;
+  highlightPoints?: string[] | null;
+
+  
+  extraFeatures: string[];
 }
 
 export interface PricingCardProps {

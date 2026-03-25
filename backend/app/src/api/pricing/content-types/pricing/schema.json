@@ -31,6 +31,9 @@
     },
     "contactNumber": {
       "type": "biginteger"
+    },
+    "extraFeatures": {
+      "type": "json"
     }
   }
 }

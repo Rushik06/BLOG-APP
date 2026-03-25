@@ -27,3 +27,8 @@ export type RichTextBlock = {
   type: string;
   children?: RichTextChild[];
 };
+
+
+export type Props = {
+  blogs: Blog[];
+};

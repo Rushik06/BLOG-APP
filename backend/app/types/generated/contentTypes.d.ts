@@ -600,6 +600,7 @@ export interface ApiPricingPricing extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     ctaSubtitle: Schema.Attribute.String;
     ctaTitle: Schema.Attribute.String;
+    extraFeatures: Schema.Attribute.JSON;
     highlightPoints: Schema.Attribute.JSON;
     highlightTitle: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1175,7 +1176,7 @@ export interface PluginUsersPermissionsUser
 }
 
 declare module '@strapi/strapi' {
-  export namespace Public {
+  export module Public {
     export interface ContentTypeSchemas {
       'admin::api-token': AdminApiToken;
       'admin::api-token-permission': AdminApiTokenPermission;

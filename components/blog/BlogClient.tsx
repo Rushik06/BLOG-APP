@@ -6,14 +6,11 @@ import BlogCard from '@/components/blog/BlogCard';
 
 import { Search, Sparkles, TrendingUp, BookOpen } from 'lucide-react';
 
-type Props = {
-  blogs: Blog[];
-};
+import type { Props } from '@/app/types/blog';
 
 export default function BlogClient({ blogs }: Props) {
   const [query, setQuery] = useState('');
 
-  /*  FILTER */
   const filteredBlogs = useMemo(() => {
     const q = query.toLowerCase();
 
@@ -27,56 +24,71 @@ export default function BlogClient({ blogs }: Props) {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
-      {/* HEADER  */}
+
+      {/* HEADER */}
       <div className="mx-auto mb-14 max-w-2xl text-center">
+
         {/* ICON */}
         <div className="mb-4 flex justify-center">
-          <div className="animate-pulse rounded-full bg-blue-100 p-3">
-            <Sparkles className="text-blue-600" size={20} aria-label="Retail features highlight" />
+          <div className="animate-pulse rounded-full bg-blue-100 dark:bg-blue-900/40 p-3">
+            <Sparkles className="text-blue-600 dark:text-blue-300" size={20} />
           </div>
         </div>
 
         {/* TITLE */}
-        <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Blog & Resources</h1>
+        <h1 className="text-4xl font-bold tracking-tight md:text-5xl text-gray-900 dark:text-white">
+          Blog & Resources
+        </h1>
 
         {/* SUBTEXT */}
-        <p className="mt-4 text-lg leading-relaxed text-gray-600">
+        <p className="mt-4 text-lg leading-relaxed text-gray-600 dark:text-gray-400">
           Insights, guides, and updates to grow your retail business
         </p>
 
         {/* ICON STRIP */}
         <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm">
-          <div className="flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 transition hover:scale-105">
-            <TrendingUp size={14} className="text-blue-600" />
+
+          <div className="flex items-center gap-2 rounded-full bg-blue-50 dark:bg-blue-900/30 px-3 py-1 text-blue-700 dark:text-blue-300 transition hover:scale-105">
+            <TrendingUp size={14} />
             Growth Tips
           </div>
 
-          <div className="flex items-center gap-2 rounded-full bg-green-50 px-3 py-1 transition hover:scale-105">
-            <BookOpen size={14} className="text-green-600" />
+          <div className="flex items-center gap-2 rounded-full bg-green-50 dark:bg-green-900/30 px-3 py-1 text-green-700 dark:text-green-300 transition hover:scale-105">
+            <BookOpen size={14} />
             Guides
           </div>
+
         </div>
 
         {/* SEARCH */}
         <div className="mt-8 flex justify-center">
           <div className="relative w-full max-w-md">
-            {/* ICON */}
-            <Search size={18} className="absolute top-1/2 left-4 -translate-y-1/2 text-gray-500" />
 
-            {/* INPUT */}
+            <Search
+              size={18}
+              className="absolute top-1/2 left-4 -translate-y-1/2 text-gray-500 dark:text-gray-400"
+            />
+
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search articles..."
-              className="w-full rounded-full border border-gray-200 bg-white/90 py-3 pr-4 pl-11 text-sm shadow-sm backdrop-blur-md transition-all duration-200 hover:shadow-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full rounded-full border border-gray-200 dark:border-gray-700
+              bg-white dark:bg-gray-900
+              text-gray-900 dark:text-gray-100
+              py-3 pr-4 pl-11 text-sm shadow-sm
+              transition-all duration-200 hover:shadow-md
+              focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </div>
         </div>
       </div>
 
-      {/*  BLOG GRID  */}
+      {/* BLOG GRID */}
       {filteredBlogs.length === 0 ? (
-        <div className="py-20 text-center text-gray-500">No blog posts found.</div>
+        <div className="py-20 text-center text-gray-500 dark:text-gray-400">
+          No blog posts found.
+        </div>
       ) : (
         <div className="grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredBlogs.map((blog) => (

@@ -1,24 +1,32 @@
 import { Card, CardContent } from '@/components/ui/Card';
 import { CheckCircle } from 'lucide-react';
-import { Feature } from '@/app/types/feature';
-
-interface FeatureCardProps {
-  feature: Feature;
-}
+import { FeatureCardProps } from '@/app/types/feature';
 
 export default function FeatureCard({ feature }: FeatureCardProps) {
   return (
-    <Card className="transition duration-300 hover:shadow-lg">
+    <Card className="border border-gray-200 dark:border-gray-800 transition duration-300 hover:shadow-xl hover:-translate-y-1">
       <CardContent className="p-6">
+
         <div className="flex items-start gap-3">
-          <CheckCircle className="mt-1 text-blue-600" size={20} />
 
-          <div>
-            <h3 className="text-lg font-semibold">{feature.title}</h3>
-
-            <p className="mt-1 text-sm text-gray-500">{feature.description}</p>
+          {/* ICON */}
+          <div className="rounded-full bg-blue-100 dark:bg-blue-900/40 p-2">
+            <CheckCircle className="text-blue-600 dark:text-blue-300" size={18} />
           </div>
+
+          {/* TEXT */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              {feature.title}
+            </h3>
+
+            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+              {feature.description}
+            </p>
+          </div>
+
         </div>
+
       </CardContent>
     </Card>
   );
