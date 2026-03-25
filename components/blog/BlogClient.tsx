@@ -32,7 +32,7 @@ export default function BlogClient({ blogs }: Props) {
         {/* ICON */}
         <div className="mb-4 flex justify-center">
           <div className="animate-pulse rounded-full bg-blue-100 p-3">
-           <Sparkles className="text-blue-600" size={20} aria-label="Retail features highlight" />
+            <Sparkles className="text-blue-600" size={20} aria-label="Retail features highlight" />
           </div>
         </div>
 

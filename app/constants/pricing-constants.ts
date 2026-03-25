@@ -4,9 +4,5 @@ export const PRICING_DEFAULTS = {
   contactNumber: '1234567890',
 
   highlightTitle: 'All plans include',
-  highlightPoints: [
-    'Real-time tracking',
-    'Analytics dashboard',
-    'Multi-store support',
-  ],
+  highlightPoints: ['Real-time tracking', 'Analytics dashboard', 'Multi-store support'],
 };

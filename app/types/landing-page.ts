@@ -15,5 +15,5 @@ export interface LandingPage {
   howItWorksTitle?: string;
   howItWorksSubTitle?: string;
 
-  howItWorksStep?: HowItWorksStep[]; 
+  howItWorksStep?: HowItWorksStep[];
 }

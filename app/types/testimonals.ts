@@ -1,5 +1,3 @@
-
-
 export type RichTextChild = {
   text?: string;
   children?: { text: string }[];

@@ -10,14 +10,12 @@ export const blogMetadata = {
   ],
   openGraph: {
     title: 'RetailPro Blog',
-    description:
-      'Insights, guides, and updates to grow your retail business.',
+    description: 'Insights, guides, and updates to grow your retail business.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'RetailPro Blog',
-    description:
-      'Insights, guides, and updates to grow your retail business.',
+    description: 'Insights, guides, and updates to grow your retail business.',
   },
 };
