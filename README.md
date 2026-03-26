@@ -167,7 +167,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - **Blog** — Dynamic blog posts fetched from Strapi, with rich text rendering and a reading progress indicator.
 - **Authentication** — Credential-based login/signup via NextAuth.js, backed by Strapi's users-permissions plugin.
 - **Dashboard** — Protected page with charts and analytics (subscriber counts, activity, stats).
-- **Newsletter Subscription** — REST endpoint to add and retrieve subscribers stored in Strapi.
 - **Landing Page** — Fully CMS-driven landing page with features, testimonials, and pricing sections.
 - **Pricing Page** — Dynamic pricing cards managed in Strapi.
 - **Dark Mode** — Theme toggling via `next-themes`.
