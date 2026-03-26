@@ -1,0 +1,32 @@
+{
+  "kind": "singleType",
+  "collectionName": "ui_configs",
+  "info": {
+    "singularName": "ui-config",
+    "pluralName": "ui-configs",
+    "displayName": "ui-config"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "logoText": {
+      "type": "string"
+    },
+    "loginText": {
+      "type": "string"
+    },
+    "logoutText": {
+      "type": "string"
+    },
+    "footerText": {
+      "type": "string"
+    },
+    "nav_links": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::nav-link.nav-link"
+    }
+  }
+}

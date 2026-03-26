@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pricings",
+  "info": {
+    "singularName": "pricing",
+    "pluralName": "pricings",
+    "displayName": "Pricing"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "planName": {
+      "type": "string"
+    },
+    "Price": {
+      "type": "biginteger"
+    },
+    "ctaTitle": {
+      "type": "string"
+    },
+    "ctaSubtitle": {
+      "type": "string"
+    },
+    "highlightTitle": {
+      "type": "string"
+    },
+    "highlightPoints": {
+      "type": "json"
+    },
+    "contactNumber": {
+      "type": "biginteger"
+    },
+    "extraFeatures": {
+      "type": "json"
+    }
+  }
+}

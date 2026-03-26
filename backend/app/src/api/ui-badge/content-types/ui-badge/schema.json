@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ui_badges",
+  "info": {
+    "singularName": "ui-badge",
+    "pluralName": "ui-badges",
+    "displayName": "ui-badge"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "buttonText": {
+      "type": "string"
+    },
+    "subText": {
+      "type": "string"
+    }
+  }
+}

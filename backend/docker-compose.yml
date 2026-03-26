@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: strapi_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - strapi_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  strapi:
+    image: node:20
+    container_name: strapi_app
+    working_dir: /opt/app
+    command: sh -c "if [ ! -f package.json ]; then npx create-strapi-app@latest . --quickstart --skip-cloud; fi && npm install && npm install pg && npm run develop"
+    restart: unless-stopped
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      API_TOKEN_SALT: ${API_TOKEN_SALT}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
+      HOST: 0.0.0.0
+      PORT: 1337
+      NODE_ENV: development
+    volumes:
+      - ./app:/opt/app
+    ports:
+      - "1337:1337"
+    networks:
+      - strapi_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+networks:
+  strapi_network:
+    driver: bridge
