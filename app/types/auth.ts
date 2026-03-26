@@ -1,10 +1,10 @@
-export interface AuthUser {
+export interface StrapiUser {
   id: number;
   username: string;
   email: string;
 }
 
-export interface LoginResponse {
+export interface StrapiAuthResponse {
   jwt: string;
-  user: AuthUser;
+  user: StrapiUser;
 }
