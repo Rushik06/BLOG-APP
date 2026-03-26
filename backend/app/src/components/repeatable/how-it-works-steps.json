@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_repeatable_how_it_works_steps",
+  "info": {
+    "displayName": "howItWorksSteps"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

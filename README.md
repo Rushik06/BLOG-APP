@@ -220,6 +220,26 @@ Commit messages are linted with Commitlint and code is auto-formatted on commit 
 
 ---
 
-## License
+The easiest way to deploy the Next.js frontend is via [Vercel](https://vercel.com). Set all environment variables from `.env.local` in the Vercel project settings.
 
-This project is private. All rights reserved.
+### Backend
+
+The Strapi backend can be deployed to any server that supports Docker. For production, ensure you:
+
+1. Use strong secrets for all environment variables.
+2. Configure `NODE_ENV=production` in the Strapi container.
+3. Set up a persistent volume for the PostgreSQL data.
+4. Restrict Strapi API token permissions to only what the frontend requires.
+
+---
+
+## Contributing
+
+1. Fork the repository.
+2. Create a feature branch: `git checkout -b feat/your-feature`
+3. Commit using [Conventional Commits](https://www.conventionalcommits.org/): `git commit -m "feat: add new feature"`
+4. Push and open a Pull Request.
+
+Commit messages are linted with Commitlint and code is auto-formatted on commit via Husky + lint-staged.
+
+
