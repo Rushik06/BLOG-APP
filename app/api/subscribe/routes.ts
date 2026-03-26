@@ -15,10 +15,7 @@ export async function POST(req: Request) {
 
   // validation
   if (!body.email || typeof body.email !== 'string') {
-    return Response.json(
-      { error: 'Valid email is required' },
-      { status: 400 }
-    );
+    return Response.json({ error: 'Valid email is required' }, { status: 400 });
   }
 
   const email = body.email.toLowerCase().trim();
@@ -27,10 +24,7 @@ export async function POST(req: Request) {
   const exists = subscribers.some((sub) => sub.email === email);
 
   if (exists) {
-    return Response.json(
-      { message: 'Already subscribed' },
-      { status: 200 }
-    );
+    return Response.json({ message: 'Already subscribed' }, { status: 200 });
   }
 
   //add new subscriber

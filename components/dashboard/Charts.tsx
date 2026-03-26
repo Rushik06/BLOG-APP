@@ -1,19 +1,8 @@
 'use client';
 
-import {
-  LineChart,
-  Line,
-  XAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
+import { LineChart, Line, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 
 // CLIENT DATA
 const chartData = [
@@ -36,7 +25,6 @@ export default function Chart() {
       <CardContent className="h-80">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
-
             <XAxis dataKey="name" stroke="#888" />
 
             <Tooltip
@@ -48,14 +36,7 @@ export default function Chart() {
               }}
             />
 
-            <Line
-              type="monotone"
-              dataKey="users"
-              stroke="#3b82f6"
-              strokeWidth={3}
-              dot={false}
-            />
-
+            <Line type="monotone" dataKey="users" stroke="#3b82f6" strokeWidth={3} dot={false} />
           </LineChart>
         </ResponsiveContainer>
       </CardContent>
