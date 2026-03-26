@@ -27,10 +27,8 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 border-b bg-white/70 backdrop-blur-xl dark:border-gray-800 dark:bg-gray-900/70">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        
         {/* LEFT */}
         <div className="flex items-center gap-10">
-          
           {/* LOGO */}
           <Link
             href="/"
@@ -60,7 +58,6 @@ export default function Navbar() {
 
         {/* RIGHT */}
         <div className="flex items-center gap-3">
-          
           {/* THEME */}
           <Button
             variant="ghost"
@@ -73,7 +70,6 @@ export default function Navbar() {
           {/* AUTH */}
           {status === 'loading' ? null : status === 'authenticated' ? (
             <div className="flex items-center gap-3">
-              
               {/* USER */}
               <div className="flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5 dark:bg-gray-800">
                 <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-500 text-xs text-white">
@@ -83,9 +79,7 @@ export default function Navbar() {
               </div>
 
               {/* LOGOUT */}
-              <Button onClick={handleLogout}>
-                {logoutText}
-              </Button>
+              <Button onClick={handleLogout}>{logoutText}</Button>
             </div>
           ) : (
             <Link href="/login">

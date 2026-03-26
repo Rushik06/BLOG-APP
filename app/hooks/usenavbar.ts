@@ -42,7 +42,7 @@ export function useNavbar() {
         );
         const json = await res.json();
 
-        setConfig(json.data); 
+        setConfig(json.data);
       } catch (err) {
         console.error(err);
       }
