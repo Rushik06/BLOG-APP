@@ -1,4 +1,4 @@
-# Blog App
+# PUBLIC CMS WEBSITE
 
 A full-stack blog platform built with **Next.js 16** (frontend) and **Strapi 5** (headless CMS backend), featuring authentication, a subscriber system, a dashboard with analytics, and a content-rich landing page.
 
