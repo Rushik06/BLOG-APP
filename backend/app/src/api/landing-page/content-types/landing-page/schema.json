@@ -36,6 +36,12 @@
       "type": "component",
       "component": "repeatable.how-it-works-steps",
       "repeatable": true
+    },
+    "secondaryCTAText": {
+      "type": "string"
+    },
+    "secondaryCTAlink": {
+      "type": "string"
     }
   }
 }

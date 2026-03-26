@@ -17,6 +17,7 @@ export default async function Home() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
+
       {/* HERO */}
       <div id="hero" className="mx-auto mb-20 max-w-2xl text-center">
         <div className="mb-4 flex justify-center">
@@ -25,32 +26,47 @@ export default async function Home() {
           </div>
         </div>
 
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{data.HeroTitle}</h1>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+          {data.HeroTitle}
+        </h1>
 
-        <p className="mt-3 text-lg text-gray-700 dark:text-gray-300">{data.HeroSubtitle}</p>
+        <p className="mt-3 text-lg text-gray-700 dark:text-gray-300">
+          {data.HeroSubtitle}
+        </p>
 
         <div className="mt-6 flex justify-center gap-4">
+
+          {/* PRIMARY CTA */}
           <Button className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-white shadow-md transition-all duration-300 hover:scale-105 hover:bg-blue-700 hover:shadow-lg">
             {data.CTAText}
             <ArrowRight size={16} />
           </Button>
 
-          <Link href="/demo">
-            <Button variant="outline">Live Demo</Button>
+          {/* SECONDARY CTA  */}
+          <Link href={data.secondaryCTALink || '/demo'}>
+            <Button variant="outline">
+              {data.secondaryCTAText || 'Live Demo'}
+            </Button>
           </Link>
+
         </div>
       </div>
 
       {/* FEATURES */}
       <div className="mx-auto mb-20 max-w-2xl text-center">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{data.featuresTitle}</h2>
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+          {data.featuresTitle}
+        </h2>
 
-        <p className="mt-3 text-gray-700 dark:text-gray-300">{data.featuresSubtitle}</p>
+        <p className="mt-3 text-gray-700 dark:text-gray-300">
+          {data.featuresSubtitle}
+        </p>
       </div>
 
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {features.map((feature, index) => {
-          const Icon = iconMap[feature.icon as keyof typeof iconMap] || iconMap.store;
+          const Icon =
+            iconMap[feature.icon as keyof typeof iconMap] || iconMap.store;
 
           return (
             <Card key={feature.id || index}>
@@ -76,7 +92,9 @@ export default async function Home() {
 
       {/* HOW IT WORKS */}
       <div className="mt-20 text-center">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{data.howItWorksTitle}</h2>
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+          {data.howItWorksTitle}
+        </h2>
 
         <p className="mx-auto mt-3 max-w-2xl text-gray-700 dark:text-gray-300">
           {data.howItWorksSubTitle}
@@ -85,7 +103,8 @@ export default async function Home() {
 
       <div className="mt-12 flex flex-col items-center gap-8 md:flex-row md:justify-between">
         {data.howItWorksStep?.map((step, index) => {
-          const Icon = iconMap[step.icon as keyof typeof iconMap] || iconMap.store;
+          const Icon =
+            iconMap[step.icon as keyof typeof iconMap] || iconMap.store;
 
           const isLast = index === data.howItWorksStep.length - 1;
 
@@ -93,12 +112,16 @@ export default async function Home() {
             <div key={index} className="flex items-center">
               <div className="group flex flex-col items-center text-center">
                 <div
-                  className={`rounded-full p-4 ${howItWorksColors[index % 4]} transition group-hover:scale-110`}
+                  className={`rounded-full p-4 ${
+                    howItWorksColors[index % 4]
+                  } transition group-hover:scale-110`}
                 >
                   <Icon size={24} />
                 </div>
 
-                <h3 className="mt-4 font-semibold text-gray-900 dark:text-white">{step.title}</h3>
+                <h3 className="mt-4 font-semibold text-gray-900 dark:text-white">
+                  {step.title}
+                </h3>
 
                 <p className="mt-2 max-w-[180px] text-sm text-gray-700 dark:text-gray-300">
                   {step.description}
@@ -120,7 +143,9 @@ export default async function Home() {
 
       {/* TESTIMONIALS */}
       <div className="mt-20 text-center">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">What our users say</h2>
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+          What our users say
+        </h2>
       </div>
 
       <div className="mt-12 grid gap-8 md:grid-cols-3">
@@ -133,15 +158,22 @@ export default async function Home() {
                 ))}
               </div>
 
-              <p className="text-sm text-gray-700 dark:text-gray-300">“{getText(t.content)}”</p>
+              <p className="text-sm text-gray-700 dark:text-gray-300">
+                “{getText(t.content)}”
+              </p>
 
-              <p className="mt-4 font-medium text-gray-900 dark:text-white">{t.name}</p>
+              <p className="mt-4 font-medium text-gray-900 dark:text-white">
+                {t.name}
+              </p>
 
-              <p className="text-xs text-gray-600 dark:text-gray-400">{t.role}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
+                {t.role}
+              </p>
             </CardContent>
           </Card>
         ))}
       </div>
+
     </div>
   );
 }

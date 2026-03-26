@@ -8,6 +8,8 @@ export interface LandingPage {
   HeroTitle: string;
   HeroSubtitle: string;
   CTAText: string;
+  secondaryCTAText?: string;
+  secondaryCTALink?: string;
 
   featuresTitle?: string;
   featuresSubtitle?: string;

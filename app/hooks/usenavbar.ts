@@ -6,7 +6,19 @@ import { useSession, signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { Navlink, UIConfig, UIConfigResponse } from '../types/navbar';
+import type { Navlink } from '@/app/types/navbar';
+
+interface NavLinkItem {
+  name: string;
+  href: string;
+}
+
+interface UiConfig {
+  logoText?: string;
+  loginText?: string;
+  logoutText?: string;
+  nav_links?: NavLinkItem[];
+}
 
 export function useNavbar() {
   const pathname = usePathname();
@@ -14,24 +26,23 @@ export function useNavbar() {
   const { data: session, status } = useSession();
 
   const [mounted, setMounted] = useState(false);
-  const [config, setConfig] = useState<UIConfig | null>(null);
+  const [config, setConfig] = useState<UiConfig | null>(null);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(id);
   }, []);
 
-  // FETCH UI CONFIG FROM STRAPI
+  /* FETCH UI CONFIG */
   useEffect(() => {
     async function fetchConfig() {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_STRAPI_URL}/ui-config?populate=nav_links`,
-          { cache: 'no-store' }
+          `${process.env.NEXT_PUBLIC_STRAPI_URL}/ui-config?populate=nav_links`
         );
+        const json = await res.json();
 
-        const json: UIConfigResponse = await res.json();
-        setConfig(json.data);
+        setConfig(json.data); 
       } catch (err) {
         console.error(err);
       }
@@ -40,25 +51,33 @@ export function useNavbar() {
     fetchConfig();
   }, []);
 
-  // Capitalize name
+  /* USER */
   const userName = session?.user?.name
     ? session.user.name.charAt(0).toUpperCase() + session.user.name.slice(1)
     : 'User';
 
   const userInitial = userName.charAt(0);
 
-  // ✅ STRAPI v5 FORMAT (NO attributes, NO data nesting)
+  /* NAV LINKS FROM CMS + AUTH FILTER */
   const navLinks: Navlink[] =
-    config?.nav_links?.map((item) => ({
-      name: item.name,
-      href: item.href,
-    })) || [];
+    config?.nav_links
+      ?.filter((link) => {
+        // Show dashboard only if logged in
+        if (link.href === '/dashboard') {
+          return status === 'authenticated';
+        }
+        return true;
+      })
+      .map((item) => ({
+        name: item.name,
+        href: item.href,
+      })) || [];
 
   const logoText = config?.logoText || 'RetailPro';
   const loginText = config?.loginText || 'Login';
   const logoutText = config?.logoutText || 'Logout';
 
-  // LOGOUT
+  /* LOGOUT */
   const handleLogout = async () => {
     toast.success('Logged out successfully');
 
