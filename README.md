@@ -51,7 +51,6 @@ BLOG-APP/
 ├── lib/                        # Utilities & API helpers
 │   ├── strapi.ts               # Strapi fetch wrapper
 │   ├── strapi-helpers.ts       # Rich text parser
-│   ├── store.ts                # Global state store
 │   └── utils.ts                # General utilities
 ├── backend/
 │   ├── docker-compose.yml      # PostgreSQL + Strapi containers
