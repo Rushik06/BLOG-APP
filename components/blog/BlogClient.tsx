@@ -1,15 +1,16 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Blog } from '@/app/types/blog';
 import BlogCard from '@/components/blog/BlogCard';
 
 import { Search, Sparkles, TrendingUp, BookOpen } from 'lucide-react';
+import { useBlogConfig } from '@/app/hooks/useblogpage';
 
 import type { Props } from '@/app/types/blog';
 
 export default function BlogClient({ blogs }: Props) {
   const [query, setQuery] = useState('');
+  const config = useBlogConfig();
 
   const filteredBlogs = useMemo(() => {
     const q = query.toLowerCase();
@@ -24,8 +25,10 @@ export default function BlogClient({ blogs }: Props) {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
+
       {/* HEADER */}
       <div className="mx-auto mb-14 max-w-2xl text-center">
+
         {/* ICON */}
         <div className="mb-4 flex justify-center">
           <div className="animate-pulse rounded-full bg-blue-100 p-3 dark:bg-blue-900/40">
@@ -35,12 +38,12 @@ export default function BlogClient({ blogs }: Props) {
 
         {/* TITLE */}
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 md:text-5xl dark:text-white">
-          Blog & Resources
+          {config?.headerTitle || 'Blog & Resources'}
         </h1>
 
         {/* SUBTEXT */}
         <p className="mt-4 text-lg leading-relaxed text-gray-600 dark:text-gray-400">
-          Insights, guides, and updates to grow your retail business
+          {config?.headerSubtitle || 'Insights, guides, and updates to grow your retail business'}
         </p>
 
         {/* ICON STRIP */}
@@ -67,7 +70,7 @@ export default function BlogClient({ blogs }: Props) {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search articles..."
+              placeholder={config?.searchPlaceholder || 'Search articles...'}
               className="w-full rounded-full border border-gray-200 bg-white py-3 pr-4 pl-11 text-sm text-gray-900 shadow-sm transition-all duration-200 hover:shadow-md focus:ring-2 focus:ring-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
             />
           </div>

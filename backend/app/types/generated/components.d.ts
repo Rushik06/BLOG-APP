@@ -13,7 +13,7 @@ export interface RepeatableHowItWorksSteps extends Struct.ComponentSchema {
 }
 
 declare module '@strapi/strapi' {
-  export namespace Public {
+  export module Public {
     export interface ComponentSchemas {
       'repeatable.how-it-works-steps': RepeatableHowItWorksSteps;
     }

@@ -20,8 +20,11 @@ export default async function Home() {
       {/* HERO */}
       <div id="hero" className="mx-auto mb-20 max-w-2xl text-center">
         <div className="mb-4 flex justify-center">
-          <div className="rounded-full bg-blue-100 p-3 transition hover:scale-110 dark:bg-blue-900/40">
-            <Sparkles className="text-blue-600 dark:text-blue-300" size={20} />
+          <div className="animate-pulse rounded-full bg-blue-100 p-3 dark:bg-blue-900/40">
+            <Sparkles
+              className="text-blue-600 dark:text-blue-300"
+              size={20}
+            />
           </div>
         </div>
 

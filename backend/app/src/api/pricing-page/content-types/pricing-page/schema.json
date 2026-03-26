@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pricing_pages",
+  "info": {
+    "singularName": "pricing-page",
+    "pluralName": "pricing-pages",
+    "displayName": "pricing-page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "headerTitle": {
+      "type": "string"
+    },
+    "headerSubtitle": {
+      "type": "text"
+    }
+  }
+}

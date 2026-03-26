@@ -6,35 +6,43 @@ import { Card, CardContent } from '@/components/ui/Card';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { featuresMetadata } from '@/app/metadata/features';
+import { FeaturesPageResponse } from '@/app/types/feature-page';
 
 export const metadata = featuresMetadata;
 
 export default async function Features() {
-  const res = await fetchAPI<{ data: Feature[] }>('/features');
-  const features = res.data;
+  const [featuresRes, configRes] = await Promise.all([
+    fetchAPI<{ data: Feature[] }>('/features'),
+    fetchAPI<FeaturesPageResponse>('/features-pages'),
+  ]);
+
+  const features = featuresRes.data;
+  const config = configRes.data;
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
-      {/*  HEADER */}
+
+      {/* HEADER (CMS) */}
       <div className="mx-auto mb-16 max-w-2xl text-center">
         <div className="mb-4 flex justify-center">
           <div className="animate-pulse rounded-full bg-blue-100 p-3 dark:bg-blue-900/40">
             <Sparkles
               className="text-blue-600 dark:text-blue-300"
               size={20}
-              aria-label="Retail features highlight"
             />
           </div>
         </div>
 
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Powerful Features</h1>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+          {config?.headerTitle || 'Powerful Features'}
+        </h1>
 
         <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">
-          Everything you need to manage your retail business efficiently
+          {config?.headerSubtitle || 'Everything you need to manage your retail business efficiently'}
         </p>
       </div>
 
-      {/*  FEATURES GRID  */}
+      {/* FEATURES GRID */}
       <h2 className="sr-only">Features List</h2>
       {features.length === 0 ? (
         <div className="py-20 text-center text-gray-500 dark:text-gray-400">
@@ -50,7 +58,7 @@ export default async function Features() {
         </div>
       )}
 
-      {/*  BADGES */}
+      {/* BADGES */}
       <div className="mt-20 flex flex-wrap justify-center gap-4">
         <div className="flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-blue-700 transition hover:scale-105 dark:border-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
           <Zap size={16} />
@@ -73,36 +81,39 @@ export default async function Features() {
         </div>
       </div>
 
-      {/* CTA */}
+      {/* CTA (CMS) */}
       <div className="mt-20 text-center">
         <Card className="rounded-2xl border border-gray-200 transition hover:shadow-lg dark:border-gray-800">
           <CardContent className="p-10">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
-              Ready to experience it live?
+              {config?.ctaTitle || 'Ready to experience it live?'}
             </h2>
 
             <p className="mt-2 text-gray-600 dark:text-gray-400">
-              Explore how RetailPro works in real-time
+              {config?.ctaSubtitle || 'Explore how RetailPro works in real-time'}
             </p>
 
             <div className="mt-6 flex justify-center gap-4">
-              <Link href="/#demo" aria-label="View live demo of RetailPro">
+              <Link href="/#demo">
                 <Button className="flex items-center gap-2 transition hover:scale-105">
-                  Live Demo
+                  {config?.ctaPrimaryText || 'Live Demo'}
                   <ArrowRight size={16} />
                 </Button>
               </Link>
 
-              <Button
-                variant="outline"
-                className="transition hover:scale-105 dark:border-gray-700 dark:text-gray-200"
-              >
-                Get Started
-              </Button>
+              <Link href="/login">
+                <Button
+                  variant="outline"
+                  className="transition hover:scale-105 dark:border-gray-700 dark:text-gray-200"
+                >
+                  {config?.ctaSecondaryText || 'Get Started'}
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
       </div>
+
     </div>
   );
 }

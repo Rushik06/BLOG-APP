@@ -458,6 +458,36 @@ export interface ApiActivityActivity extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiBlogPageBlogPage extends Struct.CollectionTypeSchema {
+  collectionName: 'blog_pages';
+  info: {
+    displayName: 'blog-page';
+    pluralName: 'blog-pages';
+    singularName: 'blog-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    headerSubtitle: Schema.Attribute.String;
+    headerTitle: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::blog-page.blog-page'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    searchPlaceholder: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiBlogBlog extends Struct.CollectionTypeSchema {
   collectionName: 'blogs';
   info: {
@@ -537,6 +567,40 @@ export interface ApiFeatureFeature extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     Title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiFeaturesPageFeaturesPage
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'features_pages';
+  info: {
+    displayName: 'features-page';
+    pluralName: 'features-pages';
+    singularName: 'features-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    ctaPrimaryText: Schema.Attribute.String;
+    ctaSecondaryText: Schema.Attribute.String;
+    ctaSubtitle: Schema.Attribute.String;
+    ctaTitle: Schema.Attribute.String;
+    headerSubtitle: Schema.Attribute.String;
+    headerTitle: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::features-page.features-page'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -665,6 +729,35 @@ export interface ApiNavLinkNavLink extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPricingPagePricingPage extends Struct.CollectionTypeSchema {
+  collectionName: 'pricing_pages';
+  info: {
+    displayName: 'pricing-page';
+    pluralName: 'pricing-pages';
+    singularName: 'pricing-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    headerSubtitle: Schema.Attribute.Text;
+    headerTitle: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::pricing-page.pricing-page'
+    > &
+      Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -816,6 +909,35 @@ export interface ApiTestimonalTestimonal extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     rating: Schema.Attribute.Integer;
     role: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiUiBadgeUiBadge extends Struct.CollectionTypeSchema {
+  collectionName: 'ui_badges';
+  info: {
+    displayName: 'ui-badge';
+    pluralName: 'ui-badges';
+    singularName: 'ui-badge';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    buttonText: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::ui-badge.ui-badge'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    subText: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1355,7 +1477,7 @@ export interface PluginUsersPermissionsUser
 }
 
 declare module '@strapi/strapi' {
-  export namespace Public {
+  export module Public {
     export interface ContentTypeSchemas {
       'admin::api-token': AdminApiToken;
       'admin::api-token-permission': AdminApiTokenPermission;
@@ -1366,18 +1488,22 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::activity.activity': ApiActivityActivity;
+      'api::blog-page.blog-page': ApiBlogPageBlogPage;
       'api::blog.blog': ApiBlogBlog;
       'api::dashboard.dashboard': ApiDashboardDashboard;
       'api::feature.feature': ApiFeatureFeature;
+      'api::features-page.features-page': ApiFeaturesPageFeaturesPage;
       'api::inventory.inventory': ApiInventoryInventory;
       'api::landing-feature.landing-feature': ApiLandingFeatureLandingFeature;
       'api::landing-page.landing-page': ApiLandingPageLandingPage;
       'api::nav-link.nav-link': ApiNavLinkNavLink;
+      'api::pricing-page.pricing-page': ApiPricingPagePricingPage;
       'api::pricing.pricing': ApiPricingPricing;
       'api::recent-activity.recent-activity': ApiRecentActivityRecentActivity;
       'api::stat.stat': ApiStatStat;
       'api::subscriber.subscriber': ApiSubscriberSubscriber;
       'api::testimonal.testimonal': ApiTestimonalTestimonal;
+      'api::ui-badge.ui-badge': ApiUiBadgeUiBadge;
       'api::ui-config.ui-config': ApiUiConfigUiConfig;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

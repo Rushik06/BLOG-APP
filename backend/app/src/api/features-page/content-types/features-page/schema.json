@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "features_pages",
+  "info": {
+    "singularName": "features-page",
+    "pluralName": "features-pages",
+    "displayName": "features-page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "headerTitle": {
+      "type": "string"
+    },
+    "headerSubtitle": {
+      "type": "string"
+    },
+    "ctaTitle": {
+      "type": "string"
+    },
+    "ctaSubtitle": {
+      "type": "string"
+    },
+    "ctaPrimaryText": {
+      "type": "string"
+    },
+    "ctaSecondaryText": {
+      "type": "string"
+    }
+  }
+}
