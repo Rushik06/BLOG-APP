@@ -25,6 +25,7 @@ export function useNavbar() {
 
   const userInitial = userName.charAt(0);
 
+  //Nav Links
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Features', href: '/features' },

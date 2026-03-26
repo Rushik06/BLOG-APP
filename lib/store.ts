@@ -1,9 +1,17 @@
-const globalForSubscribers = globalThis as unknown as {
-  subscribers: string[] | undefined;
-};
+import { Subscriber } from "@/app/types/store";
 
-export const subscribers = globalForSubscribers.subscribers ?? [];
+export const subscribers:Subscriber[] = Array.from({ length: 1243 }, (_, i) => ({
+  id: i + 1,
+  email: `user${i + 1}@gmail.com`, 
+  
+}));
 
-if (!globalForSubscribers.subscribers) {
-  globalForSubscribers.subscribers = subscribers;
-}
+export const users = Array.from({ length: 320 }, (_, i) => ({
+  id: i + 1,
+}));
+
+export const orders = Array.from({ length: 89 }, (_, i) => ({
+  id: i + 1,
+}));
+
+export const revenue = 45230; 

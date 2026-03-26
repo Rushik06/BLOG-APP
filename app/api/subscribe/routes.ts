@@ -1,10 +1,7 @@
 import { subscribers } from '@/lib/store';
+import { Subscriber } from '@/app/types/store';
 
-interface SubscribeBody {
-  email: string;
-}
-
-// GET
+//  fetch all subscribers
 export async function GET() {
   return Response.json({
     count: subscribers.length,
@@ -12,22 +9,35 @@ export async function GET() {
   });
 }
 
-// POST
+//  add new subscriber
 export async function POST(req: Request) {
-  const body: SubscribeBody = await req.json();
+  const body: Subscriber = await req.json();
 
   // validation
   if (!body.email || typeof body.email !== 'string') {
-    return Response.json({ error: 'Valid email is required' }, { status: 400 });
+    return Response.json(
+      { error: 'Valid email is required' },
+      { status: 400 }
+    );
   }
 
   const email = body.email.toLowerCase().trim();
 
-  if (subscribers.includes(email)) {
-    return Response.json({ message: 'Already subscribed' }, { status: 200 });
+  // FIXED duplicate check
+  const exists = subscribers.some((sub) => sub.email === email);
+
+  if (exists) {
+    return Response.json(
+      { message: 'Already subscribed' },
+      { status: 200 }
+    );
   }
 
-  subscribers.push(email);
+  //add new subscriber
+  subscribers.push({
+    id: subscribers.length + 1,
+    email,
+  });
 
   return Response.json(
     {
