@@ -6,16 +6,38 @@ import { useSession, signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
+import { Navlink, UIConfig, UIConfigResponse } from '../types/navbar';
+
 export function useNavbar() {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const { data: session, status } = useSession();
 
   const [mounted, setMounted] = useState(false);
+  const [config, setConfig] = useState<UIConfig | null>(null);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(id);
+  }, []);
+
+  // FETCH UI CONFIG FROM STRAPI
+  useEffect(() => {
+    async function fetchConfig() {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_STRAPI_URL}/ui-config?populate=nav_links`,
+          { cache: 'no-store' }
+        );
+
+        const json: UIConfigResponse = await res.json();
+        setConfig(json.data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    fetchConfig();
   }, []);
 
   // Capitalize name
@@ -25,13 +47,16 @@ export function useNavbar() {
 
   const userInitial = userName.charAt(0);
 
-  //Nav Links
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Features', href: '/features' },
-    { name: 'Pricing', href: '/pricing' },
-    { name: 'Blog', href: '/blog' },
-  ];
+  // ✅ STRAPI v5 FORMAT (NO attributes, NO data nesting)
+  const navLinks: Navlink[] =
+    config?.nav_links?.map((item) => ({
+      name: item.name,
+      href: item.href,
+    })) || [];
+
+  const logoText = config?.logoText || 'RetailPro';
+  const loginText = config?.loginText || 'Login';
+  const logoutText = config?.logoutText || 'Logout';
 
   // LOGOUT
   const handleLogout = async () => {
@@ -53,5 +78,8 @@ export function useNavbar() {
     userInitial,
     navLinks,
     handleLogout,
+    logoText,
+    loginText,
+    logoutText,
   };
 }

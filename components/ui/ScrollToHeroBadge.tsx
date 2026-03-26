@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 export default function ScrollToHeroBadge() {
   const handleClick = () => {
@@ -10,20 +10,34 @@ export default function ScrollToHeroBadge() {
   };
 
   return (
-    <div className="mt-12 flex flex-col items-center">
+    <div className="mt-14 flex flex-col items-center">
+
       {/* BADGE */}
       <button
         onClick={handleClick}
-        className="flex items-center gap-2 rounded-full border border-black bg-black px-5 py-2 text-sm text-white shadow-sm transition-all hover:-translate-y-0.5 hover:border-black hover:bg-white hover:text-black hover:shadow-lg"
+        className="
+          group flex items-center gap-2
+          rounded-full border border-gray-300
+          bg-white px-6 py-3
+          text-sm font-medium text-gray-900
+          shadow-sm transition-all duration-200
+          hover:-translate-y-0.5 hover:shadow-md
+          dark:border-gray-700 dark:bg-gray-900 dark:text-white
+        "
       >
         Live demo available above
-        <ArrowRight size={14} />
+
+        <ArrowUpRight
+          size={16}
+          className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
+        />
       </button>
 
       {/* SUBTEXT */}
-      <p className="mt-2 text-center text-xs text-gray-600">
-        Explore how everything works in real-time
+      <p className="mt-3 text-center text-sm text-gray-600 dark:text-gray-400">
+        Explore everything in real-time
       </p>
+
     </div>
   );
 }

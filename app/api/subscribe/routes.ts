@@ -1,43 +1,34 @@
-import { subscribers } from '@/lib/store';
-import { Subscriber } from '@/app/types/store';
-
-//  fetch all subscribers
 export async function GET() {
-  return Response.json({
-    count: subscribers.length,
-    subscribers,
-  });
+  const base = process.env.NEXT_PUBLIC_STRAPI_URL;
+
+  const res = await fetch(`${base}/api/subscribers`);
+  const json = await res.json();
+
+  return Response.json(json);
 }
 
-//  add new subscriber
+// ADD subscriber 
 export async function POST(req: Request) {
-  const body: Subscriber = await req.json();
+  const base = process.env.NEXT_PUBLIC_STRAPI_URL;
+  const body = await req.json();
 
-  // validation
-  if (!body.email || typeof body.email !== 'string') {
-    return Response.json({ error: 'Valid email is required' }, { status: 400 });
+  if (!body.email) {
+    return Response.json({ error: 'Email required' }, { status: 400 });
   }
 
-  const email = body.email.toLowerCase().trim();
-
-  // FIXED duplicate check
-  const exists = subscribers.some((sub) => sub.email === email);
-
-  if (exists) {
-    return Response.json({ message: 'Already subscribed' }, { status: 200 });
-  }
-
-  //add new subscriber
-  subscribers.push({
-    id: subscribers.length + 1,
-    email,
+  const res = await fetch(`${base}/api/subscribers`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      data: {
+        email: body.email,
+      },
+    }),
   });
 
-  return Response.json(
-    {
-      message: 'Subscribed successfully',
-      total: subscribers.length,
-    },
-    { status: 201 }
-  );
+  const json = await res.json();
+
+  return Response.json(json);
 }

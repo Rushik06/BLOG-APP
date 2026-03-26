@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "recent_activities",
+  "info": {
+    "singularName": "recent-activity",
+    "pluralName": "recent-activities",
+    "displayName": "recent-activity"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "enumeration",
+      "enum": [
+        "check",
+        "chart",
+        "light"
+      ]
+    }
+  }
+}
