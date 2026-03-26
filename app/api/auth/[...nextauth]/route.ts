@@ -1,18 +1,17 @@
-import NextAuth, { type AuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuth, { type AuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
-import type { StrapiAuthResponse } from "@/app/types/auth";
+import type { StrapiAuthResponse } from '@/app/types/auth';
 
-const STRAPI_URL =
-  process.env.NEXT_PUBLIC_STRAPI_BASE || "http://localhost:1337";
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_BASE || 'http://localhost:1337';
 
 export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
-        identifier: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        identifier: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
 
       async authorize(credentials) {
@@ -21,9 +20,9 @@ export const authOptions: AuthOptions = {
         }
 
         const res = await fetch(`${STRAPI_URL}/api/auth/local`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             identifier: credentials.identifier,
@@ -46,7 +45,7 @@ export const authOptions: AuthOptions = {
   ],
 
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
 
   callbacks: {
@@ -66,7 +65,7 @@ export const authOptions: AuthOptions = {
   },
 
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
 
   secret: process.env.NEXTAUTH_SECRET,

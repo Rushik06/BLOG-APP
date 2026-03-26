@@ -14,7 +14,6 @@ export function useLogin() {
   const [error, setError] = useState('');
 
   const handleLogin = async () => {
-
     //Validation
     if (!email || !password) {
       toast.error('Please enter email and password ');

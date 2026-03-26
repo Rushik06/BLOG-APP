@@ -13,28 +13,20 @@ const geist = Geist({
   variable: '--font-sans',
 });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={cn(geist.variable)} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col bg-gray-50 text-gray-900 transition-colors dark:bg-gray-950 dark:text-gray-100">
-
         <Providers>
           {/* NAV */}
           <Navbar />
 
           {/* MAIN */}
-          <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-8">
-            {children}
-          </main>
+          <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-8">{children}</main>
 
           {/* FOOTER */}
           <Footer />
         </Providers>
-
       </body>
     </html>
   );

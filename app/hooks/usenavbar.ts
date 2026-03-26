@@ -19,11 +19,9 @@ export function useNavbar() {
   }, []);
 
   // Capitalize name
-  const userName =
-    session?.user?.name
-      ? session.user.name.charAt(0).toUpperCase() +
-        session.user.name.slice(1)
-      : 'User';
+  const userName = session?.user?.name
+    ? session.user.name.charAt(0).toUpperCase() + session.user.name.slice(1)
+    : 'User';
 
   const userInitial = userName.charAt(0);
 
@@ -53,6 +51,6 @@ export function useNavbar() {
     userName,
     userInitial,
     navLinks,
-    handleLogout, 
+    handleLogout,
   };
 }

@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
-const STRAPI_URL =
-  process.env.NEXT_PUBLIC_STRAPI_BASE || 'http://localhost:1337';
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_BASE || 'http://localhost:1337';
 
 export function useSignup() {
   const router = useRouter();
@@ -46,7 +45,6 @@ export function useSignup() {
       setTimeout(() => {
         router.push('/login');
       }, 1000);
-
     } catch (err) {
       setError('Something went wrong');
       toast.error('Server error');
