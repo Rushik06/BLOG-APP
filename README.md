@@ -51,7 +51,6 @@ BLOG-APP/
 ├── lib/                        # Utilities & API helpers
 │   ├── strapi.ts               # Strapi fetch wrapper
 │   ├── strapi-helpers.ts       # Rich text parser
-│   ├── store.ts                # Global state store
 │   └── utils.ts                # General utilities
 ├── backend/
 │   ├── docker-compose.yml      # PostgreSQL + Strapi containers
@@ -167,7 +166,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - **Blog** — Dynamic blog posts fetched from Strapi, with rich text rendering and a reading progress indicator.
 - **Authentication** — Credential-based login/signup via NextAuth.js, backed by Strapi's users-permissions plugin.
 - **Dashboard** — Protected page with charts and analytics (subscriber counts, activity, stats).
-- **Newsletter Subscription** — REST endpoint to add and retrieve subscribers stored in Strapi.
 - **Landing Page** — Fully CMS-driven landing page with features, testimonials, and pricing sections.
 - **Pricing Page** — Dynamic pricing cards managed in Strapi.
 - **Dark Mode** — Theme toggling via `next-themes`.
@@ -221,3 +219,27 @@ The Strapi backend can be deployed to any server that supports Docker. For produ
 Commit messages are linted with Commitlint and code is auto-formatted on commit via Husky + lint-staged.
 
 ---
+
+The easiest way to deploy the Next.js frontend is via [Vercel](https://vercel.com). Set all environment variables from `.env.local` in the Vercel project settings.
+
+### Backend
+
+The Strapi backend can be deployed to any server that supports Docker. For production, ensure you:
+
+1. Use strong secrets for all environment variables.
+2. Configure `NODE_ENV=production` in the Strapi container.
+3. Set up a persistent volume for the PostgreSQL data.
+4. Restrict Strapi API token permissions to only what the frontend requires.
+
+---
+
+## Contributing
+
+1. Fork the repository.
+2. Create a feature branch: `git checkout -b feat/your-feature`
+3. Commit using [Conventional Commits](https://www.conventionalcommits.org/): `git commit -m "feat: add new feature"`
+4. Push and open a Pull Request.
+
+Commit messages are linted with Commitlint and code is auto-formatted on commit via Husky + lint-staged.
+
+
