@@ -11,10 +11,9 @@ import { PricingPageResponse } from '@/app/types/pricing-page';
 export const metadata = pricingMetadata;
 
 export default async function PricingPage() {
-
   const [res, configRes] = await Promise.all([
     fetchAPI<{ data: PricingApi[] }>('/pricings'),
-    fetchAPI<PricingPageResponse>('/pricing-pages'), 
+    fetchAPI<PricingPageResponse>('/pricing-pages'),
   ]);
 
   const config = configRes.data;
@@ -51,15 +50,11 @@ export default async function PricingPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
-
       {/* HEADER */}
       <div className="mx-auto mb-16 max-w-2xl text-center">
         <div className="mb-4 flex justify-center">
           <div className="animate-pulse rounded-full bg-blue-100 p-3 dark:bg-blue-900/40">
-            <BadgeCheck
-              className="text-blue-600 dark:text-blue-300"
-              size={20}
-            />
+            <BadgeCheck className="text-blue-600 dark:text-blue-300" size={20} />
           </div>
         </div>
 
@@ -128,13 +123,9 @@ export default async function PricingPage() {
 
       {/* CTA */}
       <div className="mt-16 text-center">
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-          {ctaTitle}
-        </h3>
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{ctaTitle}</h3>
 
-        <p className="mt-2 text-gray-700 dark:text-gray-300">
-          {ctaSubtitle}
-        </p>
+        <p className="mt-2 text-gray-700 dark:text-gray-300">{ctaSubtitle}</p>
 
         <div className="mt-6 flex justify-center">
           <a
@@ -147,7 +138,6 @@ export default async function PricingPage() {
           </a>
         </div>
       </div>
-
     </div>
   );
 }

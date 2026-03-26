@@ -25,10 +25,8 @@ export default function BlogClient({ blogs }: Props) {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
-
       {/* HEADER */}
       <div className="mx-auto mb-14 max-w-2xl text-center">
-
         {/* ICON */}
         <div className="mb-4 flex justify-center">
           <div className="animate-pulse rounded-full bg-blue-100 p-3 dark:bg-blue-900/40">

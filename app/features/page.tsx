@@ -21,15 +21,11 @@ export default async function Features() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
-
       {/* HEADER (CMS) */}
       <div className="mx-auto mb-16 max-w-2xl text-center">
         <div className="mb-4 flex justify-center">
           <div className="animate-pulse rounded-full bg-blue-100 p-3 dark:bg-blue-900/40">
-            <Sparkles
-              className="text-blue-600 dark:text-blue-300"
-              size={20}
-            />
+            <Sparkles className="text-blue-600 dark:text-blue-300" size={20} />
           </div>
         </div>
 
@@ -38,7 +34,8 @@ export default async function Features() {
         </h1>
 
         <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">
-          {config?.headerSubtitle || 'Everything you need to manage your retail business efficiently'}
+          {config?.headerSubtitle ||
+            'Everything you need to manage your retail business efficiently'}
         </p>
       </div>
 
@@ -113,7 +110,6 @@ export default async function Features() {
           </CardContent>
         </Card>
       </div>
-
     </div>
   );
 }

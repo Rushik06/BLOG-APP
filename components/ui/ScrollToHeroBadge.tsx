@@ -14,7 +14,6 @@ export default function ScrollToHeroBadge() {
 
   return (
     <div className="mt-14 flex flex-col items-center">
-
       {/* BADGE */}
       <button
         onClick={handleClick}
