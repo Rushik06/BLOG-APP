@@ -9,15 +9,12 @@ export default function Footer() {
   useEffect(() => {
     async function fetchFooter() {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_STRAPI_URL}/ui-config`
-        );
+        const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/ui-config`);
 
         const json: { data?: UIConfig } = await res.json();
 
         setFooterText(
-          json.data?.footerText ||
-          '© 2026 RetailPro. Built for modern inventory management.'
+          json.data?.footerText || '© 2026 RetailPro. Built for modern inventory management.'
         );
       } catch (err) {
         console.error(err);

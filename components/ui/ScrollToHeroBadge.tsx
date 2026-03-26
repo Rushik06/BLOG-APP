@@ -11,25 +11,15 @@ export default function ScrollToHeroBadge() {
 
   return (
     <div className="mt-14 flex flex-col items-center">
-
       {/* BADGE */}
       <button
         onClick={handleClick}
-        className="
-          group flex items-center gap-2
-          rounded-full border border-gray-300
-          bg-white px-6 py-3
-          text-sm font-medium text-gray-900
-          shadow-sm transition-all duration-200
-          hover:-translate-y-0.5 hover:shadow-md
-          dark:border-gray-700 dark:bg-gray-900 dark:text-white
-        "
+        className="group flex items-center gap-2 rounded-full border border-gray-300 bg-white px-6 py-3 text-sm font-medium text-gray-900 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-gray-700 dark:bg-gray-900 dark:text-white"
       >
         Live demo available above
-
         <ArrowUpRight
           size={16}
-          className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
+          className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
         />
       </button>
 
@@ -37,7 +27,6 @@ export default function ScrollToHeroBadge() {
       <p className="mt-3 text-center text-sm text-gray-600 dark:text-gray-400">
         Explore everything in real-time
       </p>
-
     </div>
   );
 }

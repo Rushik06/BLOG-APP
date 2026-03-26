@@ -7,7 +7,7 @@ export async function GET() {
   return Response.json(json);
 }
 
-// ADD subscriber 
+// ADD subscriber
 export async function POST(req: Request) {
   const base = process.env.NEXT_PUBLIC_STRAPI_URL;
   const body = await req.json();

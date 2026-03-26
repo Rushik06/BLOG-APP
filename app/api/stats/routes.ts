@@ -1,9 +1,7 @@
 export async function GET() {
   const base = process.env.NEXT_PUBLIC_STRAPI_URL;
 
-  const res = await fetch(
-    `${base}/subscribers?pagination[pageSize]=1`
-  );
+  const res = await fetch(`${base}/subscribers?pagination[pageSize]=1`);
 
   const json = await res.json();
 

@@ -27,10 +27,9 @@ export async function getStats(): Promise<StatsResponse> {
 /* FETCH ACTIVITIES */
 export async function getActivities(): Promise<Activity[]> {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/recent-activities`,
-      { cache: 'no-store' }
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/recent-activities`, {
+      cache: 'no-store',
+    });
 
     if (!res.ok) {
       console.error('Activities fetch failed:', res.status);
@@ -48,10 +47,9 @@ export async function getActivities(): Promise<Activity[]> {
 /*FETCH DASHBOARD TITLE */
 export async function getDashboardTitle(): Promise<string> {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/dashboard`,
-      { cache: 'no-store' }
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/dashboard`, {
+      cache: 'no-store',
+    });
 
     if (!res.ok) {
       console.error('Dashboard title fetch failed:', res.status);
