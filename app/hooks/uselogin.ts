@@ -37,7 +37,7 @@ export function useLogin() {
       if (res?.error) {
         setError(LOG_MESSAGES.login.invalid);
 
-        // warn 
+        // warn
         logger.warn({
           msg: LOG_MESSAGES.login.invalid,
           reason: res.error,
@@ -56,10 +56,8 @@ export function useLogin() {
 
       toast.success(LOG_MESSAGES.login.success);
       router.push('/dashboard');
-
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Unknown error';
+      const message = err instanceof Error ? err.message : 'Unknown error';
 
       // SYSTEM ERROR
       logger.error({
@@ -69,7 +67,6 @@ export function useLogin() {
 
       setError(LOG_MESSAGES.login.error);
       toast.error(LOG_MESSAGES.login.error);
-
     } finally {
       setLoading(false);
     }

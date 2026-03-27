@@ -4,7 +4,7 @@ export interface Blog {
   slug: string;
   createdAt: string;
   description: string;
-  content: RichTextBlock[];   
+  content: RichTextBlock[];
   category: string;
 }
 
@@ -13,7 +13,7 @@ export interface BlogCardProps {
 }
 
 export interface BlogDetailProps {
-  params: Promise<{           
+  params: Promise<{
     slug: string;
   }>;
 }

@@ -24,20 +24,24 @@ vi.mock('@/components/dashboard/Charts', () => ({
 
 vi.mock('@/components/ui/Card', () => ({
   Card: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card" className={className}>{children}</div>
+    <div data-testid="card" className={className}>
+      {children}
+    </div>
   ),
   CardContent: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card-content" className={className}>{children}</div>
+    <div data-testid="card-content" className={className}>
+      {children}
+    </div>
   ),
 }));
 
 vi.mock('lucide-react', () => ({
-  Users:       () => <svg data-testid="icon-users" />,
-  TrendingUp:  () => <svg data-testid="icon-trending-up" />,
-  Rocket:      () => <svg data-testid="icon-rocket" />,
+  Users: () => <svg data-testid="icon-users" />,
+  TrendingUp: () => <svg data-testid="icon-trending-up" />,
+  Rocket: () => <svg data-testid="icon-rocket" />,
   CheckCircle: () => <svg data-testid="icon-check-circle" />,
-  BarChart3:   () => <svg data-testid="icon-bar-chart" />,
-  Lightbulb:   () => <svg data-testid="icon-lightbulb" />,
+  BarChart3: () => <svg data-testid="icon-bar-chart" />,
+  Lightbulb: () => <svg data-testid="icon-lightbulb" />,
 }));
 
 const mockSession = { user: { name: 'Rushik', email: 'rushik@example.com' } };
