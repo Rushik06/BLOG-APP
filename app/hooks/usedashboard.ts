@@ -1,25 +1,26 @@
 import { StatsResponse, Activity } from '@/app/types/dashboard';
+import { fetchAPI } from '@/lib/strapi';
+import { logger } from '@/lib/logger';
+import { LOG_MESSAGES } from '@/lib/logger-messages';
 
 /* FETCH SUBSCRIBER COUNT*/
 export async function getStats(): Promise<StatsResponse> {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/subscribers?pagination[pageSize]=1`,
-      { cache: 'no-store' }
-    );
-
-    if (!res.ok) {
-      console.error('Stats fetch failed:', res.status);
-      return { totalSubscribers: 0 };
-    }
-
-    const json = await res.json();
+    const json = await fetchAPI<{
+      meta?: { pagination?: { total?: number } };
+    }>('/subscribers?pagination[pageSize]=1');
 
     return {
       totalSubscribers: json.meta?.pagination?.total || 0,
     };
-  } catch (err) {
-    console.error('Stats error:', err);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+
+    logger.error({
+      msg: LOG_MESSAGES.stats.error,
+      error: message,
+    });
+
     return { totalSubscribers: 0 };
   }
 }
@@ -27,40 +28,43 @@ export async function getStats(): Promise<StatsResponse> {
 /* FETCH ACTIVITIES */
 export async function getActivities(): Promise<Activity[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/recent-activities`, {
-      cache: 'no-store',
+    const json = await fetchAPI<{
+      data?: Activity[];
+    }>('/recent-activities');
+
+    return json.data || [];
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+
+    logger.error({
+      msg: LOG_MESSAGES.activities.error,
+      error: message,
     });
 
-    if (!res.ok) {
-      console.error('Activities fetch failed:', res.status);
-      return [];
-    }
-
-    const json = await res.json();
-    return json.data || [];
-  } catch (err) {
-    console.error('Activities error:', err);
     return [];
   }
 }
 
-/*FETCH DASHBOARD TITLE */
+/* FETCH DASHBOARD TITLE */
 export async function getDashboardTitle(): Promise<string> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/dashboard`, {
-      cache: 'no-store',
-    });
-
-    if (!res.ok) {
-      console.error('Dashboard title fetch failed:', res.status);
-      return 'Recent Activity';
-    }
-
-    const json = await res.json();
+    const json = await fetchAPI<{
+      data?: {
+        attributes?: {
+          activityTitle?: string;
+        };
+      };
+    }>('/dashboard');
 
     return json.data?.attributes?.activityTitle || 'Recent Activity';
-  } catch (err) {
-    console.error('Dashboard title error:', err);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+
+    logger.error({
+      msg: LOG_MESSAGES.dashboard.error,
+      error: message,
+    });
+
     return 'Recent Activity';
   }
 }
