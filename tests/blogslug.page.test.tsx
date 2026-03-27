@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import BlogDetail from '@/app/blog/[slug]/page';
 import { fetchAPI } from '@/lib/strapi';
 
-//Mocks 
+//Mocks
 
 vi.mock('@/lib/strapi', () => ({
   fetchAPI: vi.fn(),
@@ -21,16 +21,30 @@ vi.mock('@/components/blog/RenderContent', () => ({
 
 vi.mock('@/components/ui/Card', () => ({
   Card: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card" className={className}>{children}</div>
+    <div data-testid="card" className={className}>
+      {children}
+    </div>
   ),
   CardContent: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card-content" className={className}>{children}</div>
+    <div data-testid="card-content" className={className}>
+      {children}
+    </div>
   ),
 }));
 
 vi.mock('next/link', () => ({
-  default: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => (
-    <a href={href} className={className}>{children}</a>
+  default: ({
+    href,
+    children,
+    className,
+  }: {
+    href: string;
+    children: React.ReactNode;
+    className?: string;
+  }) => (
+    <a href={href} className={className}>
+      {children}
+    </a>
   ),
 }));
 
@@ -62,15 +76,14 @@ async function renderBlogDetail(slug: string) {
   return render(jsx as React.ReactElement);
 }
 
-// Tests 
+// Tests
 
 describe('BlogDetail page', () => {
-
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  // Not-found state 
+  // Not-found state
 
   describe('when blog is not found', () => {
     beforeEach(() => {
@@ -99,7 +112,7 @@ describe('BlogDetail page', () => {
     });
   });
 
-  // Happy path 
+  // Happy path
 
   describe('when blog is found', () => {
     beforeEach(() => {
@@ -149,7 +162,7 @@ describe('BlogDetail page', () => {
     });
   });
 
-  //  Optional description 
+  //  Optional description
 
   describe('when blog has no description', () => {
     it('does not render a description paragraph', async () => {
@@ -189,9 +202,7 @@ describe('BlogDetail page', () => {
 
     it('calls fetchAPI with publicationState=live', async () => {
       await renderBlogDetail('understanding-retail-analytics');
-      expect(mockedFetchAPI).toHaveBeenCalledWith(
-        expect.stringContaining('publicationState=live')
-      );
+      expect(mockedFetchAPI).toHaveBeenCalledWith(expect.stringContaining('publicationState=live'));
     });
 
     it('trims and lowercases the slug before fetching', async () => {
@@ -204,9 +215,7 @@ describe('BlogDetail page', () => {
     it('URL-encodes special characters in the slug', async () => {
       mockedFetchAPI.mockResolvedValue({ data: [] });
       await renderBlogDetail('hello world');
-      expect(mockedFetchAPI).toHaveBeenCalledWith(
-        expect.stringContaining('hello%20world')
-      );
+      expect(mockedFetchAPI).toHaveBeenCalledWith(expect.stringContaining('hello%20world'));
     });
 
     it('is called exactly once per render', async () => {

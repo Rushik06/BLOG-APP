@@ -11,9 +11,11 @@ vi.mock('@/app/hooks/uselanding-data', () => ({
 vi.mock('@/lib/strapi-helpers', () => ({
   getText: vi.fn((val: unknown) => {
     if (Array.isArray(val)) {
-      return val.map((b: { children?: { text: string }[] }) =>
-        b.children?.map((c) => c.text).join('') ?? ''
-      ).join('');
+      return val
+        .map(
+          (b: { children?: { text: string }[] }) => b.children?.map((c) => c.text).join('') ?? ''
+        )
+        .join('');
     }
     return val;
   }),
@@ -55,16 +57,8 @@ vi.mock('@/components/ui/Button', () => ({
 }));
 
 vi.mock('@/components/ui/Card', () => ({
-  Card: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="card">{children}</div>
-  ),
-  CardContent: ({
-    children,
-    className,
-  }: {
-    children: React.ReactNode;
-    className?: string;
-  }) => (
+  Card: ({ children }: { children: React.ReactNode }) => <div data-testid="card">{children}</div>,
+  CardContent: ({ children, className }: { children: React.ReactNode; className?: string }) => (
     <div data-testid="card-content" className={className}>
       {children}
     </div>
@@ -77,9 +71,8 @@ vi.mock('@/components/ui/ScrollToHeroBadge', () => ({
 
 import { getLandingData } from '@/app/hooks/uselanding-data';
 
-const makeContent = (text: string) => [
-  { children: [{ text }] },
-] as unknown as Testimonial['content'];
+const makeContent = (text: string) =>
+  [{ children: [{ text }] }] as unknown as Testimonial['content'];
 
 const mockData: LandingPage = {
   HeroTitle: 'Manage Your Retail Business',
@@ -99,15 +92,51 @@ const mockData: LandingPage = {
 };
 
 const mockFeatures = [
-  { id: 1, icon: 'store', color: 'bg-blue-100', title: 'Inventory', description: 'Track stock in real time.' },
-  { id: 2, icon: 'chart', color: 'bg-green-100', title: 'Analytics', description: 'Understand your sales.' },
-  { id: 3, icon: 'users', color: 'bg-purple-100', title: 'Customers', description: 'Manage your customer base.' },
+  {
+    id: 1,
+    icon: 'store',
+    color: 'bg-blue-100',
+    title: 'Inventory',
+    description: 'Track stock in real time.',
+  },
+  {
+    id: 2,
+    icon: 'chart',
+    color: 'bg-green-100',
+    title: 'Analytics',
+    description: 'Understand your sales.',
+  },
+  {
+    id: 3,
+    icon: 'users',
+    color: 'bg-purple-100',
+    title: 'Customers',
+    description: 'Manage your customer base.',
+  },
 ];
 
 const mockTestimonials: Testimonial[] = [
-  { id: 1, rating: 5, content: makeContent('Absolutely love it!'), name: 'Alice Johnson', role: 'Store Owner' },
-  { id: 2, rating: 4, content: makeContent('Very useful tool.'), name: 'Bob Smith', role: 'Manager' },
-  { id: 3, rating: 5, content: makeContent('Transformed our workflow.'), name: 'Carol White', role: 'CEO' },
+  {
+    id: 1,
+    rating: 5,
+    content: makeContent('Absolutely love it!'),
+    name: 'Alice Johnson',
+    role: 'Store Owner',
+  },
+  {
+    id: 2,
+    rating: 4,
+    content: makeContent('Very useful tool.'),
+    name: 'Bob Smith',
+    role: 'Manager',
+  },
+  {
+    id: 3,
+    rating: 5,
+    content: makeContent('Transformed our workflow.'),
+    name: 'Carol White',
+    role: 'CEO',
+  },
 ];
 
 describe('Home (Landing Page)', () => {
@@ -225,7 +254,15 @@ describe('Home (Landing Page)', () => {
     it('falls back to iconMap.store when feature icon is unrecognised', async () => {
       vi.mocked(getLandingData).mockResolvedValueOnce({
         data: { ...mockData, howItWorksStep: [] },
-        features: [{ id: 99, icon: 'unknown-icon', color: 'bg-red-100', title: 'Mystery', description: 'No icon.' }],
+        features: [
+          {
+            id: 99,
+            icon: 'unknown-icon',
+            color: 'bg-red-100',
+            title: 'Mystery',
+            description: 'No icon.',
+          },
+        ],
         testimonials: mockTestimonials,
       });
       await renderPage();
@@ -329,7 +366,13 @@ describe('Home (Landing Page)', () => {
         data: mockData,
         features: [],
         testimonials: [
-          { id: 9, rating: undefined, content: makeContent('Great!'), name: 'Dave', role: 'Dev' } as unknown as Testimonial,
+          {
+            id: 9,
+            rating: undefined,
+            content: makeContent('Great!'),
+            name: 'Dave',
+            role: 'Dev',
+          } as unknown as Testimonial,
         ],
       });
       const { container } = await renderPage();

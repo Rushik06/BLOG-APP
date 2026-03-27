@@ -18,8 +18,24 @@ vi.mock('@/app/metadata/blog', () => ({
 }));
 
 const mockBlogs = [
-  { id: 1, Title: 'Post One', slug: 'post-one', description: 'Desc one', content: '', category: '', createdAt: '' },
-  { id: 2, Title: 'Post Two', slug: 'post-two', description: 'Desc two', content: '', category: '', createdAt: '' },
+  {
+    id: 1,
+    Title: 'Post One',
+    slug: 'post-one',
+    description: 'Desc one',
+    content: '',
+    category: '',
+    createdAt: '',
+  },
+  {
+    id: 2,
+    Title: 'Post Two',
+    slug: 'post-two',
+    description: 'Desc two',
+    content: '',
+    category: '',
+    createdAt: '',
+  },
 ];
 
 const mockedFetchAPI = vi.mocked(fetchAPI);

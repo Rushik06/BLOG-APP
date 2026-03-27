@@ -4,10 +4,14 @@ import FeatureCard from '@/components/features/FeatureCard';
 
 vi.mock('@/components/ui/Card', () => ({
   Card: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card" className={className}>{children}</div>
+    <div data-testid="card" className={className}>
+      {children}
+    </div>
   ),
   CardContent: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card-content" className={className}>{children}</div>
+    <div data-testid="card-content" className={className}>
+      {children}
+    </div>
   ),
 }));
 
@@ -39,7 +43,9 @@ describe('FeatureCard', () => {
 
   it('renders title as an h3 heading', () => {
     render(<FeatureCard feature={mockFeature} />);
-    expect(screen.getByRole('heading', { level: 3, name: 'Inventory Management' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Inventory Management' })
+    ).toBeInTheDocument();
   });
 
   it('renders Card and CardContent wrappers', () => {

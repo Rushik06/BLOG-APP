@@ -9,16 +9,22 @@ vi.mock('@/lib/strapi', () => ({
 
 vi.mock('@/components/pricing/PricingCard', () => ({
   default: ({ plan }: { plan: { planName: string; Price: number } }) => (
-    <div data-testid="pricing-card">{plan.planName} - {plan.Price}</div>
+    <div data-testid="pricing-card">
+      {plan.planName} - {plan.Price}
+    </div>
   ),
 }));
 
 vi.mock('@/components/ui/Card', () => ({
   Card: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card" className={className}>{children}</div>
+    <div data-testid="card" className={className}>
+      {children}
+    </div>
   ),
   CardContent: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card-content" className={className}>{children}</div>
+    <div data-testid="card-content" className={className}>
+      {children}
+    </div>
   ),
 }));
 
@@ -243,9 +249,39 @@ describe('PricingPage', () => {
       mockedFetchAPI
         .mockResolvedValueOnce({
           data: [
-            { id: 1, planName: 'Basic', Price: '499', ctaTitle: null, ctaSubtitle: null, contactNumber: null, highlightTitle: null, highlightPoints: null, extraFeatures: null },
-            { id: 2, planName: 'Enterprise', Price: '1999', ctaTitle: null, ctaSubtitle: null, contactNumber: null, highlightTitle: null, highlightPoints: null, extraFeatures: null },
-            { id: 3, planName: 'Pro', Price: '999', ctaTitle: 'Call us', ctaSubtitle: 'Anytime', contactNumber: '+91 7777777777', highlightTitle: 'Pro Highlights', highlightPoints: ['Fast'], extraFeatures: null },
+            {
+              id: 1,
+              planName: 'Basic',
+              Price: '499',
+              ctaTitle: null,
+              ctaSubtitle: null,
+              contactNumber: null,
+              highlightTitle: null,
+              highlightPoints: null,
+              extraFeatures: null,
+            },
+            {
+              id: 2,
+              planName: 'Enterprise',
+              Price: '1999',
+              ctaTitle: null,
+              ctaSubtitle: null,
+              contactNumber: null,
+              highlightTitle: null,
+              highlightPoints: null,
+              extraFeatures: null,
+            },
+            {
+              id: 3,
+              planName: 'Pro',
+              Price: '999',
+              ctaTitle: 'Call us',
+              ctaSubtitle: 'Anytime',
+              contactNumber: '+91 7777777777',
+              highlightTitle: 'Pro Highlights',
+              highlightPoints: ['Fast'],
+              extraFeatures: null,
+            },
           ],
         })
         .mockResolvedValueOnce({ data: [mockConfig] });

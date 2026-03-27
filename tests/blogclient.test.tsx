@@ -22,9 +22,33 @@ vi.mock('lucide-react', () => ({
 }));
 
 const mockBlogs = [
-  { id: 1, Title: 'Retail Analytics', slug: 'retail-analytics', description: 'About analytics', content: '', category: '', createdAt: '' },
-  { id: 2, Title: 'Growth Tips', slug: 'growth-tips', description: 'Tips for growth', content: '', category: '', createdAt: '' },
-  { id: 3, Title: 'Inventory Guide', slug: 'inventory-guide', description: 'Managing inventory', content: '', category: '', createdAt: '' },
+  {
+    id: 1,
+    Title: 'Retail Analytics',
+    slug: 'retail-analytics',
+    description: 'About analytics',
+    content: '',
+    category: '',
+    createdAt: '',
+  },
+  {
+    id: 2,
+    Title: 'Growth Tips',
+    slug: 'growth-tips',
+    description: 'Tips for growth',
+    content: '',
+    category: '',
+    createdAt: '',
+  },
+  {
+    id: 3,
+    Title: 'Inventory Guide',
+    slug: 'inventory-guide',
+    description: 'Managing inventory',
+    content: '',
+    category: '',
+    createdAt: '',
+  },
 ];
 
 describe('BlogClient', () => {
@@ -132,7 +156,9 @@ describe('BlogClient', () => {
   it('falls back to default subtitle when config returns null', () => {
     mockUseBlogConfig.mockReturnValueOnce(null);
     render(<BlogClient blogs={[]} />);
-    expect(screen.getByText('Insights, guides, and updates to grow your retail business')).toBeInTheDocument();
+    expect(
+      screen.getByText('Insights, guides, and updates to grow your retail business')
+    ).toBeInTheDocument();
   });
 
   it('falls back to default search placeholder when config returns null', () => {

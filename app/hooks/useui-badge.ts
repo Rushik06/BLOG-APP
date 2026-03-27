@@ -11,7 +11,7 @@ export function useUiBadge() {
     async function load() {
       try {
         const res = await fetchAPI<UiBadgeResponse>('/ui-badges');
-        setConfig(res.data?.[0]??null);
+        setConfig(res.data?.[0] ?? null);
       } catch (err) {
         console.error('UI badge error:', err);
       }

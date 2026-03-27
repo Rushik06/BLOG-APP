@@ -48,7 +48,9 @@ describe('RenderContent', () => {
   });
 
   it('renders multiple paragraph blocks', () => {
-    render(<RenderContent content={[makeBlock('First paragraph'), makeBlock('Second paragraph')]} />);
+    render(
+      <RenderContent content={[makeBlock('First paragraph'), makeBlock('Second paragraph')]} />
+    );
     expect(screen.getByText('First paragraph')).toBeInTheDocument();
     expect(screen.getByText('Second paragraph')).toBeInTheDocument();
   });

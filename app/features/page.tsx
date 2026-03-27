@@ -29,13 +29,9 @@ export default async function Features() {
           </div>
         </div>
 
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-          {config?.headerTitle }
-        </h1>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{config?.headerTitle}</h1>
 
-        <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">
-          {config?.headerSubtitle}
-        </p>
+        <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">{config?.headerSubtitle}</p>
       </div>
 
       {/* FEATURES GRID */}
@@ -85,14 +81,12 @@ export default async function Features() {
               {config?.ctaTitle}
             </h2>
 
-            <p className="mt-2 text-gray-600 dark:text-gray-400">
-              {config?.ctaSubtitle }
-            </p>
+            <p className="mt-2 text-gray-600 dark:text-gray-400">{config?.ctaSubtitle}</p>
 
             <div className="mt-6 flex justify-center gap-4">
               <Link href="/#demo">
                 <Button className="flex items-center gap-2 transition hover:scale-105">
-                  {config?.ctaPrimaryText }
+                  {config?.ctaPrimaryText}
                   <ArrowRight size={16} />
                 </Button>
               </Link>
