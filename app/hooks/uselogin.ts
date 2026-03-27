@@ -33,35 +33,43 @@ export function useLogin() {
         redirect: false,
       });
 
+      // USER ERROR (wrong credentials)
       if (res?.error) {
-        setError(res.error);
+        setError(LOG_MESSAGES.login.invalid);
 
-        logger.error({
-          msg: LOG_MESSAGES.login.error,
-          error: res.error,
+        // warn 
+        logger.warn({
+          msg: LOG_MESSAGES.login.invalid,
+          reason: res.error,
           email,
         });
 
         toast.error(LOG_MESSAGES.login.invalid);
-      } else {
-        logger.info({
-          msg: LOG_MESSAGES.login.success,
-          email,
-        });
-
-        toast.success(LOG_MESSAGES.login.success);
-        router.push('/dashboard');
+        return;
       }
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Unknown error';
 
+      // SUCCESS
+      logger.info({
+        msg: LOG_MESSAGES.login.success,
+        email,
+      });
+
+      toast.success(LOG_MESSAGES.login.success);
+      router.push('/dashboard');
+
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : 'Unknown error';
+
+      // SYSTEM ERROR
       logger.error({
         msg: LOG_MESSAGES.login.error,
         error: message,
       });
 
-      setError(message);
+      setError(LOG_MESSAGES.login.error);
       toast.error(LOG_MESSAGES.login.error);
+
     } finally {
       setLoading(false);
     }

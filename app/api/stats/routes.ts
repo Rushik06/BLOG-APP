@@ -6,6 +6,6 @@ export async function GET() {
   const json = await res.json();
 
   return Response.json({
-    totalSubscribers: json.meta.pagination.total,
-  });
+  totalSubscribers: json?.meta?.pagination?.total ?? 0,
+});
 }

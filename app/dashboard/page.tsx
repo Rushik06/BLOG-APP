@@ -1,3 +1,7 @@
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+
 import { Users, TrendingUp, Rocket, CheckCircle, BarChart3, Lightbulb } from 'lucide-react';
 
 import { Card, CardContent } from '@/components/ui/Card';
@@ -11,6 +15,9 @@ export const metadata = dashboardMetadata;
 
 /*MAIN COMPONENT*/
 export default async function Dashboard() {
+  const session = await getServerSession(authOptions);
+  if (!session) redirect('/login');               
+
   const [data, activities, title] = await Promise.all([
     getStats(),
     getActivities(),
