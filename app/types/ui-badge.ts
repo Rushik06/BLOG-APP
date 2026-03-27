@@ -4,5 +4,5 @@ export interface UiBadgeConfig {
 }
 
 export interface UiBadgeResponse {
-  data: UiBadgeConfig;
+  data: UiBadgeConfig[];
 }

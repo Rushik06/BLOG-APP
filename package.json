@@ -10,7 +10,10 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,css,md}\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest --coverage"
   },
   "dependencies": {
     "autoprefixer": "^10.4.27",
@@ -35,6 +38,9 @@
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -43,13 +49,16 @@
     "eslint-config-prettier": "^9",
     "eslint-plugin-prettier": "^5",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^17.4.0",
     "husky": "^9",
+    "jsdom": "^29.0.1",
     "lint-staged": "^16",
     "prettier": "^3",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "typescript-eslint": "^8"
+    "typescript-eslint": "^8",
+    "vitest": "^4.1.0"
   },
   "lint-staged": {
     "**/*.{js,ts,tsx}": [
