@@ -16,7 +16,6 @@ afterEach(() => {
 });
 
 describe('Footer', () => {
-
   describe('when API returns footer text', () => {
     it('renders footer text from API', async () => {
       mockFetch.mockResolvedValueOnce({

@@ -10,25 +10,40 @@ vi.mock('@/app/hooks/usenavbar', () => ({
 }));
 
 vi.mock('next/link', () => ({
-  default: ({ href, children, className, 'aria-label': ariaLabel, 'aria-current': ariaCurrent }: {
+  default: ({
+    href,
+    children,
+    className,
+    'aria-label': ariaLabel,
+    'aria-current': ariaCurrent,
+  }: {
     href: string;
     children: React.ReactNode;
     className?: string;
     'aria-label'?: string;
     'aria-current'?: 'page' | 'step' | 'location' | 'date' | 'time' | 'true' | 'false' | boolean;
   }) => (
-    <a href={href} className={className} aria-label={ariaLabel} aria-current={ariaCurrent}>{children}</a>
+    <a href={href} className={className} aria-label={ariaLabel} aria-current={ariaCurrent}>
+      {children}
+    </a>
   ),
 }));
 
 vi.mock('@/components/ui/Button', () => ({
-  Button: ({ children, onClick, className, 'aria-label': ariaLabel }: {
+  Button: ({
+    children,
+    onClick,
+    className,
+    'aria-label': ariaLabel,
+  }: {
     children: React.ReactNode;
     onClick?: () => void;
     className?: string;
     'aria-label'?: string;
   }) => (
-    <button onClick={onClick} className={className} aria-label={ariaLabel}>{children}</button>
+    <button onClick={onClick} className={className} aria-label={ariaLabel}>
+      {children}
+    </button>
   ),
 }));
 
@@ -183,7 +198,10 @@ describe('Navbar', () => {
 
     it('renders login link pointing to /login', () => {
       render(<Navbar />);
-      expect(screen.getByRole('link', { name: /go to login page/i })).toHaveAttribute('href', '/login');
+      expect(screen.getByRole('link', { name: /go to login page/i })).toHaveAttribute(
+        'href',
+        '/login'
+      );
     });
 
     it('does not render logout button', () => {

@@ -24,7 +24,6 @@ const mockStrapiResponse = {
 };
 
 describe('GET /api/stats', () => {
-
   describe('successful responses', () => {
     it('returns totalSubscribers from strapi', async () => {
       mockFetch.mockResolvedValueOnce({
@@ -132,9 +131,7 @@ describe('GET /api/stats', () => {
 
       await GET();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('pagination[pageSize]=1')
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('pagination[pageSize]=1'));
     });
 
     it('includes subscribers endpoint in URL', async () => {
@@ -144,9 +141,7 @@ describe('GET /api/stats', () => {
 
       await GET();
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/subscribers')
-      );
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/subscribers'));
     });
   });
 });

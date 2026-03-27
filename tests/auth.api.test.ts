@@ -40,7 +40,6 @@ const getAuthorize = () => {
 };
 
 describe('authOptions', () => {
-
   describe('configuration', () => {
     it('has one provider configured', () => {
       expect(authOptions.providers).toHaveLength(1);
@@ -173,7 +172,10 @@ describe('authOptions', () => {
       });
 
       const authorize = getAuthorize();
-      const result = await authorize({ identifier: 'rushik@example.com', password: 'pass123' }) as { id: string };
+      const result = (await authorize({
+        identifier: 'rushik@example.com',
+        password: 'pass123',
+      })) as { id: string };
 
       expect(typeof result.id).toBe('string');
     });
@@ -233,14 +235,18 @@ describe('authOptions', () => {
     it('adds jwt to token when user has jwt', async () => {
       const token = {};
       const user = { jwt: 'user-jwt-token', id: '1', name: 'rushik', email: 'rushik@example.com' };
-      const result = await jwtCallback({ token, user } as unknown as Parameters<typeof jwtCallback>[0]);
+      const result = await jwtCallback({ token, user } as unknown as Parameters<
+        typeof jwtCallback
+      >[0]);
       expect(result.jwt).toBe('user-jwt-token');
     });
 
     it('does not modify token when user has no jwt', async () => {
       const token = { existing: 'value' };
       const user = { id: '1', name: 'rushik', email: 'rushik@example.com' };
-      const result = await jwtCallback({ token, user } as unknown as Parameters<typeof jwtCallback>[0]);
+      const result = await jwtCallback({ token, user } as unknown as Parameters<
+        typeof jwtCallback
+      >[0]);
       expect(result.jwt).toBeUndefined();
     });
 
@@ -253,7 +259,9 @@ describe('authOptions', () => {
     it('preserves existing token properties', async () => {
       const token = { sub: 'user-sub', existingProp: 'keep-me' };
       const user = { jwt: 'new-jwt', id: '1', name: 'rushik', email: 'rushik@example.com' };
-      const result = await jwtCallback({ token, user } as unknown as Parameters<typeof jwtCallback>[0]);
+      const result = await jwtCallback({ token, user } as unknown as Parameters<
+        typeof jwtCallback
+      >[0]);
       expect(result.existingProp).toBe('keep-me');
       expect(result.jwt).toBe('new-jwt');
     });
@@ -268,7 +276,9 @@ describe('authOptions', () => {
         expires: '2099-01-01',
       };
       const token = { jwt: 'token-jwt' };
-      const result = await sessionCallback({ session, token } as unknown as Parameters<typeof sessionCallback>[0]);
+      const result = await sessionCallback({ session, token } as unknown as Parameters<
+        typeof sessionCallback
+      >[0]);
       expect((result.user as { jwt?: string })?.jwt).toBe('token-jwt');
     });
 
@@ -278,14 +288,18 @@ describe('authOptions', () => {
         expires: '2099-01-01',
       };
       const token = {};
-      const result = await sessionCallback({ session, token } as unknown as Parameters<typeof sessionCallback>[0]);
+      const result = await sessionCallback({ session, token } as unknown as Parameters<
+        typeof sessionCallback
+      >[0]);
       expect((result.user as { jwt?: string })?.jwt).toBeUndefined();
     });
 
     it('returns session unchanged when user is missing', async () => {
       const session = { expires: '2099-01-01' };
       const token = { jwt: 'token-jwt' };
-      const result = await sessionCallback({ session, token } as unknown as Parameters<typeof sessionCallback>[0]);
+      const result = await sessionCallback({ session, token } as unknown as Parameters<
+        typeof sessionCallback
+      >[0]);
       expect(result).toEqual(session);
     });
 
@@ -295,7 +309,9 @@ describe('authOptions', () => {
         expires: '2099-01-01',
       };
       const token = { jwt: 'token-jwt' };
-      const result = await sessionCallback({ session, token } as unknown as Parameters<typeof sessionCallback>[0]);
+      const result = await sessionCallback({ session, token } as unknown as Parameters<
+        typeof sessionCallback
+      >[0]);
       expect(result.user?.name).toBe('rushik');
       expect(result.user?.email).toBe('rushik@example.com');
     });

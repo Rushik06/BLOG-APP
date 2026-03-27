@@ -27,10 +27,8 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 border-b bg-white/70 backdrop-blur-xl dark:border-gray-800 dark:bg-gray-900/70">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        
         {/* LEFT */}
         <div className="flex items-center gap-10">
-          
           {/* LOGO */}
           <Link
             href="/"
@@ -66,7 +64,6 @@ export default function Navbar() {
 
         {/* RIGHT */}
         <div className="flex items-center gap-3">
-          
           {/* THEME TOGGLE */}
           <Button
             variant="ghost"
@@ -81,15 +78,12 @@ export default function Navbar() {
           {/* AUTH */}
           {status === 'loading' ? null : status === 'authenticated' ? (
             <div className="flex items-center gap-3">
-              
               {/* USER */}
               <div className="flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5 dark:bg-gray-800">
                 <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-500 text-xs font-semibold text-white">
                   {userInitial}
                 </div>
-                <span className="text-sm text-gray-700 dark:text-gray-200">
-                  Hi {userName}
-                </span>
+                <span className="text-sm text-gray-700 dark:text-gray-200">Hi {userName}</span>
               </div>
 
               {/* LOGOUT */}
@@ -103,9 +97,7 @@ export default function Navbar() {
             </div>
           ) : (
             <Link href="/login" aria-label="Go to login page">
-              <Button className="bg-blue-600 text-white hover:bg-blue-700">
-                {loginText}
-              </Button>
+              <Button className="bg-blue-600 text-white hover:bg-blue-700">{loginText}</Button>
             </Link>
           )}
         </div>

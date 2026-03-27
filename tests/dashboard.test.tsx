@@ -16,10 +16,14 @@ vi.mock('@/components/dashboard/Charts', () => ({
 
 vi.mock('@/components/ui/Card', () => ({
   Card: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card" className={className}>{children}</div>
+    <div data-testid="card" className={className}>
+      {children}
+    </div>
   ),
   CardContent: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card-content" className={className}>{children}</div>
+    <div data-testid="card-content" className={className}>
+      {children}
+    </div>
   ),
 }));
 
@@ -168,9 +172,7 @@ describe('Dashboard page', () => {
     });
 
     it('renders activity with only check icon when icon is check', async () => {
-      const checkOnly: Activity[] = [
-        { id: 1, icon: 'check', text: 'Only check item' },
-      ];
+      const checkOnly: Activity[] = [{ id: 1, icon: 'check', text: 'Only check item' }];
       mockedGetActivities.mockResolvedValue(checkOnly);
       await renderDashboard();
       expect(screen.getByTestId('icon-check')).toBeInTheDocument();
