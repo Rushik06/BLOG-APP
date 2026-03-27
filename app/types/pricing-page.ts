@@ -4,5 +4,5 @@ export interface PricingPageConfig {
 }
 
 export interface PricingPageResponse {
-  data: PricingPageConfig;
+  data: PricingPageConfig[];
 }

@@ -173,6 +173,26 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
+## Testing
+
+Tests are written with **Vitest** and **React Testing Library**, covering pages, components, and hooks.
+
+### Run Tests
+
+| Script | Description |
+|---|---|
+| `pnpm test` | Run all tests once |
+| `pnpm test:watch` | Run tests in watch mode |
+| `pnpm test:coverage` | Run tests with coverage report |
+
+
+
+### Test Setup
+
+The test environment uses **jsdom** (configured in `vitest.config.ts`) with global setup via `vitest.setup.ts`, which imports `@testing-library/jest-dom` for extended DOM matchers.
+
+---
+
 ## Backend Content Types (Strapi)
 
 | Content Type | Description |
@@ -209,6 +229,7 @@ The Strapi backend can be deployed to any server that supports Docker. For produ
 
 ---
 
+
 ## Contributing
 
 1. Fork the repository.
@@ -241,5 +262,3 @@ The Strapi backend can be deployed to any server that supports Docker. For produ
 4. Push and open a Pull Request.
 
 Commit messages are linted with Commitlint and code is auto-formatted on commit via Husky + lint-staged.
-
-

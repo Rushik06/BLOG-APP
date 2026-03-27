@@ -1,11 +1,7 @@
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Check } from 'lucide-react';
-import { Pricing } from '@/app/types/pricing';
-
-interface PricingCardProps {
-  plan: Pricing;
-}
+import { PricingCardProps } from '@/app/types/pricing';
 
 export default function PricingCard({ plan }: PricingCardProps) {
   return (
@@ -48,7 +44,7 @@ export default function PricingCard({ plan }: PricingCardProps) {
           </div>
         )}
 
-        {/* 👇 THIS MAKES HEIGHT EQUAL */}
+        {/* THIS MAKES HEIGHT EQUAL */}
         <div className="flex-grow" />
 
         <Button className="mt-6 w-full transition hover:scale-105">Get Started</Button>

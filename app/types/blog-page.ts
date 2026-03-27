@@ -5,5 +5,5 @@ export interface BlogPageConfig {
 }
 
 export interface BlogPageResponse {
-  data: BlogPageConfig;
+  data: BlogPageConfig[];
 }

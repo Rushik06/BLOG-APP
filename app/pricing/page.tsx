@@ -16,7 +16,7 @@ export default async function PricingPage() {
     fetchAPI<PricingPageResponse>('/pricing-pages'),
   ]);
 
-  const config = configRes.data;
+  const config = configRes.data?.[0];
 
   const plans: Pricing[] = (res.data || []).map((plan) => ({
     id: plan.id,
@@ -59,7 +59,7 @@ export default async function PricingPage() {
         </div>
 
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {config?.headerTitle || 'Simple, Transparent Pricing'}
+          {config?.headerTitle}
         </h1>
 
         <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">
