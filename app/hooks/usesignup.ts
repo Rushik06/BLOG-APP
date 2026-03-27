@@ -4,7 +4,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_BASE || 'http://localhost:1337';
+import { fetchAPI } from '@/lib/strapi';
+import { logger } from '@/lib/logger';
+import { LOG_MESSAGES } from '@/lib/logger-messages';
 
 export function useSignup() {
   const router = useRouter();
@@ -15,39 +17,50 @@ export function useSignup() {
   const [error, setError] = useState('');
 
   const handleSignup = async () => {
-    setError('');
-
-    // validation
-    if (!username || !email || !password) {
-      toast.error('All fields are required');
-      return;
-    }
-
     try {
-      const res = await fetch(`${STRAPI_URL}/api/auth/local/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password }),
-      });
+      setError('');
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        const message = data?.error?.message || 'Signup failed';
-        setError(message);
-        toast.error(message);
+      // validation
+      if (!username || !email || !password) {
+        toast.error(LOG_MESSAGES.signup.validation);
         return;
       }
 
-      // success
-      toast.success('Account created successfully 🎉');
+      logger.info({
+        msg: LOG_MESSAGES.signup.attempt,
+        email,
+      });
+
+      await fetchAPI<{
+        user?: unknown;
+        error?: { message?: string };
+      }>('/auth/local/register', {
+        method: 'POST',
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      logger.info({
+        msg: LOG_MESSAGES.signup.success,
+        email,
+      });
+
+      toast.success(LOG_MESSAGES.signup.success);
 
       setTimeout(() => {
         router.push('/login');
       }, 1000);
-    } catch (err) {
-      setError('Something went wrong');
-      toast.error('Server error');
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : LOG_MESSAGES.signup.serverError;
+
+      logger.error({
+        msg: LOG_MESSAGES.signup.error,
+        error: message,
+      });
+
+      setError(message);
+
+      toast.error(message || LOG_MESSAGES.signup.serverError);
     }
   };
 

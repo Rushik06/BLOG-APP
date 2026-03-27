@@ -6,6 +6,10 @@ import { useSession, signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
+import { fetchAPI } from '@/lib/strapi';
+import { logger } from '@/lib/logger';
+import { LOG_MESSAGES } from '@/lib/logger-messages';
+
 import type { Navlink } from '@/app/types/navbar';
 
 interface NavLinkItem {
@@ -33,36 +37,41 @@ export function useNavbar() {
     return () => cancelAnimationFrame(id);
   }, []);
 
-  /* FETCH UI CONFIG */
   useEffect(() => {
     async function fetchConfig() {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_STRAPI_URL}/ui-config?populate=nav_links`
+        logger.debug({ msg: 'Fetching navbar config' });
+
+        const json = await fetchAPI<{ data: UiConfig }>(
+          '/ui-config?populate=nav_links'
         );
-        const json = await res.json();
 
         setConfig(json.data);
-      } catch (err) {
-        console.error(err);
+
+        logger.info({ msg: 'Navbar config loaded' });
+      } catch (err: unknown) {
+        const message =
+          err instanceof Error ? err.message : 'Unknown error';
+
+        logger.error({
+          msg: LOG_MESSAGES.navbar.error,
+          error: message,
+        });
       }
     }
 
     fetchConfig();
   }, []);
 
-  /* USER */
   const userName = session?.user?.name
     ? session.user.name.charAt(0).toUpperCase() + session.user.name.slice(1)
     : 'User';
 
   const userInitial = userName.charAt(0);
 
-  /* NAV LINKS FROM CMS + AUTH FILTER */
   const navLinks: Navlink[] =
     config?.nav_links
       ?.filter((link) => {
-        // Show dashboard only if logged in
         if (link.href === '/dashboard') {
           return status === 'authenticated';
         }
@@ -77,13 +86,27 @@ export function useNavbar() {
   const loginText = config?.loginText || 'Login';
   const logoutText = config?.logoutText || 'Logout';
 
-  /* LOGOUT */
   const handleLogout = async () => {
-    toast.success('Logged out successfully');
+    try {
+      logger.info({
+        msg: 'User logout initiated',
+        user: session?.user?.email,
+      });
 
-    setTimeout(() => {
-      signOut({ callbackUrl: '/' });
-    }, 800);
+      toast.success('Logged out successfully');
+
+      setTimeout(() => {
+        signOut({ callbackUrl: '/' });
+      }, 800);
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : 'Unknown error';
+
+      logger.error({
+        msg: LOG_MESSAGES.navbar.error,
+        error: message,
+      });
+    }
   };
 
   return {
