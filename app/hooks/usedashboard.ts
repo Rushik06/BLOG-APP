@@ -14,8 +14,7 @@ export async function getStats(): Promise<StatsResponse> {
       totalSubscribers: json.meta?.pagination?.total || 0,
     };
   } catch (err: unknown) {
-    const message =
-      err instanceof Error ? err.message : 'Unknown error';
+    const message = err instanceof Error ? err.message : 'Unknown error';
 
     logger.error({
       msg: LOG_MESSAGES.stats.error,
@@ -35,8 +34,7 @@ export async function getActivities(): Promise<Activity[]> {
 
     return json.data || [];
   } catch (err: unknown) {
-    const message =
-      err instanceof Error ? err.message : 'Unknown error';
+    const message = err instanceof Error ? err.message : 'Unknown error';
 
     logger.error({
       msg: LOG_MESSAGES.activities.error,
@@ -58,13 +56,9 @@ export async function getDashboardTitle(): Promise<string> {
       };
     }>('/dashboard');
 
-    return (
-      json.data?.attributes?.activityTitle ||
-      'Recent Activity'
-    );
+    return json.data?.attributes?.activityTitle || 'Recent Activity';
   } catch (err: unknown) {
-    const message =
-      err instanceof Error ? err.message : 'Unknown error';
+    const message = err instanceof Error ? err.message : 'Unknown error';
 
     logger.error({
       msg: LOG_MESSAGES.dashboard.error,

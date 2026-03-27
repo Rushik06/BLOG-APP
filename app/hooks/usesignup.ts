@@ -50,8 +50,7 @@ export function useSignup() {
         router.push('/login');
       }, 1000);
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : LOG_MESSAGES.signup.serverError;
+      const message = err instanceof Error ? err.message : LOG_MESSAGES.signup.serverError;
 
       logger.error({
         msg: LOG_MESSAGES.signup.error,

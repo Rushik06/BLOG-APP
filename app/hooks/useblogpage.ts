@@ -15,8 +15,7 @@ export function useBlogConfig() {
         const res = await fetchAPI<BlogPageResponse>('/blog-pages');
         setConfig(res.data?.[0] ?? null);
       } catch (err: unknown) {
-        const message =
-          err instanceof Error ? err.message : 'Unknown error';
+        const message = err instanceof Error ? err.message : 'Unknown error';
 
         logger.error({
           msg: LOG_MESSAGES.blog.error,

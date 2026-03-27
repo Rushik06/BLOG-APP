@@ -42,16 +42,13 @@ export function useNavbar() {
       try {
         logger.debug({ msg: 'Fetching navbar config' });
 
-        const json = await fetchAPI<{ data: UiConfig }>(
-          '/ui-config?populate=nav_links'
-        );
+        const json = await fetchAPI<{ data: UiConfig }>('/ui-config?populate=nav_links');
 
         setConfig(json.data);
 
         logger.info({ msg: 'Navbar config loaded' });
       } catch (err: unknown) {
-        const message =
-          err instanceof Error ? err.message : 'Unknown error';
+        const message = err instanceof Error ? err.message : 'Unknown error';
 
         logger.error({
           msg: LOG_MESSAGES.navbar.error,
@@ -99,8 +96,7 @@ export function useNavbar() {
         signOut({ callbackUrl: '/' });
       }, 800);
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Unknown error';
+      const message = err instanceof Error ? err.message : 'Unknown error';
 
       logger.error({
         msg: LOG_MESSAGES.navbar.error,

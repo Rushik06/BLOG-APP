@@ -53,8 +53,7 @@ export function useLogin() {
         router.push('/dashboard');
       }
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : 'Unknown error';
+      const message = err instanceof Error ? err.message : 'Unknown error';
 
       logger.error({
         msg: LOG_MESSAGES.login.error,

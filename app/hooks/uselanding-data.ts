@@ -2,11 +2,7 @@ import { fetchAPI } from '@/lib/strapi';
 import { logger } from '@/lib/logger';
 import { LOG_MESSAGES } from '@/lib/logger-messages';
 
-import type {
-  LandingPage,
-  Feature,
-  FeatureResponse,
-} from '@/app/types/landing-page';
+import type { LandingPage, Feature, FeatureResponse } from '@/app/types/landing-page';
 import type { Testimonial } from '@/app/types/testimonals';
 
 type LandingResponse = {
@@ -53,8 +49,7 @@ export async function getLandingData(): Promise<{
       features: featureRes?.data ?? [],
     };
   } catch (err: unknown) {
-    const message =
-      err instanceof Error ? err.message : 'Unknown error';
+    const message = err instanceof Error ? err.message : 'Unknown error';
 
     logger.error({
       msg: LOG_MESSAGES.landing.error,
