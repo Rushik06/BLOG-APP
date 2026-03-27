@@ -11,7 +11,7 @@ export function useBlogConfig() {
     async function loadConfig() {
       try {
         const res = await fetchAPI<BlogPageResponse>('/blog-pages');
-        setConfig(res.data);
+        setConfig(res.data?.[0]??null);
       } catch (err) {
         console.error('Blog config error:', err);
       }

@@ -19,7 +19,7 @@ export default function ScrollToHeroBadge() {
         onClick={handleClick}
         className="group flex items-center gap-2 rounded-full border border-gray-300 bg-white px-6 py-3 text-sm font-medium text-gray-900 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-gray-700 dark:bg-gray-900 dark:text-white"
       >
-        {config?.buttonText || 'Explore How it works'}
+        {config?.buttonText}
 
         <ArrowUpRight
           size={16}
@@ -29,7 +29,7 @@ export default function ScrollToHeroBadge() {
 
       {/* SUBTEXT */}
       <p className="mt-3 text-center text-sm text-gray-600 dark:text-gray-400">
-        {config?.subText || 'Discover features in Real-time'}
+        {config?.subText}
       </p>
     </div>
   );

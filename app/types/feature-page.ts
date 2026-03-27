@@ -8,5 +8,5 @@ export interface FeaturesPageConfig {
 }
 
 export interface FeaturesPageResponse {
-  data: FeaturesPageConfig;
+  data: FeaturesPageConfig[];
 }

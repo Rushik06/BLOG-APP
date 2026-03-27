@@ -17,7 +17,7 @@ export default async function Features() {
   ]);
 
   const features = featuresRes.data;
-  const config = configRes.data;
+  const config = configRes.data[0];
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16">
@@ -30,12 +30,11 @@ export default async function Features() {
         </div>
 
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-          {config?.headerTitle || 'Powerful Features'}
+          {config?.headerTitle }
         </h1>
 
         <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">
-          {config?.headerSubtitle ||
-            'Everything you need to manage your retail business efficiently'}
+          {config?.headerSubtitle}
         </p>
       </div>
 
@@ -83,17 +82,17 @@ export default async function Features() {
         <Card className="rounded-2xl border border-gray-200 transition hover:shadow-lg dark:border-gray-800">
           <CardContent className="p-10">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
-              {config?.ctaTitle || 'Ready to experience it live?'}
+              {config?.ctaTitle}
             </h2>
 
             <p className="mt-2 text-gray-600 dark:text-gray-400">
-              {config?.ctaSubtitle || 'Explore how RetailPro works in real-time'}
+              {config?.ctaSubtitle }
             </p>
 
             <div className="mt-6 flex justify-center gap-4">
               <Link href="/#demo">
                 <Button className="flex items-center gap-2 transition hover:scale-105">
-                  {config?.ctaPrimaryText || 'Live Demo'}
+                  {config?.ctaPrimaryText }
                   <ArrowRight size={16} />
                 </Button>
               </Link>
@@ -103,7 +102,7 @@ export default async function Features() {
                   variant="outline"
                   className="transition hover:scale-105 dark:border-gray-700 dark:text-gray-200"
                 >
-                  {config?.ctaSecondaryText || 'Get Started'}
+                  {config?.ctaSecondaryText}
                 </Button>
               </Link>
             </div>
