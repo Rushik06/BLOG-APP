@@ -246,7 +246,7 @@ describe('DemoPage', () => {
 
   it('renders activity messages', async () => {
     await renderPage();
-    expect(screen.getByText('Order placed by John')).toBeDefined();
+    expect(screen.getByText('Order #1023 placed by John')).toBeDefined();
     expect(screen.getByText('Stock replenished for Widget C')).toBeDefined();
     expect(screen.getByText('New customer registered')).toBeDefined();
   });
