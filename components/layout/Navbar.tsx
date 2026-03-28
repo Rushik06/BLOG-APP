@@ -22,8 +22,8 @@ export default function Navbar() {
     logoutText,
   } = useNavbar();
 
-  if (!mounted) return <div className="h-16 w-full" />;
-
+  if (!mounted) return <div className="h-16 min-h-[64px] w-full" />;
+  
   return (
     <nav className="sticky top-0 z-50 border-b bg-white/70 backdrop-blur-xl dark:border-gray-800 dark:bg-gray-900/70">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">

@@ -5,17 +5,32 @@ import { ArrowLeft, Calendar, User, Sparkles } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/Card';
 import ReadingProgress from '@/components/ui/ReadingProgress';
 import RenderContent from '@/components/blog/RenderContent';
+import type { Metadata } from 'next';
+import { getBlogSlugMetadata, blogSlugNotFoundMetadata } from '@/app/metadata/blogslug';
 
-export default async function BlogDetail({ params }: BlogDetailProps) {
-  const { slug } = await params;
-
+async function getBlog(slug: string): Promise<Blog | null> {
   const cleanSlug = slug?.toString().trim().toLowerCase();
 
   const res = await fetchAPI<{ data: Blog[] }>(
-    `/blogs?filters[slug][$eq]=${encodeURIComponent(cleanSlug)}&publicationState=live`
+    `/blogs?filters[slug][$eq]=${encodeURIComponent(cleanSlug)}&publicationState=live`,
+    { next: { revalidate: 60 } }
   );
 
-  const blog = res.data?.[0];
+  return res.data?.[0] ?? null;
+}
+
+export async function generateMetadata({ params }: BlogDetailProps): Promise<Metadata> {
+  const { slug } = await params;
+  const blog = await getBlog(slug);
+
+  if (!blog) return blogSlugNotFoundMetadata;
+
+  return getBlogSlugMetadata(blog);
+}
+
+export default async function BlogDetail({ params }: BlogDetailProps) {
+  const { slug } = await params;
+  const blog = await getBlog(slug);
 
   // NOT FOUND
   if (!blog) {

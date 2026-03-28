@@ -8,10 +8,12 @@ import { demoMetadata } from '../metadata/demo';
 export const metadata = demoMetadata;
 
 export default async function DemoPage() {
-  const statsRes = await fetchAPI<{ data: Stat[] }>('/stats');
-  const inventoryRes = await fetchAPI<{ data: InventoryItem[] }>('/inventories');
-  const activityRes = await fetchAPI<{ data: ActivityItem[] }>('/activities');
-
+  const [statsRes, inventoryRes, activityRes] = await Promise.all([
+    fetchAPI<{ data: Stat[] }>('/stats', { next: { revalidate: 60 } }),
+    fetchAPI<{ data: InventoryItem[] }>('/inventories', { next: { revalidate: 60 } }),
+    fetchAPI<{ data: ActivityItem[] }>('/activities', { next: { revalidate: 60 } }),
+  ]);
+  
   const stats = statsRes?.data || [];
   const inventory = inventoryRes?.data || [];
   const activities = activityRes?.data || [];

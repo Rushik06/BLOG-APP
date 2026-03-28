@@ -3,9 +3,7 @@ import { render, screen } from '@testing-library/react';
 import PricingPage from '@/app/pricing/page';
 import { fetchAPI } from '@/lib/strapi';
 
-vi.mock('@/lib/strapi', () => ({
-  fetchAPI: vi.fn(),
-}));
+vi.mock('@/lib/strapi', () => ({ fetchAPI: vi.fn() }));
 
 vi.mock('@/components/pricing/PricingCard', () => ({
   default: ({ plan }: { plan: { planName: string; Price: number } }) => (
@@ -17,22 +15,18 @@ vi.mock('@/components/pricing/PricingCard', () => ({
 
 vi.mock('@/components/ui/Card', () => ({
   Card: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card" className={className}>
-      {children}
-    </div>
+    <div data-testid="card" className={className}>{children}</div>
   ),
   CardContent: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card-content" className={className}>
-      {children}
-    </div>
+    <div data-testid="card-content" className={className}>{children}</div>
   ),
 }));
 
 vi.mock('lucide-react', () => ({
   BadgeCheck: () => <svg data-testid="icon-badgecheck" />,
-  Sparkles: () => <svg data-testid="icon-sparkles" />,
-  Check: () => <svg data-testid="icon-check" />,
-  Phone: () => <svg data-testid="icon-phone" />,
+  Sparkles:   () => <svg data-testid="icon-sparkles" />,
+  Check:      () => <svg data-testid="icon-check" />,
+  Phone:      () => <svg data-testid="icon-phone" />,
 }));
 
 vi.mock('@/app/metadata/pricing', () => ({
@@ -41,10 +35,10 @@ vi.mock('@/app/metadata/pricing', () => ({
 
 vi.mock('@/app/constants/pricing-constants', () => ({
   PRICING_DEFAULTS: {
-    ctaTitle: 'Default CTA Title',
-    ctaSubtitle: 'Default CTA Subtitle',
-    contactNumber: '+91 9999999999',
-    highlightTitle: 'Default Highlight Title',
+    ctaTitle:        'Default CTA Title',
+    ctaSubtitle:     'Default CTA Subtitle',
+    contactNumber:   '+91 9999999999',
+    highlightTitle:  'Default Highlight Title',
     highlightPoints: ['Point A', 'Point B'],
   },
 }));
@@ -86,7 +80,7 @@ const mockPricingData = [
 ];
 
 const mockConfig = {
-  headerTitle: 'Simple Pricing',
+  headerTitle:    'Simple Pricing',
   headerSubtitle: 'Pick the plan that works for you',
 };
 
@@ -114,54 +108,69 @@ describe('PricingPage', () => {
 
     it('renders header title from config', async () => {
       await renderPricingPage();
-      expect(screen.getByText('Simple Pricing')).toBeInTheDocument();
+      expect(screen.getByText('Simple Pricing')).toBeDefined();
     });
 
     it('renders header subtitle from config', async () => {
       await renderPricingPage();
-      expect(screen.getByText('Pick the plan that works for you')).toBeInTheDocument();
+      expect(screen.getByText('Pick the plan that works for you')).toBeDefined();
     });
 
     it('renders CTA title from pro plan', async () => {
       await renderPricingPage();
-      expect(screen.getByText('Talk to us')).toBeInTheDocument();
+      expect(screen.getByText('Talk to us')).toBeDefined();
     });
 
     it('renders CTA subtitle from pro plan', async () => {
       await renderPricingPage();
-      expect(screen.getByText('We are available 24/7')).toBeInTheDocument();
+      expect(screen.getByText('We are available 24/7')).toBeDefined();
     });
 
     it('renders contact number from pro plan', async () => {
       await renderPricingPage();
-      expect(screen.getByText('+91 8888888888')).toBeInTheDocument();
+      expect(screen.getByText('+91 8888888888')).toBeDefined();
     });
 
     it('renders highlight title from pro plan', async () => {
       await renderPricingPage();
-      expect(screen.getByText('Why choose Pro?')).toBeInTheDocument();
+      expect(screen.getByText('Why choose Pro?')).toBeDefined();
     });
 
     it('renders highlight points from pro plan', async () => {
       await renderPricingPage();
-      expect(screen.getByText('Fast support')).toBeInTheDocument();
-      expect(screen.getByText('Unlimited stores')).toBeInTheDocument();
+      expect(screen.getByText('Fast support')).toBeDefined();
+      expect(screen.getByText('Unlimited stores')).toBeDefined();
     });
 
     it('renders Most Popular badge for Pro plan', async () => {
       await renderPricingPage();
-      expect(screen.getByText('Most Popular')).toBeInTheDocument();
+      expect(screen.getByText('Most Popular')).toBeDefined();
     });
 
-    it('does not render Most Popular badge for non-Pro plans', async () => {
+    it('does not render more than one Most Popular badge', async () => {
       await renderPricingPage();
       expect(screen.getAllByText('Most Popular')).toHaveLength(1);
     });
 
-    it('renders contact link with tel href', async () => {
+    it('renders contact link with correct tel href', async () => {
       await renderPricingPage();
       const link = screen.getByRole('link', { name: /call support/i });
-      expect(link).toHaveAttribute('href', 'tel:+91 8888888888');
+      expect(link.getAttribute('href')).toBe('tel:+91 8888888888');
+    });
+
+    it('renders BadgeCheck icon in header', async () => {
+      await renderPricingPage();
+      expect(screen.getByTestId('icon-badgecheck')).toBeDefined();
+    });
+
+    it('renders Phone icon in CTA section', async () => {
+      await renderPricingPage();
+      expect(screen.getByTestId('icon-phone')).toBeDefined();
+    });
+
+    it('renders Check icons for highlight points', async () => {
+      await renderPricingPage();
+      expect(screen.getAllByTestId('icon-check').length).toBeGreaterThan(0);
     });
   });
 
@@ -174,7 +183,7 @@ describe('PricingPage', () => {
 
     it('renders default header subtitle when config is empty', async () => {
       await renderPricingPage();
-      expect(screen.getByText('Choose a plan that fits your business needs')).toBeInTheDocument();
+      expect(screen.getByText('Choose a plan that fits your business needs')).toBeDefined();
     });
   });
 
@@ -201,28 +210,28 @@ describe('PricingPage', () => {
 
     it('renders default CTA title from PRICING_DEFAULTS', async () => {
       await renderPricingPage();
-      expect(screen.getByText('Default CTA Title')).toBeInTheDocument();
+      expect(screen.getByText('Default CTA Title')).toBeDefined();
     });
 
     it('renders default CTA subtitle from PRICING_DEFAULTS', async () => {
       await renderPricingPage();
-      expect(screen.getByText('Default CTA Subtitle')).toBeInTheDocument();
+      expect(screen.getByText('Default CTA Subtitle')).toBeDefined();
     });
 
     it('renders default contact number from PRICING_DEFAULTS', async () => {
       await renderPricingPage();
-      expect(screen.getByText('+91 9999999999')).toBeInTheDocument();
+      expect(screen.getByText('+91 9999999999')).toBeDefined();
     });
 
     it('renders default highlight title from PRICING_DEFAULTS', async () => {
       await renderPricingPage();
-      expect(screen.getByText('Default Highlight Title')).toBeInTheDocument();
+      expect(screen.getByText('Default Highlight Title')).toBeDefined();
     });
 
     it('renders default highlight points from PRICING_DEFAULTS', async () => {
       await renderPricingPage();
-      expect(screen.getByText('Point A')).toBeInTheDocument();
-      expect(screen.getByText('Point B')).toBeInTheDocument();
+      expect(screen.getByText('Point A')).toBeDefined();
+      expect(screen.getByText('Point B')).toBeDefined();
     });
   });
 
@@ -235,12 +244,12 @@ describe('PricingPage', () => {
 
     it('renders empty state message', async () => {
       await renderPricingPage();
-      expect(screen.getByText('No pricing plans available.')).toBeInTheDocument();
+      expect(screen.getByText('No pricing plans available.')).toBeDefined();
     });
 
     it('renders no pricing cards', async () => {
       await renderPricingPage();
-      expect(screen.queryByTestId('pricing-card')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('pricing-card')).toBeNull();
     });
   });
 
@@ -288,7 +297,7 @@ describe('PricingPage', () => {
 
       await renderPricingPage();
       const cards = screen.getAllByTestId('pricing-card');
-      expect(cards[1]).toHaveTextContent('Pro');
+      expect(cards[1].textContent?.includes('Pro')).toBe(true);
     });
   });
 
@@ -304,14 +313,20 @@ describe('PricingPage', () => {
       expect(mockedFetchAPI).toHaveBeenCalledTimes(2);
     });
 
-    it('calls fetchAPI with /pricings endpoint', async () => {
+    it('calls fetchAPI with /pricings endpoint and revalidate option', async () => {
       await renderPricingPage();
-      expect(mockedFetchAPI).toHaveBeenCalledWith('/pricings');
+      expect(mockedFetchAPI).toHaveBeenCalledWith(
+        '/pricings',
+        expect.objectContaining({ next: { revalidate: 60 } })
+      );
     });
 
-    it('calls fetchAPI with /pricing-pages endpoint', async () => {
+    it('calls fetchAPI with /pricing-pages endpoint and revalidate option', async () => {
       await renderPricingPage();
-      expect(mockedFetchAPI).toHaveBeenCalledWith('/pricing-pages');
+      expect(mockedFetchAPI).toHaveBeenCalledWith(
+        '/pricing-pages',
+        expect.objectContaining({ next: { revalidate: 60 } })
+      );
     });
   });
 });

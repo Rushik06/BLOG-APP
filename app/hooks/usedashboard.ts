@@ -8,7 +8,7 @@ export async function getStats(): Promise<StatsResponse> {
   try {
     const json = await fetchAPI<{
       meta?: { pagination?: { total?: number } };
-    }>('/subscribers?pagination[pageSize]=1');
+    }>('/subscribers?pagination[pageSize]=1', { next: { revalidate: 0 } });
 
     return {
       totalSubscribers: json.meta?.pagination?.total || 0,
@@ -30,7 +30,7 @@ export async function getActivities(): Promise<Activity[]> {
   try {
     const json = await fetchAPI<{
       data?: Activity[];
-    }>('/recent-activities');
+    }>('/recent-activities', { next: { revalidate: 0 } });
 
     return json.data || [];
   } catch (err: unknown) {
@@ -54,7 +54,7 @@ export async function getDashboardTitle(): Promise<string> {
           activityTitle?: string;
         };
       };
-    }>('/dashboard');
+    }>('/dashboard', { next: { revalidate: 0 } });
 
     return json.data?.attributes?.activityTitle || 'Recent Activity';
   } catch (err: unknown) {

@@ -20,9 +20,9 @@ export async function getLandingData(): Promise<{
 }> {
   try {
     const [landingRes, testimonialRes, featureRes] = await Promise.all([
-      fetchAPI<LandingResponse>('/landing-pages?populate=howItWorksStep'),
-      fetchAPI<TestimonialResponse>('/testimonals'),
-      fetchAPI<FeatureResponse>('/landing-features'),
+      fetchAPI<LandingResponse>('/landing-pages?populate=howItWorksStep', { next: { revalidate: 300 } }),
+      fetchAPI<TestimonialResponse>('/testimonals', { next: { revalidate: 300 } }),
+      fetchAPI<FeatureResponse>('/landing-features', { next: { revalidate: 300 } }),
     ]);
 
     const raw = landingRes.data?.[0];

@@ -12,7 +12,6 @@ export async function fetchAPI<T>(path: string, options: RequestInit = {}): Prom
           Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
         }),
       },
-      cache: 'no-store',
       ...options,
     });
 
@@ -29,14 +28,14 @@ export async function fetchAPI<T>(path: string, options: RequestInit = {}): Prom
 
     return res.json() as Promise<T>;
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Unexpected API error';
+    if (!(error instanceof Error && error.message.startsWith('Failed to fetch:'))) {
+      logger.error({
+        msg: LOG_MESSAGES.api.globalError,
+        error: error instanceof Error ? error.message : LOG_MESSAGES.api.unexpectedError,
+        url: `${API_URL}${path}`,
+      });
+    }
 
-    logger.error({
-      msg: LOG_MESSAGES.api.globalError,
-      error: message,
-      url: `${API_URL}${path}`,
-    });
-
-    throw new Error(message);
+    throw error instanceof Error ? error : new Error(LOG_MESSAGES.api.unexpectedError);
   }
 }
