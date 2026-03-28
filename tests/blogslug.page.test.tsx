@@ -14,8 +14,18 @@ vi.mock('@/app/metadata/blogslug', () => ({
 }));
 
 vi.mock('next/link', () => ({
-  default: ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => (
-    <a href={href} className={className}>{children}</a>
+  default: ({
+    href,
+    children,
+    className,
+  }: {
+    href: string;
+    children: React.ReactNode;
+    className?: string;
+  }) => (
+    <a href={href} className={className}>
+      {children}
+    </a>
   ),
 }));
 
@@ -31,18 +41,22 @@ vi.mock('@/components/blog/RenderContent', () => ({
 
 vi.mock('@/components/ui/Card', () => ({
   Card: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card" className={className}>{children}</div>
+    <div data-testid="card" className={className}>
+      {children}
+    </div>
   ),
   CardContent: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card-content" className={className}>{children}</div>
+    <div data-testid="card-content" className={className}>
+      {children}
+    </div>
   ),
 }));
 
 vi.mock('lucide-react', () => ({
-  ArrowLeft:  () => <svg data-testid="icon-arrow-left" />,
-  Calendar:   () => <svg data-testid="icon-calendar" />,
-  User:       () => <svg data-testid="icon-user" />,
-  Sparkles:   () => <svg data-testid="icon-sparkles" />,
+  ArrowLeft: () => <svg data-testid="icon-arrow-left" />,
+  Calendar: () => <svg data-testid="icon-calendar" />,
+  User: () => <svg data-testid="icon-user" />,
+  Sparkles: () => <svg data-testid="icon-sparkles" />,
 }));
 
 const mockBlog: Blog = {
@@ -155,7 +169,7 @@ describe('BlogDetail - found state layout', () => {
   it('renders a back link to /blog', async () => {
     await renderBlogDetail();
     const links = screen.getAllByRole('link', { name: /back to blog/i });
-    expect(links.some(l => l.getAttribute('href') === '/blog')).toBe(true);
+    expect(links.some((l) => l.getAttribute('href') === '/blog')).toBe(true);
   });
 
   it('renders the Sparkles icon', async () => {

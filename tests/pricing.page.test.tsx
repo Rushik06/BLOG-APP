@@ -15,18 +15,22 @@ vi.mock('@/components/pricing/PricingCard', () => ({
 
 vi.mock('@/components/ui/Card', () => ({
   Card: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card" className={className}>{children}</div>
+    <div data-testid="card" className={className}>
+      {children}
+    </div>
   ),
   CardContent: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card-content" className={className}>{children}</div>
+    <div data-testid="card-content" className={className}>
+      {children}
+    </div>
   ),
 }));
 
 vi.mock('lucide-react', () => ({
   BadgeCheck: () => <svg data-testid="icon-badgecheck" />,
-  Sparkles:   () => <svg data-testid="icon-sparkles" />,
-  Check:      () => <svg data-testid="icon-check" />,
-  Phone:      () => <svg data-testid="icon-phone" />,
+  Sparkles: () => <svg data-testid="icon-sparkles" />,
+  Check: () => <svg data-testid="icon-check" />,
+  Phone: () => <svg data-testid="icon-phone" />,
 }));
 
 vi.mock('@/app/metadata/pricing', () => ({
@@ -35,10 +39,10 @@ vi.mock('@/app/metadata/pricing', () => ({
 
 vi.mock('@/app/constants/pricing-constants', () => ({
   PRICING_DEFAULTS: {
-    ctaTitle:        'Default CTA Title',
-    ctaSubtitle:     'Default CTA Subtitle',
-    contactNumber:   '+91 9999999999',
-    highlightTitle:  'Default Highlight Title',
+    ctaTitle: 'Default CTA Title',
+    ctaSubtitle: 'Default CTA Subtitle',
+    contactNumber: '+91 9999999999',
+    highlightTitle: 'Default Highlight Title',
     highlightPoints: ['Point A', 'Point B'],
   },
 }));
@@ -80,7 +84,7 @@ const mockPricingData = [
 ];
 
 const mockConfig = {
-  headerTitle:    'Simple Pricing',
+  headerTitle: 'Simple Pricing',
   headerSubtitle: 'Pick the plan that works for you',
 };
 

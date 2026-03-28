@@ -11,9 +11,13 @@ vi.mock('@/app/metadata/blog', () => ({ blogMetadata: { title: 'Blog' } }));
 
 vi.mock('@/components/blog/BlogClient', () => ({
   default: ({ blogs }: { blogs: Blog[] }) => (
-    <div data-testid="blog-client">{blogs.map(b => (
-      <div key={b.id} data-testid="blog-item">{b.Title}</div>
-    ))}</div>
+    <div data-testid="blog-client">
+      {blogs.map((b) => (
+        <div key={b.id} data-testid="blog-item">
+          {b.Title}
+        </div>
+      ))}
+    </div>
   ),
 }));
 

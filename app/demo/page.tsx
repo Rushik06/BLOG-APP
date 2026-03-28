@@ -13,7 +13,7 @@ export default async function DemoPage() {
     fetchAPI<{ data: InventoryItem[] }>('/inventories', { next: { revalidate: 60 } }),
     fetchAPI<{ data: ActivityItem[] }>('/activities', { next: { revalidate: 60 } }),
   ]);
-  
+
   const stats = statsRes?.data || [];
   const inventory = inventoryRes?.data || [];
   const activities = activityRes?.data || [];

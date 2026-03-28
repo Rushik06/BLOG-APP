@@ -15,10 +15,14 @@ vi.mock('@/components/features/FeatureCard', () => ({
 
 vi.mock('@/components/ui/Card', () => ({
   Card: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card" className={className}>{children}</div>
+    <div data-testid="card" className={className}>
+      {children}
+    </div>
   ),
   CardContent: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card-content" className={className}>{children}</div>
+    <div data-testid="card-content" className={className}>
+      {children}
+    </div>
   ),
 }));
 
@@ -35,12 +39,12 @@ vi.mock('next/link', () => ({
 }));
 
 vi.mock('lucide-react', () => ({
-  Sparkles:  () => <svg data-testid="icon-sparkles" />,
-  ArrowRight:() => <svg data-testid="icon-arrow-right" />,
-  Zap:       () => <svg data-testid="icon-zap" />,
+  Sparkles: () => <svg data-testid="icon-sparkles" />,
+  ArrowRight: () => <svg data-testid="icon-arrow-right" />,
+  Zap: () => <svg data-testid="icon-zap" />,
   BarChart3: () => <svg data-testid="icon-barchart" />,
-  Store:     () => <svg data-testid="icon-store" />,
-  TrendingUp:() => <svg data-testid="icon-trending" />,
+  Store: () => <svg data-testid="icon-store" />,
+  TrendingUp: () => <svg data-testid="icon-trending" />,
 }));
 
 vi.mock('@/app/metadata/features', () => ({
@@ -49,16 +53,16 @@ vi.mock('@/app/metadata/features', () => ({
 
 const mockFeatures: Feature[] = [
   { id: 1, title: 'Inventory Management', description: 'Track stock levels' },
-  { id: 2, title: 'Sales Analytics',      description: 'Understand your sales' },
+  { id: 2, title: 'Sales Analytics', description: 'Understand your sales' },
 ];
 
 const mockConfig: FeaturesPageConfig = {
-  headerTitle:     'Amazing Features',
-  headerSubtitle:  'All you need',
-  ctaTitle:        'Try it now',
-  ctaSubtitle:     'See it in action',
-  ctaPrimaryText:  'Live Demo',
-  ctaSecondaryText:'Get Started',
+  headerTitle: 'Amazing Features',
+  headerSubtitle: 'All you need',
+  ctaTitle: 'Try it now',
+  ctaSubtitle: 'See it in action',
+  ctaPrimaryText: 'Live Demo',
+  ctaSecondaryText: 'Get Started',
 };
 
 const mockedFetchAPI = vi.mocked(fetchAPI);
