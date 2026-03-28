@@ -1,8 +1,9 @@
 import type { NextConfig } from 'next';
 
-
-const strapiOrigin = (process.env.NEXT_PUBLIC_STRAPI_URL ?? 'http://localhost:1337')
-  .replace(/\/api.*$/, '');
+const strapiOrigin = (process.env.NEXT_PUBLIC_STRAPI_URL ?? 'http://localhost:1337').replace(
+  /\/api.*$/,
+  ''
+);
 
 const securityHeaders = [
   { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
