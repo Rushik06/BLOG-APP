@@ -1,0 +1,58 @@
+# Development / local tooling 
+node_modules
+.pnpm-store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next.js build output 
+.next
+out
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+#  Test / CI artifacts
+coverage
+tests
+vitest.config.ts
+vitest.setup.ts
+
+# Linting / formatting 
+.eslintrc*
+eslint.config.*
+.prettierrc
+.prettierignore
+lintstagedrc
+commitlint.config.cjs
+.husky
+
+# IDE / OS 
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+#Docs 
+README.md
+AGENTS.md
+CLAUDE.md
+
+node_modules
+.next
+.git
+backend/app/node_modules
+backend/app/.tmp
+backend/app/.strapi
+backend/app/build
+backend/app/dist
+coverage
+.husky
+*.md

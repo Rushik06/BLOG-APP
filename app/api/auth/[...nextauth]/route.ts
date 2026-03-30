@@ -2,8 +2,7 @@ import NextAuth, { type AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 import type { StrapiAuthResponse } from '@/app/types/auth';
-
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_BASE || 'http://localhost:1337';
+const STRAPI_URL = 'http://strapi:1337';
 
 export const authOptions: AuthOptions = {
   providers: [

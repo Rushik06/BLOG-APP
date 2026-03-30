@@ -1,9 +1,16 @@
 import { logger } from '@/lib/logger';
 import { LOG_MESSAGES } from '@/lib/logger-messages';
 
-const API_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337/api';
+const API_URL =
+  typeof window === 'undefined'
+    ? 'http://strapi:1337/api'
+    : process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337/api';
 
 export async function fetchAPI<T>(path: string, options: RequestInit = {}): Promise<T> {
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return { data: [] } as T;
+  }
+
   try {
     const res = await fetch(`${API_URL}${path}`, {
       headers: {
