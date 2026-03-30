@@ -13,7 +13,7 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 
-const mockApi = (data: object | null) => 
+const mockApi = (data: object | null) =>
   mockFetch.mockResolvedValueOnce({ ok: true, json: async () => ({ data }) });
 
 describe('Footer', () => {
@@ -28,7 +28,7 @@ describe('Footer', () => {
   it('falls back to default text when API data is missing or null', async () => {
     mockApi(null);
     render(<Footer />);
-    
+
     expect(await screen.findByText(DEFAULT_TEXT)).toBeDefined();
   });
 
@@ -39,18 +39,17 @@ describe('Footer', () => {
 
     render(<Footer />);
 
-  
     const footer = await screen.findByRole('contentinfo');
     expect(footer).toBeDefined();
     expect(consoleSpy).toHaveBeenCalledWith(error);
-    
+
     consoleSpy.mockRestore();
   });
 
   it('stays empty during the loading state', () => {
     mockFetch.mockReturnValue(new Promise(() => {})); // Never resolves
     render(<Footer />);
-    
+
     const footer = screen.getByRole('contentinfo');
     expect(footer.textContent).toBe('');
   });

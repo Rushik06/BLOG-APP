@@ -8,12 +8,15 @@ vi.mock('@/app/hooks/usenavbar', () => ({ useNavbar: vi.fn() }));
 vi.mock('@/lib/utils', () => ({ cn: (...args: string[]) => args.filter(Boolean).join(' ') }));
 
 vi.mock('next/link', () => ({
-  default: ({ href, children }: { href: string; children: ReactNode }) => <a href={href}>{children}</a>
+  default: ({ href, children }: { href: string; children: ReactNode }) => (
+    <a href={href}>{children}</a>
+  ),
 }));
 
 vi.mock('@/components/ui/Button', () => ({
-  Button: ({ children, onClick }: { children: ReactNode; onClick?: () => void }) => 
+  Button: ({ children, onClick }: { children: ReactNode; onClick?: () => void }) => (
     <button onClick={onClick}>{children}</button>
+  ),
 }));
 
 vi.mock('lucide-react', () => ({
@@ -38,9 +41,9 @@ describe('Navbar', () => {
       userName: '',
       userInitial: '',
       handleLogout: vi.fn(),
-      ...overrides
+      ...overrides,
     } as ReturnType<typeof useNavbar>;
-    
+
     vi.mocked(useNavbar).mockReturnValue(state);
     return state;
   };
@@ -55,7 +58,7 @@ describe('Navbar', () => {
     mockNavbar({ pathname: '/blog' });
     rerender(<Navbar />);
     expect(screen.getByText('RetailPro')).toBeDefined();
-    
+
     const blogLink = screen.getByText('Blog').closest('a');
     expect(blogLink).toHaveAttribute('href', '/blog');
   });
@@ -63,10 +66,10 @@ describe('Navbar', () => {
   it('toggles theme correctly', () => {
     const state = mockNavbar({ theme: 'light' });
     render(<Navbar />);
-    
+
     const themeBtn = screen.getByTestId('icon-moon').closest('button');
     if (themeBtn) fireEvent.click(themeBtn);
-    
+
     expect(state.setTheme).toHaveBeenCalledWith('dark');
   });
 
@@ -75,10 +78,10 @@ describe('Navbar', () => {
     const { rerender } = render(<Navbar />);
     expect(screen.getByText('Login')).toBeDefined();
 
-    mockNavbar({ 
-      status: 'authenticated', 
-      userName: 'Rushik', 
-      userInitial: 'R' 
+    mockNavbar({
+      status: 'authenticated',
+      userName: 'Rushik',
+      userInitial: 'R',
     });
     rerender(<Navbar />);
     expect(screen.getByText('Hi Rushik')).toBeDefined();
