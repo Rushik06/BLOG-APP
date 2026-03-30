@@ -12,18 +12,29 @@ vi.mock('@/app/metadata/blogslug', () => ({
   blogSlugNotFoundMetadata: { title: 'Not Found' },
 }));
 
-vi.mock('next/link', () => ({ 
-  default: ({ href, children }: { href: string; children: ReactNode }) => <a href={href}>{children}</a> 
+vi.mock('next/link', () => ({
+  default: ({ href, children }: { href: string; children: ReactNode }) => (
+    <a href={href}>{children}</a>
+  ),
 }));
-vi.mock('@/components/ui/ReadingProgress', () => ({ default: () => <div data-testid="progress" /> }));
-vi.mock('@/components/blog/RenderContent', () => ({ 
-  default: ({ content }: { content: unknown }) => <div data-testid="content">{JSON.stringify(content)}</div> 
+vi.mock('@/components/ui/ReadingProgress', () => ({
+  default: () => <div data-testid="progress" />,
 }));
-vi.mock('@/components/ui/Card', () => ({ 
-  Card: ({ children }: { children: ReactNode }) => <div>{children}</div>, 
-  CardContent: ({ children }: { children: ReactNode }) => <div>{children}</div> 
+vi.mock('@/components/blog/RenderContent', () => ({
+  default: ({ content }: { content: unknown }) => (
+    <div data-testid="content">{JSON.stringify(content)}</div>
+  ),
 }));
-vi.mock('lucide-react', () => ({ ArrowLeft: () => <i />, Calendar: () => <i />, User: () => <i />, Sparkles: () => <i /> }));
+vi.mock('@/components/ui/Card', () => ({
+  Card: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+  CardContent: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+}));
+vi.mock('lucide-react', () => ({
+  ArrowLeft: () => <i />,
+  Calendar: () => <i />,
+  User: () => <i />,
+  Sparkles: () => <i />,
+}));
 
 const mockBlog = {
   id: 1,

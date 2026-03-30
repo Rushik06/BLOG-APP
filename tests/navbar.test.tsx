@@ -7,37 +7,40 @@ import { useNavbar } from '@/app/hooks/usenavbar';
 vi.mock('@/app/hooks/usenavbar', () => ({ useNavbar: vi.fn() }));
 vi.mock('@/lib/utils', () => ({ cn: (...args: string[]) => args.filter(Boolean).join(' ') }));
 
-vi.mock('next/link', () => ({ 
-  default: ({ href, children }: { href: string; children: ReactNode }) => <a href={href}>{children}</a> 
+vi.mock('next/link', () => ({
+  default: ({ href, children }: { href: string; children: ReactNode }) => (
+    <a href={href}>{children}</a>
+  ),
 }));
 
-vi.mock('@/components/ui/Button', () => ({ 
-  Button: ({ children, onClick }: { children: ReactNode; onClick?: () => void }) => 
-    <button onClick={onClick}>{children}</button> 
+vi.mock('@/components/ui/Button', () => ({
+  Button: ({ children, onClick }: { children: ReactNode; onClick?: () => void }) => (
+    <button onClick={onClick}>{children}</button>
+  ),
 }));
 
-vi.mock('lucide-react', () => ({ 
-  Store: () => <i data-testid="icon-store" />, 
-  Sun: () => <i data-testid="icon-sun" />, 
-  Moon: () => <i data-testid="icon-moon" /> 
+vi.mock('lucide-react', () => ({
+  Store: () => <i data-testid="icon-store" />,
+  Sun: () => <i data-testid="icon-sun" />,
+  Moon: () => <i data-testid="icon-moon" />,
 }));
 
 const mock = (overrides = {}) => {
   const state: ReturnType<typeof useNavbar> = {
-    pathname: '/', 
-    theme: 'light', 
-    setTheme: vi.fn(), 
+    pathname: '/',
+    theme: 'light',
+    setTheme: vi.fn(),
     status: 'unauthenticated',
-    session: null, 
-    mounted: true, 
+    session: null,
+    mounted: true,
     navLinks: [{ href: '/blog', name: 'Blog' }],
-    logoText: 'RetailPro', 
-    loginText: 'Login', 
+    logoText: 'RetailPro',
+    loginText: 'Login',
     logoutText: 'Logout',
-    userName: '', 
-    userInitial: '', 
-    handleLogout: vi.fn(), 
-    ...overrides
+    userName: '',
+    userInitial: '',
+    handleLogout: vi.fn(),
+    ...overrides,
   };
   vi.mocked(useNavbar).mockReturnValue(state);
   return state;
@@ -53,7 +56,7 @@ it('renders brand and navigation correctly', async () => {
   mock({ pathname: '/blog' });
   rerender(<Navbar />);
   expect(screen.getByText('RetailPro')).toBeDefined();
-  
+
   const link = screen.getByText('Blog').closest('a');
   expect(link).toHaveAttribute('href', '/blog');
 });
@@ -61,7 +64,7 @@ it('renders brand and navigation correctly', async () => {
 it('toggles theme and manages auth states', () => {
   const { setTheme } = mock({ theme: 'light' });
   const { rerender } = render(<Navbar />);
-  
+
   const themeBtn = screen.getByTestId('icon-moon').closest('button');
   if (themeBtn) fireEvent.click(themeBtn);
   expect(setTheme).toHaveBeenCalledWith('dark');

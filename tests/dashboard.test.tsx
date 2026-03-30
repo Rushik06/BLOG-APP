@@ -13,34 +13,40 @@ vi.mock('next-auth', () => ({
 
 vi.mock('next/navigation', () => ({ redirect: vi.fn() }));
 vi.mock('@/app/api/auth/[...nextauth]/route', () => ({ authOptions: {} }));
-vi.mock('@/app/hooks/usedashboard', () => ({ 
-  getStats: vi.fn(), 
-  getActivities: vi.fn(), 
-  getDashboardTitle: vi.fn() 
+vi.mock('@/app/hooks/usedashboard', () => ({
+  getStats: vi.fn(),
+  getActivities: vi.fn(),
+  getDashboardTitle: vi.fn(),
 }));
 
 vi.mock('@/components/dashboard/Charts', () => ({ default: () => <div data-testid="chart" /> }));
-vi.mock('@/components/ui/Card', () => ({ 
-  Card: ({ children }: { children: ReactNode }) => <div>{children}</div>, 
-  CardContent: ({ children }: { children: ReactNode }) => <div>{children}</div> 
+vi.mock('@/components/ui/Card', () => ({
+  Card: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+  CardContent: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }));
 
-vi.mock('lucide-react', () => ({ 
-  Users: () => <i />, TrendingUp: () => <i />, Rocket: () => <i />, 
-  CheckCircle: () => <i data-testid="check" />, BarChart3: () => <i />, Lightbulb: () => <i /> 
+vi.mock('lucide-react', () => ({
+  Users: () => <i />,
+  TrendingUp: () => <i />,
+  Rocket: () => <i />,
+  CheckCircle: () => <i data-testid="check" />,
+  BarChart3: () => <i />,
+  Lightbulb: () => <i />,
 }));
 
 const mockData = {
   stats: { totalSubscribers: 4200 },
   activities: [{ id: 1, icon: 'check', text: 'New user' }],
-  title: 'Recent Activity'
+  title: 'Recent Activity',
 };
 
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(getServerSession).mockResolvedValue({ user: { name: 'Rushik' } });
   vi.mocked(getStats).mockResolvedValue(mockData.stats);
-  vi.mocked(getActivities).mockResolvedValue(mockData.activities as ReturnType<typeof getActivities> extends Promise<infer T> ? T : never);
+  vi.mocked(getActivities).mockResolvedValue(
+    mockData.activities as ReturnType<typeof getActivities> extends Promise<infer T> ? T : never
+  );
   vi.mocked(getDashboardTitle).mockResolvedValue(mockData.title);
 });
 

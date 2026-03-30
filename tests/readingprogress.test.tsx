@@ -16,7 +16,7 @@ describe('ReadingProgress', () => {
     });
   });
 
-  const getBar = (container: HTMLElement): HTMLElement => 
+  const getBar = (container: HTMLElement): HTMLElement =>
     container.querySelector('.bg-blue-600') as HTMLElement;
 
   it('renders initial state and updates on scroll', () => {
@@ -42,7 +42,7 @@ describe('ReadingProgress', () => {
 
     // Verify 'scroll' was registered
     expect(addSpy).toHaveBeenCalledWith('scroll', expect.not.stringContaining(''));
-    
+
     // Check that the second argument is indeed a function
     const lastCallArg = addSpy.mock.calls[0][1];
     expect(typeof lastCallArg).toBe('function');
