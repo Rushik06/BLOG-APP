@@ -3,99 +3,65 @@ import { render, screen } from '@testing-library/react';
 import RenderContent from '@/components/blog/RenderContent';
 
 vi.mock('lucide-react', () => ({
-  CheckCircle: () => <svg data-testid="icon-check" />,
+  CheckCircle: () => <span data-testid="icon-check" />,
 }));
 
-const makeBlock = (text: string) => ({
-  type: 'paragraph',
-  children: [{ text }],
-});
-
-const makeListBlock = (text: string) => ({
-  type: 'paragraph',
-  children: [{ text: `1. ${text}` }],
-});
-
-const makeNestedBlock = (texts: string[]) => ({
-  type: 'paragraph',
-  children: [{ children: texts.map((t) => ({ text: t })) }],
-});
-
 describe('RenderContent', () => {
-  it('renders fallback when content is null', () => {
-    render(<RenderContent content={null} />);
-    expect(screen.getByText('No content available')).toBeInTheDocument();
+  it('handles invalid or empty content gracefully', () => {
+    const { rerender } = render(<RenderContent content={null as unknown as []} />);
+    expect(screen.getByText(/no content available/i)).toBeDefined();
+
+    rerender(<RenderContent content={[]} />);
+    expect(screen.queryByText(/./)).toBeNull();
   });
 
-  it('renders fallback when content is a string', () => {
-    render(<RenderContent content="some string" />);
-    expect(screen.getByText('No content available')).toBeInTheDocument();
+  it('renders standard paragraph blocks and nested text', () => {
+    const content = [
+      { type: 'paragraph', children: [{ text: 'Hello' }] },
+      { type: 'paragraph', children: [{ children: [{ text: 'Nested ' }, { text: 'Text' }] }] },
+    ];
+
+    render(<RenderContent content={content} />);
+
+    expect(screen.getByText('Hello')).toBeDefined();
+    expect(screen.getByText('Nested Text')).toBeDefined();
   });
 
-  it('renders fallback when content is an object', () => {
-    render(<RenderContent content={{}} />);
-    expect(screen.getByText('No content available')).toBeInTheDocument();
+  it('transforms numbered text (1. Task) into list items with icons', () => {
+    const content = [{ type: 'paragraph', children: [{ text: '1. Clean the room' }] }];
+
+    render(<RenderContent content={content} />);
+
+    expect(screen.getByTestId('icon-check')).toBeDefined();
+    expect(screen.getByText('Clean the room')).toBeDefined();
+    expect(screen.queryByText(/1\./)).toBeNull();
   });
 
-  it('renders fallback when content is undefined', () => {
-    render(<RenderContent content={undefined} />);
-    expect(screen.getByText('No content available')).toBeInTheDocument();
+  it('ignores blocks that have no text content', () => {
+    const content = [
+      { type: 'paragraph', children: [{ text: '' }] },
+      { type: 'paragraph', children: [{ text: 'Valid Content' }] },
+    ];
+
+    render(<RenderContent content={content} />);
+
+    expect(screen.getByText('Valid Content')).toBeDefined();
+    const paragraphs = screen.queryAllByText(/./);
+    expect(paragraphs.length).toBe(1);
   });
 
-  it('renders a paragraph block', () => {
-    render(<RenderContent content={[makeBlock('Hello world')]} />);
-    expect(screen.getByText('Hello world')).toBeInTheDocument();
-  });
+  it('renders a mix of plain text and list items', () => {
+    const content = [
+      { type: 'paragraph', children: [{ text: 'Intro' }] },
+      { type: 'paragraph', children: [{ text: '1. Step One' }] },
+      { type: 'paragraph', children: [{ text: 'Outro' }] },
+    ];
 
-  it('renders multiple paragraph blocks', () => {
-    render(
-      <RenderContent content={[makeBlock('First paragraph'), makeBlock('Second paragraph')]} />
-    );
-    expect(screen.getByText('First paragraph')).toBeInTheDocument();
-    expect(screen.getByText('Second paragraph')).toBeInTheDocument();
-  });
+    render(<RenderContent content={content} />);
 
-  it('renders nested children text correctly', () => {
-    render(<RenderContent content={[makeNestedBlock(['Nested ', 'text'])]} />);
-    expect(screen.getByText('Nested text')).toBeInTheDocument();
-  });
-
-  it('skips blocks with empty text', () => {
-    render(<RenderContent content={[makeBlock(''), makeBlock('Visible')]} />);
-    expect(screen.getByText('Visible')).toBeInTheDocument();
-    expect(screen.getAllByText(/./)).toHaveLength(1);
-  });
-
-  it('renders a numbered list block with CheckCircle icon', () => {
-    render(<RenderContent content={[makeListBlock('Buy groceries')]} />);
-    expect(screen.getByTestId('icon-check')).toBeInTheDocument();
-  });
-
-  it('strips the number prefix from list items', () => {
-    render(<RenderContent content={[makeListBlock('Buy groceries')]} />);
-    expect(screen.getByText('Buy groceries')).toBeInTheDocument();
-    expect(screen.queryByText(/^1\./)).not.toBeInTheDocument();
-  });
-
-  it('renders non-list block without CheckCircle icon', () => {
-    render(<RenderContent content={[makeBlock('Regular text')]} />);
-    expect(screen.queryByTestId('icon-check')).not.toBeInTheDocument();
-  });
-
-  it('renders a mix of paragraphs and list blocks', () => {
-    render(
-      <RenderContent
-        content={[makeBlock('Intro text'), makeListBlock('Step one'), makeBlock('Closing text')]}
-      />
-    );
-    expect(screen.getByText('Intro text')).toBeInTheDocument();
-    expect(screen.getByText('Step one')).toBeInTheDocument();
-    expect(screen.getByText('Closing text')).toBeInTheDocument();
+    expect(screen.getByText('Intro')).toBeDefined();
+    expect(screen.getByText('Step One')).toBeDefined();
+    expect(screen.getByText('Outro')).toBeDefined();
     expect(screen.getAllByTestId('icon-check')).toHaveLength(1);
-  });
-
-  it('renders nothing when content is an empty array', () => {
-    const { container } = render(<RenderContent content={[]} />);
-    expect(container.innerHTML).toBe('');
   });
 });

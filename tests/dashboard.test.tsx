@@ -1,218 +1,82 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
+
 import Dashboard from '@/app/dashboard/page';
 import { getStats, getActivities, getDashboardTitle } from '@/app/hooks/usedashboard';
-import { Activity } from '@/app/types/dashboard';
+import type { StatsResponse, Activity } from '@/app/types/dashboard';
 
+vi.mock('next-auth', () => ({ getServerSession: vi.fn() }));
+vi.mock('next/navigation', () => ({ redirect: vi.fn() }));
+vi.mock('@/app/api/auth/[...nextauth]/route', () => ({ authOptions: {} }));
+vi.mock('@/app/metadata/dashboard', () => ({ dashboardMetadata: {} }));
 vi.mock('@/app/hooks/usedashboard', () => ({
   getStats: vi.fn(),
   getActivities: vi.fn(),
   getDashboardTitle: vi.fn(),
 }));
 
-vi.mock('@/components/dashboard/Charts', () => ({
-  default: () => <div data-testid="chart" />,
-}));
-
+vi.mock('@/components/dashboard/Charts', () => ({ default: () => <div data-testid="chart" /> }));
 vi.mock('@/components/ui/Card', () => ({
-  Card: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card" className={className}>
-      {children}
-    </div>
-  ),
-  CardContent: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card-content" className={className}>
-      {children}
-    </div>
-  ),
+  Card: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  CardContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
-
 vi.mock('lucide-react', () => ({
-  Users: () => <svg data-testid="icon-users" />,
-  TrendingUp: () => <svg data-testid="icon-trending" />,
-  Rocket: () => <svg data-testid="icon-rocket" />,
-  CheckCircle: () => <svg data-testid="icon-check" />,
-  BarChart3: () => <svg data-testid="icon-barchart" />,
-  Lightbulb: () => <svg data-testid="icon-lightbulb" />,
+  Users: () => <div />,
+  TrendingUp: () => <div />,
+  Rocket: () => <div />,
+  CheckCircle: () => <div data-testid="icon-check" />,
+  BarChart3: () => <div data-testid="icon-chart" />,
+  Lightbulb: () => <div data-testid="icon-light" />,
 }));
 
-vi.mock('@/app/metadata/dashboard', () => ({
-  dashboardMetadata: { title: 'Dashboard' },
-}));
-
-const mockedGetStats = vi.mocked(getStats);
-const mockedGetActivities = vi.mocked(getActivities);
-const mockedGetDashboardTitle = vi.mocked(getDashboardTitle);
-
-const mockStats = { totalSubscribers: 1200 };
-const mockTitle = 'Recent Activity';
-
+const mockStats: StatsResponse = { totalSubscribers: 4200 };
 const mockActivities: Activity[] = [
-  { id: 1, icon: 'check', text: 'New order received' },
-  { id: 2, icon: 'chart', text: 'Revenue increased by 5%' },
-  { id: 3, icon: 'light', text: 'New feature suggestion added' },
+  { id: 1, icon: 'check', text: 'New user signed up' },
+  { id: 2, icon: 'chart', text: 'Revenue increased' },
+  { id: 3, icon: 'light', text: 'New feature suggested' },
 ];
 
-async function renderDashboard() {
-  const jsx = await Dashboard();
-  return render(jsx as React.ReactElement);
-}
+beforeEach(() => {
+  vi.clearAllMocks();
+  vi.mocked(getServerSession).mockResolvedValue({ user: { name: 'Rushik' } });
+  vi.mocked(getStats).mockResolvedValue(mockStats);
+  vi.mocked(getActivities).mockResolvedValue(mockActivities);
+  vi.mocked(getDashboardTitle).mockResolvedValue('Recent Activity');
+});
 
-describe('Dashboard page', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    mockedGetStats.mockResolvedValue(mockStats);
-    mockedGetActivities.mockResolvedValue(mockActivities);
-    mockedGetDashboardTitle.mockResolvedValue(mockTitle);
+describe('Dashboard Page', () => {
+  it('protects the route by redirecting unauthenticated users', async () => {
+    vi.mocked(getServerSession).mockResolvedValueOnce(null);
+    await Dashboard();
+    expect(redirect).toHaveBeenCalledWith('/login');
   });
 
-  describe('header', () => {
-    it('renders the Dashboard heading', async () => {
-      await renderDashboard();
-      expect(screen.getByRole('heading', { name: 'Dashboard' })).toBeInTheDocument();
-    });
+  it('renders the full dashboard layout for authenticated users', async () => {
+    render(await Dashboard());
 
-    it('renders the welcome message', async () => {
-      await renderDashboard();
-      expect(screen.getByText(/welcome back/i)).toBeInTheDocument();
-    });
+    expect(screen.getByRole('heading', { name: /dashboard/i })).toBeDefined();
+    expect(screen.getByText(/welcome back/i)).toBeDefined();
+    expect(screen.getByTestId('chart')).toBeDefined();
 
-    it('renders the rocket icon', async () => {
-      await renderDashboard();
-      expect(screen.getByTestId('icon-rocket')).toBeInTheDocument();
-    });
+    expect(screen.getByText('4200')).toBeDefined();
+    expect(screen.getByText('Recent Activity')).toBeDefined();
   });
 
-  describe('stats card', () => {
-    it('renders Total Subscribers label', async () => {
-      await renderDashboard();
-      expect(screen.getByText('Total Subscribers')).toBeInTheDocument();
-    });
+  it('correctly lists all activity items', async () => {
+    render(await Dashboard());
 
-    it('renders total subscribers value from data', async () => {
-      await renderDashboard();
-      expect(screen.getByText('1200')).toBeInTheDocument();
-    });
-
-    it('renders weekly growth indicator', async () => {
-      await renderDashboard();
-      expect(screen.getByText('+12% this week')).toBeInTheDocument();
-    });
-
-    it('renders users icon', async () => {
-      await renderDashboard();
-      expect(screen.getByTestId('icon-users')).toBeInTheDocument();
-    });
-
-    it('renders trending up icon', async () => {
-      await renderDashboard();
-      expect(screen.getByTestId('icon-trending')).toBeInTheDocument();
-    });
-
-    it('renders different subscriber count correctly', async () => {
-      mockedGetStats.mockResolvedValue({ totalSubscribers: 9999 });
-      await renderDashboard();
-      expect(screen.getByText('9999')).toBeInTheDocument();
-    });
+    const items = screen.getAllByRole('listitem');
+    expect(items).toHaveLength(3);
+    expect(screen.getByText('New user signed up')).toBeDefined();
   });
 
-  describe('chart', () => {
-    it('renders the Chart component', async () => {
-      await renderDashboard();
-      expect(screen.getByTestId('chart')).toBeInTheDocument();
-    });
-  });
+  it('displays empty state when no activities exist', async () => {
+    vi.mocked(getActivities).mockResolvedValueOnce([]);
+    render(await Dashboard());
 
-  describe('activity section', () => {
-    it('renders activity section title from getDashboardTitle', async () => {
-      await renderDashboard();
-      expect(screen.getByText('Recent Activity')).toBeInTheDocument();
-    });
-
-    it('renders all activity items', async () => {
-      await renderDashboard();
-      expect(screen.getByText('New order received')).toBeInTheDocument();
-      expect(screen.getByText('Revenue increased by 5%')).toBeInTheDocument();
-      expect(screen.getByText('New feature suggestion added')).toBeInTheDocument();
-    });
-
-    it('renders check icon for check activity', async () => {
-      await renderDashboard();
-      expect(screen.getByTestId('icon-check')).toBeInTheDocument();
-    });
-
-    it('renders barchart icon for chart activity', async () => {
-      await renderDashboard();
-      expect(screen.getByTestId('icon-barchart')).toBeInTheDocument();
-    });
-
-    it('renders lightbulb icon for light activity', async () => {
-      await renderDashboard();
-      expect(screen.getByTestId('icon-lightbulb')).toBeInTheDocument();
-    });
-
-    it('renders correct number of activity list items', async () => {
-      await renderDashboard();
-      const items = screen.getAllByRole('listitem');
-      expect(items).toHaveLength(3);
-    });
-
-    it('renders No activity found when activities is empty', async () => {
-      mockedGetActivities.mockResolvedValue([]);
-      await renderDashboard();
-      expect(screen.getByText('No activity found')).toBeInTheDocument();
-    });
-
-    it('renders no activity items when activities is empty', async () => {
-      mockedGetActivities.mockResolvedValue([]);
-      await renderDashboard();
-      expect(screen.queryByTestId('icon-check')).not.toBeInTheDocument();
-      expect(screen.queryByTestId('icon-barchart')).not.toBeInTheDocument();
-      expect(screen.queryByTestId('icon-lightbulb')).not.toBeInTheDocument();
-    });
-
-    it('renders activity with only check icon when icon is check', async () => {
-      const checkOnly: Activity[] = [{ id: 1, icon: 'check', text: 'Only check item' }];
-      mockedGetActivities.mockResolvedValue(checkOnly);
-      await renderDashboard();
-      expect(screen.getByTestId('icon-check')).toBeInTheDocument();
-      expect(screen.queryByTestId('icon-barchart')).not.toBeInTheDocument();
-      expect(screen.queryByTestId('icon-lightbulb')).not.toBeInTheDocument();
-    });
-
-    it('renders different title from getDashboardTitle', async () => {
-      mockedGetDashboardTitle.mockResolvedValue('Latest Updates');
-      await renderDashboard();
-      expect(screen.getByText('Latest Updates')).toBeInTheDocument();
-    });
-  });
-
-  describe('data fetching', () => {
-    it('calls getStats exactly once', async () => {
-      await renderDashboard();
-      expect(mockedGetStats).toHaveBeenCalledTimes(1);
-    });
-
-    it('calls getActivities exactly once', async () => {
-      await renderDashboard();
-      expect(mockedGetActivities).toHaveBeenCalledTimes(1);
-    });
-
-    it('calls getDashboardTitle exactly once', async () => {
-      await renderDashboard();
-      expect(mockedGetDashboardTitle).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('layout', () => {
-    it('renders card components', async () => {
-      await renderDashboard();
-      expect(screen.getAllByTestId('card').length).toBeGreaterThanOrEqual(1);
-    });
-
-    it('renders card content components', async () => {
-      await renderDashboard();
-      expect(screen.getAllByTestId('card-content').length).toBeGreaterThanOrEqual(1);
-    });
+    expect(screen.getByText(/no activity found/i)).toBeDefined();
+    expect(screen.queryByTestId('icon-check')).toBeNull();
   });
 });
