@@ -2,7 +2,13 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import Footer from '@/components/layout/Footer';
 
+interface FooterResponse {
+  data?: { footerText?: string | null } | null;
+}
+
 const mockFetch = vi.fn();
+const DEFAULT_TEXT = '© 2026 RetailPro. Built for modern inventory management.';
+const CUSTOM_TEXT = '© 2026 RetailPro. Custom footer text.';
 
 beforeEach(() => {
   vi.stubGlobal('fetch', mockFetch);
@@ -15,158 +21,52 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
+const mockSuccess = (body: FooterResponse) => {
+  mockFetch.mockResolvedValueOnce({
+    ok: true,
+    json: async () => body,
+  });
+};
+
 describe('Footer', () => {
-  describe('when API returns footer text', () => {
-    it('renders footer text from API', async () => {
-      mockFetch.mockResolvedValueOnce({
-        json: async () => ({ data: { footerText: '© 2026 RetailPro. Custom footer text.' } }),
-      });
+  it('displays custom text from API', async () => {
+    mockSuccess({ data: { footerText: CUSTOM_TEXT } });
+    render(<Footer />);
 
-      render(<Footer />);
-
-      await waitFor(() => {
-        expect(screen.getByText('© 2026 RetailPro. Custom footer text.')).toBeInTheDocument();
-      });
-    });
-
-    it('renders footer element', async () => {
-      mockFetch.mockResolvedValueOnce({
-        json: async () => ({ data: { footerText: 'My Footer' } }),
-      });
-
-      render(<Footer />);
-
-      await waitFor(() => {
-        expect(screen.getByRole('contentinfo')).toBeInTheDocument();
-      });
-    });
-
-    it('calls fetch with correct URL', async () => {
-      mockFetch.mockResolvedValueOnce({
-        json: async () => ({ data: { footerText: 'Some text' } }),
-      });
-
-      render(<Footer />);
-
-      await waitFor(() => {
-        expect(mockFetch).toHaveBeenCalledWith('http://localhost:1337/ui-config');
-      });
-    });
-
-    it('calls fetch exactly once', async () => {
-      mockFetch.mockResolvedValueOnce({
-        json: async () => ({ data: { footerText: 'Some text' } }),
-      });
-
-      render(<Footer />);
-
-      await waitFor(() => {
-        expect(mockFetch).toHaveBeenCalledTimes(1);
-      });
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith('http://localhost:1337/ui-config');
+      expect(screen.getByText(CUSTOM_TEXT)).toBeInTheDocument();
     });
   });
 
-  describe('when API returns no footerText', () => {
-    it('renders default text when footerText is null', async () => {
-      mockFetch.mockResolvedValueOnce({
-        json: async () => ({ data: { footerText: null } }),
-      });
+  it.each([
+    ['null text', { data: { footerText: null } }],
+    ['null data', { data: null }],
+    ['empty object', {}],
+  ])('shows default text on %s', async (_, body) => {
+    mockSuccess(body);
+    render(<Footer />);
 
-      render(<Footer />);
-
-      await waitFor(() => {
-        expect(
-          screen.getByText('© 2026 RetailPro. Built for modern inventory management.')
-        ).toBeInTheDocument();
-      });
-    });
-
-    it('renders default text when data is null', async () => {
-      mockFetch.mockResolvedValueOnce({
-        json: async () => ({ data: null }),
-      });
-
-      render(<Footer />);
-
-      await waitFor(() => {
-        expect(
-          screen.getByText('© 2026 RetailPro. Built for modern inventory management.')
-        ).toBeInTheDocument();
-      });
-    });
-
-    it('renders default text when data is undefined', async () => {
-      mockFetch.mockResolvedValueOnce({
-        json: async () => ({}),
-      });
-
-      render(<Footer />);
-
-      await waitFor(() => {
-        expect(
-          screen.getByText('© 2026 RetailPro. Built for modern inventory management.')
-        ).toBeInTheDocument();
-      });
-    });
+    expect(await screen.findByText(DEFAULT_TEXT)).toBeInTheDocument();
   });
 
-  describe('when API call fails', () => {
-    it('does not render any footer text on fetch error', async () => {
-      mockFetch.mockRejectedValueOnce(new Error('Network error'));
+  it('handles fetch errors gracefully', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const err = new Error('Fail');
+    mockFetch.mockRejectedValueOnce(err);
 
-      render(<Footer />);
+    render(<Footer />);
 
-      await waitFor(() => {
-        expect(screen.getByRole('contentinfo')).toBeInTheDocument();
-      });
-
-      expect(
-        screen.queryByText('© 2026 RetailPro. Built for modern inventory management.')
-      ).not.toBeInTheDocument();
-    });
-
-    it('logs error to console on fetch failure', async () => {
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      const error = new Error('Network error');
-      mockFetch.mockRejectedValueOnce(error);
-
-      render(<Footer />);
-
-      await waitFor(() => {
-        expect(consoleSpy).toHaveBeenCalledWith(error);
-      });
-
-      consoleSpy.mockRestore();
-    });
-
-    it('renders footer element even on error', async () => {
-      mockFetch.mockRejectedValueOnce(new Error('Network error'));
-
-      render(<Footer />);
-
-      await waitFor(() => {
-        expect(screen.getByRole('contentinfo')).toBeInTheDocument();
-      });
-    });
+    await waitFor(() => expect(consoleSpy).toHaveBeenCalledWith(err));
+    expect(screen.getByRole('contentinfo')).toBeInTheDocument();
+    expect(screen.queryByText(DEFAULT_TEXT)).not.toBeInTheDocument();
+    
+    consoleSpy.mockRestore();
   });
 
-  describe('initial render', () => {
-    it('renders footer with empty text before fetch completes', () => {
-      mockFetch.mockImplementationOnce(() => new Promise(() => {}));
-
-      render(<Footer />);
-
-      const footer = screen.getByRole('contentinfo');
-      expect(footer).toBeInTheDocument();
-      expect(footer.textContent?.trim()).toBe('');
-    });
-
-    it('renders footer element immediately on mount', () => {
-      mockFetch.mockImplementationOnce(() => new Promise(() => {}));
-
-      render(<Footer />);
-
-      expect(screen.getByRole('contentinfo')).toBeInTheDocument();
-    });
+  it('is empty while loading', () => {
+    mockFetch.mockReturnValue(new Promise(() => {}));
+    render(<Footer />);
+    expect(screen.getByRole('contentinfo').textContent).toBe('');
   });
 });

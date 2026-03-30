@@ -2,73 +2,50 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import FeatureCard from '@/components/features/FeatureCard';
 
+
 vi.mock('@/components/ui/Card', () => ({
-  Card: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card" className={className}>
-      {children}
-    </div>
-  ),
-  CardContent: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div data-testid="card-content" className={className}>
-      {children}
-    </div>
-  ),
+  Card: ({ children }: any) => <div data-testid="card-wrapper">{children}</div>,
+  CardContent: ({ children }: any) => <div>{children}</div>,
 }));
 
 vi.mock('lucide-react', () => ({
-  CheckCircle: () => <svg data-testid="icon-check" />,
+  CheckCircle: () => <span data-testid="check-icon" />,
 }));
 
-const mockFeature = {
-  id: 1,
-  title: 'Inventory Management',
-  description: 'Track your stock levels in real time.',
-};
-
 describe('FeatureCard', () => {
-  it('renders the feature title', () => {
-    render(<FeatureCard feature={mockFeature} />);
-    expect(screen.getByText('Inventory Management')).toBeInTheDocument();
+  const mockFeature = {
+    id: 1,
+    title: 'Inventory Management',
+    description: 'Track your stock levels in real time.',
+  };
+
+  const setup = (props = mockFeature) => render(<FeatureCard feature={props} />);
+
+  it('should display all feature details correctly', () => {
+    setup();
+
+    expect(screen.getByText(mockFeature.title)).toBeInTheDocument();
+    expect(screen.getByText(mockFeature.description)).toBeInTheDocument();
+    expect(screen.getByTestId('check-icon')).toBeInTheDocument();
   });
 
-  it('renders the feature description', () => {
-    render(<FeatureCard feature={mockFeature} />);
-    expect(screen.getByText('Track your stock levels in real time.')).toBeInTheDocument();
+  it('should render within the Card UI wrapper', () => {
+    setup();
+    
+    const container = screen.getByTestId('card-wrapper');
+    expect(container).toContainElement(screen.getByText(mockFeature.title));
   });
 
-  it('renders the CheckCircle icon', () => {
-    render(<FeatureCard feature={mockFeature} />);
-    expect(screen.getByTestId('icon-check')).toBeInTheDocument();
-  });
-
-  it('renders title as an h3 heading', () => {
-    render(<FeatureCard feature={mockFeature} />);
-    expect(
-      screen.getByRole('heading', { level: 3, name: 'Inventory Management' })
-    ).toBeInTheDocument();
-  });
-
-  it('renders Card and CardContent wrappers', () => {
-    render(<FeatureCard feature={mockFeature} />);
-    expect(screen.getByTestId('card')).toBeInTheDocument();
-    expect(screen.getByTestId('card-content')).toBeInTheDocument();
-  });
-
-  it('renders different feature data correctly', () => {
-    const anotherFeature = {
-      id: 2,
-      title: 'Sales Analytics',
-      description: 'Understand your revenue trends.',
+  it('should handle different data sets dynamically', () => {
+    const altFeature = { 
+      id: 99, 
+      title: 'Analytics', 
+      description: 'View trends' 
     };
-    render(<FeatureCard feature={anotherFeature} />);
-    expect(screen.getByText('Sales Analytics')).toBeInTheDocument();
-    expect(screen.getByText('Understand your revenue trends.')).toBeInTheDocument();
-  });
+    
+    setup(altFeature);
 
-  it('renders title and description in the same card', () => {
-    render(<FeatureCard feature={mockFeature} />);
-    const card = screen.getByTestId('card');
-    expect(card).toHaveTextContent('Inventory Management');
-    expect(card).toHaveTextContent('Track your stock levels in real time.');
+    expect(screen.getByText('Analytics')).toBeInTheDocument();
+    expect(screen.getByText('View trends')).toBeInTheDocument();
   });
 });

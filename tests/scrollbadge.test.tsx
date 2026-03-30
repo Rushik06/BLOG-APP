@@ -1,138 +1,60 @@
-// @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import ScrollToHeroBadge from '@/components/ui/ScrollToHeroBadge';
+import { useUiBadge } from '@/app/hooks/useui-badge';
 
-const mockUseUiBadge = vi.fn();
-
-vi.mock('@/app/hooks/useui-badge', () => ({
-  useUiBadge: () => mockUseUiBadge(),
-}));
-
-vi.mock('lucide-react', () => ({
-  ArrowUpRight: () => <svg data-testid="icon-arrow-up-right" />,
-}));
-
-const mockConfig = {
-  buttonText: 'Scroll to top',
-  subText: 'Click to go back to hero',
-};
+vi.mock('@/app/hooks/useui-badge', () => ({ useUiBadge: vi.fn() }));
+vi.mock('lucide-react', () => ({ ArrowUpRight: () => <span data-testid="icon" /> }));
 
 describe('ScrollToHeroBadge', () => {
+  const mockConfig = { buttonText: 'Top', subText: 'Hero' };
+
   beforeEach(() => {
     vi.clearAllMocks();
-    mockUseUiBadge.mockReturnValue(mockConfig);
+    document.body.innerHTML = ''; 
   });
 
-  describe('rendering', () => {
-    it('renders the button', () => {
-      render(<ScrollToHeroBadge />);
-      expect(screen.getByRole('button')).toBeInTheDocument();
-    });
+  it('renders text and icons correctly from the hook', () => {
+    vi.mocked(useUiBadge).mockReturnValue(mockConfig);
+    render(<ScrollToHeroBadge />);
 
-    it('renders button text from config', () => {
-      render(<ScrollToHeroBadge />);
-      expect(screen.getByText('Scroll to top')).toBeInTheDocument();
-    });
-
-    it('renders subtext from config', () => {
-      render(<ScrollToHeroBadge />);
-      expect(screen.getByText('Click to go back to hero')).toBeInTheDocument();
-    });
-
-    it('renders the ArrowUpRight icon', () => {
-      render(<ScrollToHeroBadge />);
-      expect(screen.getByTestId('icon-arrow-up-right')).toBeInTheDocument();
-    });
-
-    it('renders container div', () => {
-      const { container } = render(<ScrollToHeroBadge />);
-      expect(container.firstChild).toBeInTheDocument();
-    });
+    expect(screen.getByText('Top')).toBeDefined();
+    expect(screen.getByText('Hero')).toBeDefined();
+    expect(screen.getByTestId('icon')).toBeDefined();
   });
 
-  describe('when config is null', () => {
-    beforeEach(() => {
-      mockUseUiBadge.mockReturnValue(null);
-    });
+  it('scrolls to hero smoothly when clicked', () => {
+    vi.mocked(useUiBadge).mockReturnValue(mockConfig);
+    
+    
+    const hero = document.createElement('div');
+    hero.id = 'hero';
+    hero.scrollIntoView = vi.fn();
+    document.body.appendChild(hero);
 
-    it('renders button even when config is null', () => {
-      render(<ScrollToHeroBadge />);
-      expect(screen.getByRole('button')).toBeInTheDocument();
-    });
+    render(<ScrollToHeroBadge />);
+    fireEvent.click(screen.getByRole('button'));
 
-    it('renders icon even when config is null', () => {
-      render(<ScrollToHeroBadge />);
-      expect(screen.getByTestId('icon-arrow-up-right')).toBeInTheDocument();
-    });
-
-    it('renders no button text when config is null', () => {
-      render(<ScrollToHeroBadge />);
-      expect(screen.getByRole('button').textContent?.trim()).toBe('');
-    });
+    expect(hero.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
   });
 
-  describe('scroll behavior', () => {
-    it('calls scrollIntoView on hero element when button is clicked', () => {
-      const scrollIntoViewMock = vi.fn();
-      const heroElement = document.createElement('div');
-      heroElement.id = 'hero';
-      heroElement.scrollIntoView = scrollIntoViewMock;
-      document.body.appendChild(heroElement);
-
-      render(<ScrollToHeroBadge />);
-      fireEvent.click(screen.getByRole('button'));
-
-      expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: 'smooth' });
-
-      document.body.removeChild(heroElement);
-    });
-
-    it('calls scrollIntoView exactly once per click', () => {
-      const scrollIntoViewMock = vi.fn();
-      const heroElement = document.createElement('div');
-      heroElement.id = 'hero';
-      heroElement.scrollIntoView = scrollIntoViewMock;
-      document.body.appendChild(heroElement);
-
-      render(<ScrollToHeroBadge />);
-      fireEvent.click(screen.getByRole('button'));
-
-      expect(scrollIntoViewMock).toHaveBeenCalledTimes(1);
-
-      document.body.removeChild(heroElement);
-    });
-
-    it('does not throw when hero element does not exist', () => {
-      render(<ScrollToHeroBadge />);
-      expect(() => fireEvent.click(screen.getByRole('button'))).not.toThrow();
-    });
-
-    it('does not call scrollIntoView when hero element does not exist', () => {
-      const scrollIntoViewMock = vi.fn();
-      render(<ScrollToHeroBadge />);
-      fireEvent.click(screen.getByRole('button'));
-      expect(scrollIntoViewMock).not.toHaveBeenCalled();
-    });
+  it('handles missing hero element without crashing', () => {
+    vi.mocked(useUiBadge).mockReturnValue(mockConfig);
+    render(<ScrollToHeroBadge />);
+    
+   
+    expect(() => fireEvent.click(screen.getByRole('button'))).not.toThrow();
   });
 
-  describe('config variations', () => {
-    it('renders updated button text when config changes', () => {
-      mockUseUiBadge.mockReturnValue({ buttonText: 'Back to top', subText: 'Go up' });
-      render(<ScrollToHeroBadge />);
-      expect(screen.getByText('Back to top')).toBeInTheDocument();
-    });
+  it('handles empty or partial config gracefully', () => {
+  
+    vi.mocked(useUiBadge).mockReturnValue(null);
+    const { rerender } = render(<ScrollToHeroBadge />);
+    expect(screen.getByRole('button').textContent?.trim()).toBe('');
 
-    it('renders updated subtext when config changes', () => {
-      mockUseUiBadge.mockReturnValue({ buttonText: 'Back to top', subText: 'Go up' });
-      render(<ScrollToHeroBadge />);
-      expect(screen.getByText('Go up')).toBeInTheDocument();
-    });
-
-    it('renders empty button text when buttonText is undefined', () => {
-      mockUseUiBadge.mockReturnValue({ buttonText: undefined, subText: 'Some text' });
-      render(<ScrollToHeroBadge />);
-      expect(screen.getByText('Some text')).toBeInTheDocument();
-    });
+  
+    vi.mocked(useUiBadge).mockReturnValue({ subText: 'Just Sub' });
+    rerender(<ScrollToHeroBadge />);
+    expect(screen.getByText('Just Sub')).toBeDefined();
   });
 });

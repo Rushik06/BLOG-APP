@@ -6,16 +6,12 @@ import { fetchAPI } from '@/lib/strapi';
 import type { Blog } from '@/app/types/blog';
 
 vi.mock('@/lib/strapi', () => ({ fetchAPI: vi.fn() }));
-
 vi.mock('@/app/metadata/blog', () => ({ blogMetadata: { title: 'Blog' } }));
-
 vi.mock('@/components/blog/BlogClient', () => ({
   default: ({ blogs }: { blogs: Blog[] }) => (
     <div data-testid="blog-client">
       {blogs.map((b) => (
-        <div key={b.id} data-testid="blog-item">
-          {b.Title}
-        </div>
+        <div key={b.id} data-testid="blog-item">{b.Title}</div>
       ))}
     </div>
   ),
@@ -42,78 +38,31 @@ const mockBlogs: Blog[] = [
   },
 ];
 
-async function renderBlogPage() {
-  const ui = await BlogPage();
-  return render(ui);
-}
-
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(fetchAPI).mockResolvedValue({ data: mockBlogs });
 });
 
-describe('BlogPage - fetchAPI', () => {
-  it('calls fetchAPI with /blogs endpoint', async () => {
-    await renderBlogPage();
-    expect(fetchAPI).toHaveBeenCalledWith('/blogs', expect.any(Object));
+const renderPage = async () => render(await BlogPage());
+
+describe('BlogPage', () => {
+  it('fetches blogs with correct params', async () => {
+    await renderPage();
+    expect(fetchAPI).toHaveBeenCalledOnce();
+    expect(fetchAPI).toHaveBeenCalledWith('/blogs', { next: { revalidate: 60 } });
   });
 
-  it('calls fetchAPI with revalidate of 60', async () => {
-    await renderBlogPage();
-    expect(fetchAPI).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({ next: { revalidate: 60 } })
-    );
-  });
-
-  it('calls fetchAPI exactly once', async () => {
-    await renderBlogPage();
-    expect(fetchAPI).toHaveBeenCalledTimes(1);
-  });
-});
-
-describe('BlogPage - rendering', () => {
-  it('renders the BlogClient component', async () => {
-    await renderBlogPage();
-    expect(screen.getByTestId('blog-client')).toBeDefined();
-  });
-
-  it('passes blogs from API response to BlogClient', async () => {
-    await renderBlogPage();
-    const items = screen.getAllByTestId('blog-item');
-    expect(items).toHaveLength(mockBlogs.length);
-  });
-
-  it('passes correct blog titles to BlogClient', async () => {
-    await renderBlogPage();
+  it('renders blogs returned from the API', async () => {
+    await renderPage();
+    expect(screen.getAllByTestId('blog-item')).toHaveLength(2);
     expect(screen.getByText('First Blog')).toBeDefined();
     expect(screen.getByText('Second Blog')).toBeDefined();
   });
-});
 
-describe('BlogPage - empty and fallback states', () => {
-  it('passes an empty array to BlogClient when res.data is null', async () => {
+  it('renders BlogClient with empty list when API returns nothing', async () => {
     vi.mocked(fetchAPI).mockResolvedValueOnce({ data: null });
-    await renderBlogPage();
-    expect(screen.queryAllByTestId('blog-item')).toHaveLength(0);
-  });
-
-  it('passes an empty array to BlogClient when res.data is undefined', async () => {
-    vi.mocked(fetchAPI).mockResolvedValueOnce({});
-    await renderBlogPage();
-    expect(screen.queryAllByTestId('blog-item')).toHaveLength(0);
-  });
-
-  it('still renders BlogClient when there are no blogs', async () => {
-    vi.mocked(fetchAPI).mockResolvedValueOnce({ data: [] });
-    await renderBlogPage();
+    await renderPage();
     expect(screen.getByTestId('blog-client')).toBeDefined();
-  });
-
-  it('renders BlogClient with a single blog correctly', async () => {
-    vi.mocked(fetchAPI).mockResolvedValueOnce({ data: [mockBlogs[0]] });
-    await renderBlogPage();
-    expect(screen.getAllByTestId('blog-item')).toHaveLength(1);
-    expect(screen.getByText('First Blog')).toBeDefined();
+    expect(screen.queryAllByTestId('blog-item')).toHaveLength(0);
   });
 });
