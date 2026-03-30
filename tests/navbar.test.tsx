@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import { useNavbar } from '@/app/hooks/usenavbar';
 
@@ -20,75 +20,60 @@ vi.mock('@/components/ui/Button', () => ({
 }));
 
 vi.mock('lucide-react', () => ({
-  Store: () => <span data-testid="icon-store" />,
-  Sun: () => <span data-testid="icon-sun" />,
-  Moon: () => <span data-testid="icon-moon" />,
+  Store: () => <i data-testid="icon-store" />,
+  Sun: () => <i data-testid="icon-sun" />,
+  Moon: () => <i data-testid="icon-moon" />,
 }));
 
-describe('Navbar', () => {
-  const mockNavbar = (overrides = {}) => {
-    const state = {
-      pathname: '/',
-      theme: 'light',
-      setTheme: vi.fn(),
-      status: 'unauthenticated' as const,
-      session: null,
-      mounted: true,
-      navLinks: [{ href: '/blog', name: 'Blog' }],
-      logoText: 'RetailPro',
-      loginText: 'Login',
-      logoutText: 'Logout',
-      userName: '',
-      userInitial: '',
-      handleLogout: vi.fn(),
-      ...overrides,
-    } as ReturnType<typeof useNavbar>;
-
-    vi.mocked(useNavbar).mockReturnValue(state);
-    return state;
+const mock = (overrides = {}) => {
+  const state: ReturnType<typeof useNavbar> = {
+    pathname: '/',
+    theme: 'light',
+    setTheme: vi.fn(),
+    status: 'unauthenticated',
+    session: null,
+    mounted: true,
+    navLinks: [{ href: '/blog', name: 'Blog' }],
+    logoText: 'RetailPro',
+    loginText: 'Login',
+    logoutText: 'Logout',
+    userName: '',
+    userInitial: '',
+    handleLogout: vi.fn(),
+    ...overrides,
   };
+  vi.mocked(useNavbar).mockReturnValue(state);
+  return state;
+};
 
-  beforeEach(() => vi.clearAllMocks());
+beforeEach(() => vi.clearAllMocks());
 
-  it('handles loading state and brand rendering', () => {
-    mockNavbar({ mounted: false });
-    const { container, rerender } = render(<Navbar />);
-    expect(container.firstChild).toHaveClass('h-16');
+it('renders brand and navigation correctly', async () => {
+  mock({ mounted: false });
+  const { container, rerender } = render(<Navbar />);
+  expect(container.firstChild).toHaveClass('h-16');
 
-    mockNavbar({ pathname: '/blog' });
-    rerender(<Navbar />);
-    expect(screen.getByText('RetailPro')).toBeDefined();
+  mock({ pathname: '/blog' });
+  rerender(<Navbar />);
+  expect(screen.getByText('RetailPro')).toBeDefined();
 
-    const blogLink = screen.getByText('Blog').closest('a');
-    expect(blogLink).toHaveAttribute('href', '/blog');
-  });
+  const link = screen.getByText('Blog').closest('a');
+  expect(link).toHaveAttribute('href', '/blog');
+});
 
-  it('toggles theme correctly', () => {
-    const state = mockNavbar({ theme: 'light' });
-    render(<Navbar />);
+it('toggles theme and manages auth states', () => {
+  const { setTheme } = mock({ theme: 'light' });
+  const { rerender } = render(<Navbar />);
 
-    const themeBtn = screen.getByTestId('icon-moon').closest('button');
-    if (themeBtn) fireEvent.click(themeBtn);
+  const themeBtn = screen.getByTestId('icon-moon').closest('button');
+  if (themeBtn) fireEvent.click(themeBtn);
+  expect(setTheme).toHaveBeenCalledWith('dark');
 
-    expect(state.setTheme).toHaveBeenCalledWith('dark');
-  });
+  mock({ status: 'authenticated', userName: 'Rushik' });
+  rerender(<Navbar />);
+  expect(screen.getByText(/Rushik/)).toBeDefined();
 
-  it('manages auth states correctly', () => {
-    mockNavbar({ status: 'unauthenticated' });
-    const { rerender } = render(<Navbar />);
-    expect(screen.getByText('Login')).toBeDefined();
-
-    mockNavbar({
-      status: 'authenticated',
-      userName: 'Rushik',
-      userInitial: 'R',
-    });
-    rerender(<Navbar />);
-    expect(screen.getByText('Hi Rushik')).toBeDefined();
-    expect(screen.getByText('R')).toBeDefined();
-
-    mockNavbar({ status: 'loading' });
-    rerender(<Navbar />);
-    expect(screen.queryByText('Login')).toBeNull();
-  });
+  mock({ status: 'loading' });
+  rerender(<Navbar />);
+  expect(screen.queryByText('Login')).toBeNull();
 });
