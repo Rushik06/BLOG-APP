@@ -51,8 +51,6 @@ describe('GET /api/stats', () => {
     setupFetch(5);
 
     await GET();
-    expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringMatching(new RegExp(`^${custom}`))
-    );
+    expect(mockFetch).toHaveBeenCalledWith(expect.stringMatching(new RegExp(`^${custom}`)));
   });
 });

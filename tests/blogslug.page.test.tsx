@@ -14,18 +14,27 @@ vi.mock('@/app/metadata/blogslug', () => ({
 }));
 
 vi.mock('next/link', () => ({
-  default: ({ href, children }: { href: string; children: React.ReactNode }) => <a href={href}>{children}</a>
+  default: ({ href, children }: { href: string; children: React.ReactNode }) => (
+    <a href={href}>{children}</a>
+  ),
 }));
-vi.mock('@/components/ui/ReadingProgress', () => ({ default: () => <div data-testid="progress" /> }));
-vi.mock('@/components/blog/RenderContent', () => ({ 
-  default: ({ content }: { content: unknown }) => <div data-testid="content">{JSON.stringify(content)}</div> 
+vi.mock('@/components/ui/ReadingProgress', () => ({
+  default: () => <div data-testid="progress" />,
+}));
+vi.mock('@/components/blog/RenderContent', () => ({
+  default: ({ content }: { content: unknown }) => (
+    <div data-testid="content">{JSON.stringify(content)}</div>
+  ),
 }));
 vi.mock('@/components/ui/Card', () => ({
   Card: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   CardContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
-vi.mock('lucide-react', () => ({ 
-  ArrowLeft: () => <div />, Calendar: () => <div />, User: () => <div />, Sparkles: () => <div /> 
+vi.mock('lucide-react', () => ({
+  ArrowLeft: () => <div />,
+  Calendar: () => <div />,
+  User: () => <div />,
+  Sparkles: () => <div />,
 }));
 
 const mockBlog: Blog = {
@@ -37,7 +46,6 @@ const mockBlog: Blog = {
   category: 'General',
   content: [{ type: 'paragraph', children: [{ text: 'Hello' }] }],
 };
-
 
 const getProps = (slug: string): BlogDetailProps => ({
   params: Promise.resolve({ slug }),
@@ -74,20 +82,19 @@ describe('Blog Detail Page', () => {
   });
 
   it('falls back to "Recently" when date is missing', async () => {
-    vi.mocked(fetchAPI).mockResolvedValueOnce({ 
-      data: [{ ...mockBlog, createdAt: '' }] 
+    vi.mocked(fetchAPI).mockResolvedValueOnce({
+      data: [{ ...mockBlog, createdAt: '' }],
     });
-    
+
     const Page = await BlogDetail(getProps('retail-guide'));
     render(<>{Page}</>);
-    
+
     expect(screen.getByText('Recently')).toBeDefined();
   });
 });
 
 describe('SEO Metadata', () => {
   it('generates correct metadata for valid and invalid slugs', async () => {
-    
     const meta = await generateMetadata(getProps('retail-guide'));
     expect(meta).toEqual({ title: 'Retail Guide' });
 

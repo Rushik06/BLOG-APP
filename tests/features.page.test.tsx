@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import FeatureCard from '@/components/features/FeatureCard';
 
-
 interface MockProps {
   children: React.ReactNode;
 }
@@ -36,16 +35,16 @@ describe('FeatureCard', () => {
 
   it('wraps content in the Card component', () => {
     setup();
-    
+
     const card = screen.getByTestId('card-wrapper');
     expect(card).toContainElement(screen.getByText(mockFeature.title));
   });
 
   it('supports different feature data', () => {
-    setup({ 
-      id: 2, 
-      title: 'Analytics', 
-      description: 'Real-time insights' 
+    setup({
+      id: 2,
+      title: 'Analytics',
+      description: 'Real-time insights',
     });
 
     expect(screen.getByText('Analytics')).toBeInTheDocument();

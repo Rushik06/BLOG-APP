@@ -41,7 +41,10 @@ describe('authOptions', () => {
     });
 
     if ('authorize' in authProvider) {
-      const result = await authProvider.authorize({ identifier: 'rushik@gmail.com', password: 'password' }, {});
+      const result = await authProvider.authorize(
+        { identifier: 'rushik@gmail.com', password: 'password' },
+        {}
+      );
       expect(result).toMatchObject({ id: '1', name: 'rushik', jwt: 'mock-jwt' });
     }
   });
@@ -53,19 +56,28 @@ describe('authOptions', () => {
 
       if (jwtCb && sessionCb) {
         const user = { id: '1', name: 'rushik', email: 'rushik@gmail.com', jwt: 'secret' };
-        const token = await jwtCb({ token: {}, user, account: null, profile: undefined, trigger: 'signIn' });
+        const token = await jwtCb({
+          token: {},
+          user,
+          account: null,
+          profile: undefined,
+          trigger: 'signIn',
+        });
         expect(token.jwt).toBe('secret');
 
-        const mockSession = { user: { name: 'rushik', email: 'rushik@gmail.com' }, expires: '2026' };
-        
+        const mockSession = {
+          user: { name: 'rushik', email: 'rushik@gmail.com' },
+          expires: '2026',
+        };
+
         const mockAdapterUser = { id: '1', email: 'rushik@gmail.com', emailVerified: null };
 
-        const sessionResult = await sessionCb({ 
-          session: mockSession, 
-          token, 
-          user: mockAdapterUser, 
-          newSession: undefined, 
-          trigger: 'update' 
+        const sessionResult = await sessionCb({
+          session: mockSession,
+          token,
+          user: mockAdapterUser,
+          newSession: undefined,
+          trigger: 'update',
         });
 
         expect(sessionResult.user).toHaveProperty('jwt', 'secret');

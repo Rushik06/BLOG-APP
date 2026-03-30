@@ -18,7 +18,7 @@ describe('RenderContent', () => {
   it('renders standard paragraph blocks and nested text', () => {
     const content = [
       { type: 'paragraph', children: [{ text: 'Hello' }] },
-      { type: 'paragraph', children: [{ children: [{ text: 'Nested ' }, { text: 'Text' }] }] }
+      { type: 'paragraph', children: [{ children: [{ text: 'Nested ' }, { text: 'Text' }] }] },
     ];
 
     render(<RenderContent content={content} />);
@@ -29,7 +29,7 @@ describe('RenderContent', () => {
 
   it('transforms numbered text (1. Task) into list items with icons', () => {
     const content = [{ type: 'paragraph', children: [{ text: '1. Clean the room' }] }];
-    
+
     render(<RenderContent content={content} />);
 
     expect(screen.getByTestId('icon-check')).toBeDefined();
@@ -40,7 +40,7 @@ describe('RenderContent', () => {
   it('ignores blocks that have no text content', () => {
     const content = [
       { type: 'paragraph', children: [{ text: '' }] },
-      { type: 'paragraph', children: [{ text: 'Valid Content' }] }
+      { type: 'paragraph', children: [{ text: 'Valid Content' }] },
     ];
 
     render(<RenderContent content={content} />);
@@ -54,7 +54,7 @@ describe('RenderContent', () => {
     const content = [
       { type: 'paragraph', children: [{ text: 'Intro' }] },
       { type: 'paragraph', children: [{ text: '1. Step One' }] },
-      { type: 'paragraph', children: [{ text: 'Outro' }] }
+      { type: 'paragraph', children: [{ text: 'Outro' }] },
     ];
 
     render(<RenderContent content={content} />);

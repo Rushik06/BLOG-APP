@@ -1,15 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import  { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import PricingPage from '@/app/pricing/page';
 import { fetchAPI } from '@/lib/strapi';
 
 vi.mock('@/lib/strapi', () => ({ fetchAPI: vi.fn() }));
 vi.mock('@/app/metadata/pricing', () => ({ pricingMetadata: { title: 'Pricing' } }));
 
-
 vi.mock('@/components/pricing/PricingCard', () => ({
-  default: ({ plan }: { plan: { planName: string } }) => <div>{plan.planName}</div>
+  default: ({ plan }: { plan: { planName: string } }) => <div>{plan.planName}</div>,
 }));
 
 vi.mock('@/components/ui/Card', () => ({
@@ -17,9 +16,11 @@ vi.mock('@/components/ui/Card', () => ({
   CardContent: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }));
 
-vi.mock('lucide-react', () => ({ 
-  BadgeCheck: () => <div />, Sparkles: () => <div />, 
-  Check: () => <div />, Phone: () => <div /> 
+vi.mock('lucide-react', () => ({
+  BadgeCheck: () => <div />,
+  Sparkles: () => <div />,
+  Check: () => <div />,
+  Phone: () => <div />,
 }));
 
 describe('PricingPage', () => {
@@ -33,7 +34,7 @@ describe('PricingPage', () => {
 
   it('renders plans and header content correctly', async () => {
     setupMocks(
-      [{ id: 1, planName: 'Pro', Price: '99', ctaTitle: 'Get Pro' }], 
+      [{ id: 1, planName: 'Pro', Price: '99', ctaTitle: 'Get Pro' }],
       [{ headerTitle: 'Our Plans' }]
     );
 

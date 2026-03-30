@@ -11,7 +11,7 @@ describe('ScrollToHeroBadge', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    document.body.innerHTML = ''; 
+    document.body.innerHTML = '';
   });
 
   it('renders text and icons correctly from the hook', () => {
@@ -25,8 +25,7 @@ describe('ScrollToHeroBadge', () => {
 
   it('scrolls to hero smoothly when clicked', () => {
     vi.mocked(useUiBadge).mockReturnValue(mockConfig);
-    
-    
+
     const hero = document.createElement('div');
     hero.id = 'hero';
     hero.scrollIntoView = vi.fn();
@@ -41,18 +40,15 @@ describe('ScrollToHeroBadge', () => {
   it('handles missing hero element without crashing', () => {
     vi.mocked(useUiBadge).mockReturnValue(mockConfig);
     render(<ScrollToHeroBadge />);
-    
-   
+
     expect(() => fireEvent.click(screen.getByRole('button'))).not.toThrow();
   });
 
   it('handles empty or partial config gracefully', () => {
-  
     vi.mocked(useUiBadge).mockReturnValue(null);
     const { rerender } = render(<ScrollToHeroBadge />);
     expect(screen.getByRole('button').textContent?.trim()).toBe('');
 
-  
     vi.mocked(useUiBadge).mockReturnValue({ subText: 'Just Sub' });
     rerender(<ScrollToHeroBadge />);
     expect(screen.getByText('Just Sub')).toBeDefined();

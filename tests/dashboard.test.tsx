@@ -23,7 +23,9 @@ vi.mock('@/components/ui/Card', () => ({
   CardContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 vi.mock('lucide-react', () => ({
-  Users: () => <div />, TrendingUp: () => <div />, Rocket: () => <div />,
+  Users: () => <div />,
+  TrendingUp: () => <div />,
+  Rocket: () => <div />,
   CheckCircle: () => <div data-testid="icon-check" />,
   BarChart3: () => <div data-testid="icon-chart" />,
   Lightbulb: () => <div data-testid="icon-light" />,
@@ -54,19 +56,17 @@ describe('Dashboard Page', () => {
   it('renders the full dashboard layout for authenticated users', async () => {
     render(await Dashboard());
 
-
     expect(screen.getByRole('heading', { name: /dashboard/i })).toBeDefined();
     expect(screen.getByText(/welcome back/i)).toBeDefined();
     expect(screen.getByTestId('chart')).toBeDefined();
-    
-  
+
     expect(screen.getByText('4200')).toBeDefined();
     expect(screen.getByText('Recent Activity')).toBeDefined();
   });
 
   it('correctly lists all activity items', async () => {
     render(await Dashboard());
-    
+
     const items = screen.getAllByRole('listitem');
     expect(items).toHaveLength(3);
     expect(screen.getByText('New user signed up')).toBeDefined();

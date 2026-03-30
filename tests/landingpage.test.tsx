@@ -5,13 +5,19 @@ import type { Testimonial } from '@/app/types/testimonals';
 import type { LandingPage } from '@/app/types/landing-page';
 import { getLandingData } from '@/app/hooks/uselanding-data';
 
-
-interface MockProps { children: React.ReactNode; className?: string }
-interface ButtonProps extends MockProps { variant?: string }
+interface MockProps {
+  children: React.ReactNode;
+  className?: string;
+}
+interface ButtonProps extends MockProps {
+  variant?: string;
+}
 
 vi.mock('@/app/hooks/uselanding-data', () => ({ getLandingData: vi.fn() }));
 vi.mock('@/app/metadata/home', () => ({ homeMetadata: {} }));
-vi.mock('@/components/ui/ScrollToHeroBadge', () => ({ default: () => <div data-testid="scroll" /> }));
+vi.mock('@/components/ui/ScrollToHeroBadge', () => ({
+  default: () => <div data-testid="scroll" />,
+}));
 
 vi.mock('@/lib/strapi-helpers', () => ({
   getText: vi.fn((val: unknown) => {
@@ -30,12 +36,16 @@ vi.mock('@/app/constants/landing-constants', () => ({
 }));
 
 vi.mock('next/link', () => ({
-  default: ({ href, children }: { href: string; children: React.ReactNode }) => <a href={href}>{children}</a>,
+  default: ({ href, children }: { href: string; children: React.ReactNode }) => (
+    <a href={href}>{children}</a>
+  ),
 }));
 
 vi.mock('@/components/ui/Button', () => ({
   Button: ({ children, variant, className }: ButtonProps) => (
-    <button data-testid="btn" data-variant={variant} className={className}>{children}</button>
+    <button data-testid="btn" data-variant={variant} className={className}>
+      {children}
+    </button>
   ),
 }));
 
@@ -43,7 +53,6 @@ vi.mock('@/components/ui/Card', () => ({
   Card: ({ children }: MockProps) => <div data-testid="card">{children}</div>,
   CardContent: ({ children, className }: MockProps) => <div className={className}>{children}</div>,
 }));
-
 
 const mockData: LandingPage = {
   HeroTitle: 'Manage Your Retail Business',
@@ -58,12 +67,21 @@ const mockData: LandingPage = {
   howItWorksStep: [{ icon: 'store', title: 'Connect', description: 'Link.' }],
 };
 
-const mockFeatures = [{ id: 1, icon: 'store', color: 'bg-blue-100', title: 'Inventory', description: 'Stock.' }];
+const mockFeatures = [
+  { id: 1, icon: 'store', color: 'bg-blue-100', title: 'Inventory', description: 'Stock.' },
+];
 
-const mockTestimonials: Testimonial[] = [{
-  id: 1, rating: 5, name: 'Alice', role: 'Owner',
-  content: [{ type: 'paragraph', children: [{ text: 'Love it!' }] }] as unknown as Testimonial['content']
-}];
+const mockTestimonials: Testimonial[] = [
+  {
+    id: 1,
+    rating: 5,
+    name: 'Alice',
+    role: 'Owner',
+    content: [
+      { type: 'paragraph', children: [{ text: 'Love it!' }] },
+    ] as unknown as Testimonial['content'],
+  },
+];
 
 const renderPage = async () => {
   const { default: Home } = await import('../app/page');
@@ -140,7 +158,7 @@ describe('Landing Page', () => {
     it('identifies outline variant for secondary button', async () => {
       await renderPage();
       const buttons = screen.getAllByTestId('btn');
-      const hasOutline = buttons.some(b => b.getAttribute('data-variant') === 'outline');
+      const hasOutline = buttons.some((b) => b.getAttribute('data-variant') === 'outline');
       expect(hasOutline).toBe(true);
     });
   });

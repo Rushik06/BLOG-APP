@@ -25,7 +25,7 @@ const basePlan = {
   contactNumber: null,
   highlightTitle: null,
   highlightPoints: null,
-  extraFeatures: [] as string[], 
+  extraFeatures: [] as string[],
 };
 
 describe('PricingCard', () => {
@@ -43,19 +43,19 @@ describe('PricingCard', () => {
   it('handles extra features dynamically', () => {
     const extras = ['Priority support', 'API Access'];
     const { rerender } = render(<PricingCard plan={basePlan} />);
-    
+
     expect(screen.queryByText(extras[0])).toBeNull();
 
     rerender(<PricingCard plan={{ ...basePlan, extraFeatures: extras }} />);
-    
-    extras.forEach(feature => {
+
+    extras.forEach((feature) => {
       expect(screen.getByText(feature)).toBeDefined();
     });
   });
 
   it('updates display for different pricing tiers', () => {
     render(<PricingCard plan={{ ...basePlan, planName: 'Pro', Price: 999 }} />);
-    
+
     expect(screen.getByText('Pro')).toBeDefined();
     expect(screen.getByText(/999/)).toBeDefined();
   });

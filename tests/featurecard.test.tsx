@@ -2,7 +2,6 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import FeatureCard from '@/components/features/FeatureCard';
 
-
 vi.mock('@/components/ui/Card', () => ({
   Card: ({ children }: any) => <div data-testid="card-wrapper">{children}</div>,
   CardContent: ({ children }: any) => <div>{children}</div>,
@@ -31,18 +30,18 @@ describe('FeatureCard', () => {
 
   it('should render within the Card UI wrapper', () => {
     setup();
-    
+
     const container = screen.getByTestId('card-wrapper');
     expect(container).toContainElement(screen.getByText(mockFeature.title));
   });
 
   it('should handle different data sets dynamically', () => {
-    const altFeature = { 
-      id: 99, 
-      title: 'Analytics', 
-      description: 'View trends' 
+    const altFeature = {
+      id: 99,
+      title: 'Analytics',
+      description: 'View trends',
     };
-    
+
     setup(altFeature);
 
     expect(screen.getByText('Analytics')).toBeInTheDocument();

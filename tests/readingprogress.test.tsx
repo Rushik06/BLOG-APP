@@ -13,8 +13,14 @@ describe('ReadingProgress', () => {
   };
 
   beforeEach(() => {
-    Object.defineProperty(document.documentElement, 'scrollHeight', { configurable: true, value: 1000 });
-    Object.defineProperty(document.documentElement, 'clientHeight', { configurable: true, value: 500 });
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      configurable: true,
+      value: 1000,
+    });
+    Object.defineProperty(document.documentElement, 'clientHeight', {
+      configurable: true,
+      value: 500,
+    });
     setScroll(0);
   });
 

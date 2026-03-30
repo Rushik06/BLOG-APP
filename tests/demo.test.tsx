@@ -21,11 +21,15 @@ const mockData = {
 
 describe('DemoModal', () => {
   it('handles all closing triggers', async () => {
-    const { container } = render(<DemoModal><div>Content</div></DemoModal>);
-    
+    const { container } = render(
+      <DemoModal>
+        <div>Content</div>
+      </DemoModal>
+    );
+
     await userEvent.click(screen.getByRole('button'));
     fireEvent.keyDown(window, { key: 'Escape' });
-    
+
     const backdrop = container.querySelector('.fixed');
     if (backdrop) await userEvent.click(backdrop);
 
@@ -36,7 +40,7 @@ describe('DemoModal', () => {
 describe('DemoPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    cleanup(); 
+    cleanup();
   });
 
   it('renders dashboard with stats and colors', async () => {
@@ -47,16 +51,16 @@ describe('DemoPage', () => {
     });
 
     render(await DemoPage());
-    
+
     expect(screen.getByText('Products')).toBeDefined();
     expect(screen.getByText('120').className).toContain('text-green-600');
   });
 
   it('renders nothing when API returns null', async () => {
     vi.mocked(fetchAPI).mockResolvedValue(null);
-    
+
     render(await DemoPage());
-    
+
     expect(screen.queryByText('Products')).toBeNull();
     expect(screen.queryByText('Widget A')).toBeNull();
   });
