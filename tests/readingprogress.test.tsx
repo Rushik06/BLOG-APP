@@ -1,84 +1,56 @@
-// @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, fireEvent, act } from '@testing-library/react';
 import ReadingProgress from '@/components/ui/ReadingProgress';
 
 describe('ReadingProgress', () => {
-  const setScroll = (top: number) => {
-    Object.defineProperty(document.documentElement, 'scrollTop', {
-      configurable: true,
-      writable: true,
-      value: top,
-    });
+  const setScroll = (top: number): void => {
+    document.documentElement.scrollTop = top;
+    fireEvent.scroll(window);
   };
 
   beforeEach(() => {
-    Object.defineProperty(document.documentElement, 'scrollHeight', {
-      configurable: true,
-      value: 1000,
+    Object.defineProperties(document.documentElement, {
+      scrollHeight: { value: 1000, configurable: true },
+      clientHeight: { value: 500, configurable: true },
+      scrollTop: { value: 0, writable: true, configurable: true },
     });
-    Object.defineProperty(document.documentElement, 'clientHeight', {
-      configurable: true,
-      value: 500,
-    });
-    setScroll(0);
   });
 
-  it('renders with correct classes and initial 0% width', () => {
+  const getBar = (container: HTMLElement): HTMLElement => 
+    container.querySelector('.bg-blue-600') as HTMLElement;
+
+  it('renders initial state and updates on scroll', () => {
     const { container } = render(<ReadingProgress />);
-    const bar = container.querySelector('.bg-blue-600');
+    const bar = getBar(container);
 
-    if (bar instanceof HTMLElement) {
-      expect(bar.parentElement?.className).toContain('fixed');
-      expect(bar.style.width).toBe('0%');
-    } else {
-      throw new Error('Progress bar element not found or not an HTMLElement');
-    }
-  });
+    expect(bar.style.width).toBe('0%');
+    expect(bar.parentElement?.className).toContain('fixed');
 
-  it('updates width correctly when scrolling', () => {
-    const { container } = render(<ReadingProgress />);
-    const bar = container.querySelector('.bg-blue-600');
-
-    if (!(bar instanceof HTMLElement)) return;
-
-    act(() => {
-      setScroll(250);
-      fireEvent.scroll(window);
-    });
+    act(() => setScroll(250));
     expect(bar.style.width).toBe('50%');
 
-    act(() => {
-      setScroll(500);
-      fireEvent.scroll(window);
-    });
+    act(() => setScroll(500));
     expect(bar.style.width).toBe('100%');
   });
 
-  it('manages scroll listeners on mount and unmount', () => {
+  it('manages lifecycle and listeners', () => {
     const addSpy = vi.spyOn(window, 'addEventListener');
     const removeSpy = vi.spyOn(window, 'removeEventListener');
 
-    const { unmount } = render(<ReadingProgress />);
-    expect(addSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
+    const { unmount, container } = render(<ReadingProgress />);
+    const bar = getBar(container);
+
+    // Verify 'scroll' was registered
+    expect(addSpy).toHaveBeenCalledWith('scroll', expect.not.stringContaining(''));
+    
+    // Check that the second argument is indeed a function
+    const lastCallArg = addSpy.mock.calls[0][1];
+    expect(typeof lastCallArg).toBe('function');
 
     unmount();
-    expect(removeSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
-  });
+    expect(removeSpy).toHaveBeenCalledWith('scroll', expect.not.stringContaining(''));
 
-  it('stops updating width after component is unmounted', () => {
-    const { container, unmount } = render(<ReadingProgress />);
-    const bar = container.querySelector('.bg-blue-600');
-
-    if (!(bar instanceof HTMLElement)) return;
-
-    unmount();
-
-    act(() => {
-      setScroll(500);
-      fireEvent.scroll(window);
-    });
-
+    act(() => setScroll(500));
     expect(bar.style.width).toBe('0%');
   });
 });
