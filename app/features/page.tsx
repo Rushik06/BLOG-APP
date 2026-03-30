@@ -12,8 +12,8 @@ export const metadata = featuresMetadata;
 
 export default async function Features() {
   const [featuresRes, configRes] = await Promise.all([
-    fetchAPI<{ data: Feature[] }>('/features'),
-    fetchAPI<FeaturesPageResponse>('/features-pages'),
+    fetchAPI<{ data: Feature[] }>('/features', { next: { revalidate: 60 } }),
+    fetchAPI<FeaturesPageResponse>('/features-pages', { next: { revalidate: 60 } }),
   ]);
 
   const features = featuresRes.data;

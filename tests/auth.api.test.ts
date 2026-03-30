@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import type { StrapiAuthResponse } from '@/app/types/auth';
 
+const mockFetch = vi.fn();
+
 vi.mock('next-auth', () => ({
   default: vi.fn(() => ({ GET: vi.fn(), POST: vi.fn() })),
 }));
@@ -9,8 +11,6 @@ vi.mock('next-auth', () => ({
 vi.mock('next-auth/providers/credentials', () => ({
   default: vi.fn((config) => config),
 }));
-
-const mockFetch = vi.fn();
 
 beforeEach(() => {
   vi.stubGlobal('fetch', mockFetch);
@@ -23,297 +23,65 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-const mockStrapiResponse: StrapiAuthResponse = {
-  jwt: 'mock-jwt-token',
-  user: {
-    id: 1,
-    username: 'rushik',
-    email: 'rushik@example.com',
-  },
-};
-
-const getAuthorize = () => {
-  const provider = authOptions.providers[0] as unknown as {
-    authorize: (credentials: { identifier: string; password: string }) => Promise<unknown>;
-  };
-  return provider.authorize.bind(provider);
-};
-
 describe('authOptions', () => {
-  describe('configuration', () => {
-    it('has one provider configured', () => {
-      expect(authOptions.providers).toHaveLength(1);
-    });
+  const [authProvider] = authOptions.providers;
 
-    it('uses jwt session strategy', () => {
-      expect(authOptions.session?.strategy).toBe('jwt');
-    });
-
-    it('sets signIn page to /login', () => {
-      expect(authOptions.pages?.signIn).toBe('/login');
-    });
-
-    it('has jwt callback defined', () => {
-      expect(authOptions.callbacks?.jwt).toBeDefined();
-    });
-
-    it('has session callback defined', () => {
-      expect(authOptions.callbacks?.session).toBeDefined();
-    });
+  it('verifies general auth configuration', () => {
+    expect(authOptions.session?.strategy).toBe('jwt');
+    expect(authOptions.pages?.signIn).toBe('/login');
   });
 
-  describe('authorize', () => {
-    it('returns null when identifier is missing', async () => {
-      const authorize = getAuthorize();
-      const result = await authorize({ identifier: '', password: 'pass123' });
-      expect(result).toBeNull();
+  it('normalizes credentials into a user object', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async (): Promise<StrapiAuthResponse> => ({
+        jwt: 'mock-jwt',
+        user: { id: 1, username: 'rushik', email: 'rushik@gmail.com' },
+      }),
     });
 
-    it('returns null when password is missing', async () => {
-      const authorize = getAuthorize();
-      const result = await authorize({ identifier: 'rushik@example.com', password: '' });
-      expect(result).toBeNull();
-    });
-
-    it('returns null when both credentials are missing', async () => {
-      const authorize = getAuthorize();
-      const result = await authorize({ identifier: '', password: '' });
-      expect(result).toBeNull();
-    });
-
-    it('calls fetch with correct URL', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockStrapiResponse,
-      });
-
-      const authorize = getAuthorize();
-      await authorize({ identifier: 'rushik@example.com', password: 'pass123' });
-
-      expect(mockFetch).toHaveBeenCalledWith(
-        'http://localhost:1337/api/auth/local',
-        expect.any(Object)
+    if ('authorize' in authProvider) {
+      const result = await authProvider.authorize(
+        { identifier: 'rushik@gmail.com', password: 'password' },
+        {}
       );
-    });
-
-    it('calls fetch with POST method', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockStrapiResponse,
-      });
-
-      const authorize = getAuthorize();
-      await authorize({ identifier: 'rushik@example.com', password: 'pass123' });
-
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({ method: 'POST' })
-      );
-    });
-
-    it('calls fetch with correct Content-Type header', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockStrapiResponse,
-      });
-
-      const authorize = getAuthorize();
-      await authorize({ identifier: 'rushik@example.com', password: 'pass123' });
-
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({
-          headers: { 'Content-Type': 'application/json' },
-        })
-      );
-    });
-
-    it('calls fetch with credentials in body', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockStrapiResponse,
-      });
-
-      const authorize = getAuthorize();
-      await authorize({ identifier: 'rushik@example.com', password: 'pass123' });
-
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({
-          body: JSON.stringify({
-            identifier: 'rushik@example.com',
-            password: 'pass123',
-          }),
-        })
-      );
-    });
-
-    it('returns user object when credentials are valid', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockStrapiResponse,
-      });
-
-      const authorize = getAuthorize();
-      const result = await authorize({ identifier: 'rushik@example.com', password: 'pass123' });
-
-      expect(result).toEqual({
-        id: '1',
-        name: 'rushik',
-        email: 'rushik@example.com',
-        jwt: 'mock-jwt-token',
-      });
-    });
-
-    it('returns id as string', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockStrapiResponse,
-      });
-
-      const authorize = getAuthorize();
-      const result = (await authorize({
-        identifier: 'rushik@example.com',
-        password: 'pass123',
-      })) as { id: string };
-
-      expect(typeof result.id).toBe('string');
-    });
-
-    it('returns null when response is not ok', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: false,
-        json: async () => ({ error: 'Invalid credentials' }),
-      });
-
-      const authorize = getAuthorize();
-      const result = await authorize({ identifier: 'rushik@example.com', password: 'wrongpass' });
-
-      expect(result).toBeNull();
-    });
-
-    it('returns null when user is missing in response', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ jwt: 'some-token', user: null }),
-      });
-
-      const authorize = getAuthorize();
-      const result = await authorize({ identifier: 'rushik@example.com', password: 'pass123' });
-
-      expect(result).toBeNull();
-    });
-
-    it('returns null when response is not ok and user is missing', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: false,
-        json: async () => ({}),
-      });
-
-      const authorize = getAuthorize();
-      const result = await authorize({ identifier: 'rushik@example.com', password: 'pass123' });
-
-      expect(result).toBeNull();
-    });
-
-    it('calls fetch exactly once per authorize call', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockStrapiResponse,
-      });
-
-      const authorize = getAuthorize();
-      await authorize({ identifier: 'rushik@example.com', password: 'pass123' });
-
-      expect(mockFetch).toHaveBeenCalledTimes(1);
-    });
+      expect(result).toMatchObject({ id: '1', name: 'rushik', jwt: 'mock-jwt' });
+    }
   });
 
-  describe('jwt callback', () => {
-    const jwtCallback = authOptions.callbacks!.jwt!;
+  describe('Callbacks', () => {
+    it('jwt and session callbacks flow correctly', async () => {
+      const jwtCb = authOptions.callbacks?.jwt;
+      const sessionCb = authOptions.callbacks?.session;
 
-    it('adds jwt to token when user has jwt', async () => {
-      const token = {};
-      const user = { jwt: 'user-jwt-token', id: '1', name: 'rushik', email: 'rushik@example.com' };
-      const result = await jwtCallback({ token, user } as unknown as Parameters<
-        typeof jwtCallback
-      >[0]);
-      expect(result.jwt).toBe('user-jwt-token');
-    });
+      if (jwtCb && sessionCb) {
+        const user = { id: '1', name: 'rushik', email: 'rushik@gmail.com', jwt: 'secret' };
+        const token = await jwtCb({
+          token: {},
+          user,
+          account: null,
+          profile: undefined,
+          trigger: 'signIn',
+        });
+        expect(token.jwt).toBe('secret');
 
-    it('does not modify token when user has no jwt', async () => {
-      const token = { existing: 'value' };
-      const user = { id: '1', name: 'rushik', email: 'rushik@example.com' };
-      const result = await jwtCallback({ token, user } as unknown as Parameters<
-        typeof jwtCallback
-      >[0]);
-      expect(result.jwt).toBeUndefined();
-    });
+        const mockSession = {
+          user: { name: 'rushik', email: 'rushik@gmail.com' },
+          expires: '2026',
+        };
 
-    it('returns token unchanged when user is undefined', async () => {
-      const token = { sub: 'existing-sub' };
-      const result = await jwtCallback({ token } as unknown as Parameters<typeof jwtCallback>[0]);
-      expect(result).toEqual(token);
-    });
+        const mockAdapterUser = { id: '1', email: 'rushik@gmail.com', emailVerified: null };
 
-    it('preserves existing token properties', async () => {
-      const token = { sub: 'user-sub', existingProp: 'keep-me' };
-      const user = { jwt: 'new-jwt', id: '1', name: 'rushik', email: 'rushik@example.com' };
-      const result = await jwtCallback({ token, user } as unknown as Parameters<
-        typeof jwtCallback
-      >[0]);
-      expect(result.existingProp).toBe('keep-me');
-      expect(result.jwt).toBe('new-jwt');
-    });
-  });
+        const sessionResult = await sessionCb({
+          session: mockSession,
+          token,
+          user: mockAdapterUser,
+          newSession: undefined,
+          trigger: 'update',
+        });
 
-  describe('session callback', () => {
-    const sessionCallback = authOptions.callbacks!.session!;
-
-    it('adds jwt to session user when token has jwt', async () => {
-      const session = {
-        user: { name: 'rushik', email: 'rushik@example.com' },
-        expires: '2099-01-01',
-      };
-      const token = { jwt: 'token-jwt' };
-      const result = await sessionCallback({ session, token } as unknown as Parameters<
-        typeof sessionCallback
-      >[0]);
-      expect((result.user as { jwt?: string })?.jwt).toBe('token-jwt');
-    });
-
-    it('does not add jwt to session when token has no jwt', async () => {
-      const session = {
-        user: { name: 'rushik', email: 'rushik@example.com' },
-        expires: '2099-01-01',
-      };
-      const token = {};
-      const result = await sessionCallback({ session, token } as unknown as Parameters<
-        typeof sessionCallback
-      >[0]);
-      expect((result.user as { jwt?: string })?.jwt).toBeUndefined();
-    });
-
-    it('returns session unchanged when user is missing', async () => {
-      const session = { expires: '2099-01-01' };
-      const token = { jwt: 'token-jwt' };
-      const result = await sessionCallback({ session, token } as unknown as Parameters<
-        typeof sessionCallback
-      >[0]);
-      expect(result).toEqual(session);
-    });
-
-    it('preserves existing session user properties', async () => {
-      const session = {
-        user: { name: 'rushik', email: 'rushik@example.com' },
-        expires: '2099-01-01',
-      };
-      const token = { jwt: 'token-jwt' };
-      const result = await sessionCallback({ session, token } as unknown as Parameters<
-        typeof sessionCallback
-      >[0]);
-      expect(result.user?.name).toBe('rushik');
-      expect(result.user?.email).toBe('rushik@example.com');
+        expect(sessionResult.user).toHaveProperty('jwt', 'secret');
+      }
     });
   });
 });

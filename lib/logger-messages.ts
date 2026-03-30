@@ -48,5 +48,6 @@ export const LOG_MESSAGES = {
   api: {
     fetchError: 'API Error',
     globalError: 'Global Fetch Error',
+    unexpectedError: 'Unexpected API error',
   },
 };

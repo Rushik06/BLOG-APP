@@ -6,7 +6,7 @@ import { blogMetadata } from '@/app/metadata/blog';
 export const metadata = blogMetadata;
 
 export default async function BlogPage() {
-  const res = await fetchAPI<{ data: Blog[] }>('/blogs');
+  const res = await fetchAPI<{ data: Blog[] }>('/blogs', { next: { revalidate: 60 } });
   const blogs = res.data || [];
 
   return <BlogClient blogs={blogs} />;

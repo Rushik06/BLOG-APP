@@ -12,8 +12,8 @@ export const metadata = pricingMetadata;
 
 export default async function PricingPage() {
   const [res, configRes] = await Promise.all([
-    fetchAPI<{ data: PricingApi[] }>('/pricings'),
-    fetchAPI<PricingPageResponse>('/pricing-pages'),
+    fetchAPI<{ data: PricingApi[] }>('/pricings', { next: { revalidate: 60 } }),
+    fetchAPI<PricingPageResponse>('/pricing-pages', { next: { revalidate: 60 } }),
   ]);
 
   const config = configRes.data?.[0];
